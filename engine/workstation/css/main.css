@@ -1,17 +1,60 @@
-.work-panel, .prev-panel{
-	position: absolute;
-	width: 100vw;
-	height: 50vh;
-	margin: 0;
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);
+@supports (font-variation-settings: normal) {
+	html, * { font-family: 'Fira Code', Arial; }
+  }
+html,body, table{
 	padding: 0;
+	margin: 0;
+	font-size: large;
+	font-family: Arial;
+}
+table *{
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+select, input, button,textarea, div[contenteditable] {
+	width: 100% !important;
+	vertical-align: middle;
+	font-size: large;
+	font-weight: 500;
+	resize: none;
+	font-family: Fira Code, Arial, Helvetica, sans-serif;
+}
+.form p div{
+	display: inline;
+}
+table{
+	width: calc(100% - 10px);
+}
+
+.work-panel, .prev-panel, .tree-panel{
+	position: absolute;
+	margin: 0;
+	padding: 0 10px;
 	overflow: auto;
+}
+.tree-panel{
+	top:0;
+	width: calc(15vw - 15px);
+	height: 100vh;
 	left: 0;
+	background-color: palevioletred;
 }
 .work-panel{
+	width: calc(40vw - 10px);
+	height: 100vh;
 	top:0;
-	background-color: dimgrey;
+	left: 15vw;
+	background-color: #242222;
+	color :#FFFFFF;
 }
+
+
 .prev-panel{
-	bottom: 0;
+	top:0;
+	width: calc(45vw - 20px);
+	height: 100vh;
+	left: 55vw;
+	top: 0;
 	background-color: gainsboro
 }
