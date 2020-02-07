@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="/main.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://use.fontawesome.com/releases/v5.12.0/js/all.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+</head>
+
+<body>
+<div id="work" class="work-panel" contenteditable> </div>
+<div id="prev" class="prev-panel" ></div>
+
+	<script>
+		var converter = new showdown.Converter();
+		//IT IS LIVE !!!!!!!!!!!!!!!!!!!!!!!!!!
+		function convert() {
+			var text = $("#work").text();
+			html = converter.makeHtml(text);
+			$("#prev").html(html);
+		}
+		$("#work").on("keydown", convert())
+	</script>
+</body>
+
+</html>

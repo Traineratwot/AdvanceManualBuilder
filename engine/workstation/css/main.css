@@ -1,0 +1,17 @@
+.work-panel, .prev-panel{
+	position: absolute;
+	width: 100vw;
+	height: 50vh;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	left: 0;
+}
+.work-panel{
+	top:0;
+	background-color: dimgrey;
+}
+.prev-panel{
+	bottom: 0;
+	background-color: gainsboro
+}
