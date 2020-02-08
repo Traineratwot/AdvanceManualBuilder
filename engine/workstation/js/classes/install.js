@@ -9,6 +9,7 @@ class install {
 		this.body.fadeIn()
 		this.body = $(`<table>`).appendTo(this.body);
 		this.CurrentStep = 0;
+		this.iii = 0;
 		this.step1()
 	}
 	step1() {
@@ -18,7 +19,8 @@ class install {
 		var select = `<select>`;
 		for (const key in this.Types.project) {
 			const e = this.Types.project[key];
-			select += `<option value="${e}">${e}</option>`;
+			select += `<option value="${e}">${e}</op
+			tion>`;
 		}
 		select += `</select>`
 		this.data.ProjectType = $(select).appendTo(td);
@@ -37,14 +39,14 @@ class install {
 		Shematik = this.Shematik.Project.typeField[this.data.ProjectType.val()];
 		var key = Object.keys(Shematik)[this.CurrentStep];
 		if (!key) {
-			var data = JSON.stringify(this.data)
+			var data = JSON.stringify(this.export())
 			$.ajax({
 				type: "POST",
 				url: "engine/core/CreateProject.php",
 				data: `data=${data}`,
-				dataType: "json",
+				dataType: "text",
 				success: function (response) {
-					alert(response)
+					console.log(response);
 				}
 			});
 			return "finish";
@@ -52,7 +54,6 @@ class install {
 		var var_name = `Project${key}`;
 		var CurrentField = Shematik[key]
 		if (CurrentField.type == "array") {
-			this.data[var_name] = []
 		} else {
 			this.data[var_name] = null
 		}
@@ -61,7 +62,6 @@ class install {
 		var td;
 		td = $(`<td>`).appendTo(tr)
 		$(`<span>${key}</span>`).appendTo(td);
-		var $i = 0;
 		for (const k in CurrentField.fields) {
 			if (CurrentField.fields.hasOwnProperty(k)) {
 				const e = CurrentField.fields[k];
@@ -115,10 +115,10 @@ class install {
 						if (!this.data[var_name]) {
 							this.data[var_name] = []
 						}
-						if (!this.data[var_name][$i]) {
-							this.data[var_name][$i] = {}
+						if (!this.data[var_name][this.iii]) {
+							this.data[var_name][this.iii] = {}
 						}
-						this.data[var_name][$i][e.value] = _field
+						this.data[var_name][this.iii][e.value] = _field
 					} else {
 						this.data[var_name] = {}
 						this.data[var_name][e.value] = _field
@@ -126,7 +126,6 @@ class install {
 				}
 			}
 		}
-		console.log(CurrentField);
 		td = $(`<td>`).appendTo(tr)
 		var button = $(`<button>next</button>`).appendTo(td);
 		button.on('click', (e) => {
@@ -134,13 +133,15 @@ class install {
 			if(addAction){
 				addAction.attr('disabled',"");
 			}
-			$(e.target).attr('disabled',"");
+			self.iii = 0
+			// $(e.target).attr('disabled',"");
 			self.overstep()
 		})
 		if(addAction){
 			addAction.on('click', (e) => {
 				$(e.target).attr('disabled',"");
 				button.attr('disabled',"");
+				self.iii++;
 				self.overstep()
 			})
 		}
@@ -196,13 +197,13 @@ class install {
 						}
 						break;
 					case "Object":
-						for (const k in Object) {
-							if (Object.hasOwnProperty(k)) {
-								const elem = Object[k];
+						for (const k in e) {
+							if (e.hasOwnProperty(k)) {
+								const elem = e[k];
 								if (!exportData[key]) {
-									exportData[key] = []
+									exportData[key] = ''
 								}
-								exportData[key][k] = elem.val()
+								exportData[key] = elem.val()
 							}
 						}
 					break;

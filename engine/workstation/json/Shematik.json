@@ -7,76 +7,74 @@
 		},
 		"typeField": {
 			"Library": {
-				"Instalation": {
+				"instalation": {
 					"type": "array",
 					"fields": {
 						"select": {
-							"value":"type",
+							"value": "type",
 							"options": "Types.instalation"
 						},
 						"text": {
-							"value":"text",
+							"value": "text",
 							"placeholder": "dicription"
 						},
 						"button": {
-							"action":"add",
+							"action": "add",
 							"title": "add"
 						}
 					}
 				},
-				"Dependences": {
+				"dependences": {
 					"type": "array",
 					"fields": {
 						"select": {
-							"value":"type",
+							"value": "type",
 							"options": "Types.dependences"
 						},
-						"text":{
-							"value":"name",
+						"text": {
+							"value": "name",
 							"placeholder": "Name"
-
 						},
-						"text1":{
-							"value":"minversion",
+						"text1": {
+							"value": "minversion",
 							"placeholder": "Min version"
-
 						},
 						"button": {
-							"action":"add",
+							"action": "add",
 							"title": "add"
 						}
 					}
 				},
-				"Lang": {
+				"lang": {
 					"type": "string",
 					"fields": {
 						"select": {
-							"value":"Lang",
+							"value": "Lang",
 							"options": "Types.lang"
 						}
 					}
 				},
-				"Discription": {
+				"discription": {
 					"type": "string",
 					"fields": {
 						"textarea": {
-							"value":"Discription",
+							"value": "Discription",
 							"placeholder": "discription"
 						}
 					}
 				},
-				"Version": {
+				"version": {
 					"type": "string",
 					"fields": {
 						"text": {
-							"value":"Version",
+							"value": "Version",
 							"placeholder": "version"
 						}
 					}
 				}
 			},
 			"REST API": {
-				"Url": {
+				"url": {
 					"type": "string",
 					"fields": {
 						"url": {
@@ -84,15 +82,15 @@
 						}
 					}
 				},
-				"Auth": {
+				"auth": {
 					"type": "string",
 					"fields": {
 						"select": {
-							"options": ["none","header","basic"]
+							"options": ["none", "header", "basic"]
 						}
 					}
 				},
-				"Discription": {
+				"discription": {
 					"type": "string",
 					"fields": {
 						"textarea": {
@@ -100,7 +98,7 @@
 						}
 					}
 				},
-				"Version": {
+				"version": {
 					"type": "string",
 					"fields": {
 						"text": {
@@ -110,6 +108,5 @@
 				}
 			}
 		}
-		
 	}
 }

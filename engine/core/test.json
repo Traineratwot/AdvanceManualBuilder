@@ -1,1 +1,28 @@
-{"ProjectType":{"0":{"0":{},"1":{}},"length":1,"prevObject":{"0":{"0":{},"1":{}},"length":1}},"ProjectName":{"0":{},"length":1,"prevObject":{"0":{},"length":1}},"ProjectInstalation":[{"type":{"0":{"0":{},"1":{},"2":{},"3":{}},"length":1,"prevObject":{"0":{"0":{},"1":{},"2":{},"3":{}},"length":1}},"text":{"0":{},"length":1,"prevObject":{"0":{},"length":1}}}],"ProjectDependences":[{"type":{"0":{"0":{},"1":{}},"length":1,"prevObject":{"0":{"0":{},"1":{}},"length":1}},"name":{"0":{},"length":1,"prevObject":{"0":{},"length":1}},"minversion":{"0":{},"length":1,"prevObject":{"0":{},"length":1}}}],"ProjectLang":{"Lang":{"0":{"0":{},"1":{},"2":{},"3":{},"4":{},"5":{},"6":{}},"length":1,"prevObject":{"0":{"0":{},"1":{},"2":{},"3":{},"4":{},"5":{},"6":{}},"length":1}}},"ProjectDiscription":{"Discription":{"0":{},"length":1,"prevObject":{"0":{},"length":1}}},"ProjectVersion":{"Version":{"0":{},"length":1,"prevObject":{"0":{},"length":1}}}}
+{
+	"ProjectType": "Library",
+	"ProjectName": "gfghfdghfgh",
+	"Projectinstalation": [
+		{
+			"type": "html",
+			"text": "fdsfsd"
+		},
+		{
+			"type": "html",
+			"text": "fdsfds"
+		},
+		{
+			"type": "html",
+			"text": "dsads"
+		}
+	],
+	"Projectdependences": [
+		{
+			"type": "library",
+			"name": "fdsds",
+			"minversion": "adfghb"
+		}
+	],
+	"Projectlang": "py",
+	"Projectdiscription": "fddsf",
+	"Projectversion": "dsfds"
+}
