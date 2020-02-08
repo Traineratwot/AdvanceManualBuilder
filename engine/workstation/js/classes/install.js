@@ -64,6 +64,7 @@ class install {
 			}
 		}
 		$(".install-menu").on("click", (event) => {
+			this.iii = 0;
 			self.generate(event)
 		})
 	}
