@@ -27,7 +27,6 @@ class _function extends _object{
 		this.param = [];
 		this.addParam()
 	}
-
 	addParam(){
 		var Itr 	= $(`<tr>`).appendTo(this.SELECTOR);
 		var Itd 	= $(`<td>`).appendTo(Itr);

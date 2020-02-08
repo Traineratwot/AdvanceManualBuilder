@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="engine/workstation/css/main copy.css">
+	<link rel="stylesheet" href="engine/workstation/css/input.css">
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
+	<script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+</head>
+<style>
+.instalition-main {
+	width: 10vw;
+	height: 80vh;
+	min-height: 400px;
+	max-height: 500px;
+	min-width: 200px;
+	max-width: 250px;
+	position: absolute;
+	top: 50%;
+	left: 10%;
+	transform: translate(-50%,-50%);
+	background-color: aliceblue;
+	border-radius: 10px;
+	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+}
+</style>
+<body>
+	<div class="select-project">
+
+	</div>
+</body>
+<script src="engine/workstation/js/classes/install copy.js"></script>
+<script>
+	var inst;
+	var Types;	
+	$.getJSON("engine/workstation/json/Types.json",(data)=>{
+			Types = data;
+		})
+	var Shematik;		
+	$.getJSON("engine/workstation/json/Shematik.json",(data)=>{
+			Shematik = data;
+		})
+	var Projects;
+	$.getJSON("engine/workstation/json/Projects.json", (data) => {
+		Projects = data;
+		var ul = $(`<ul class="ProjectList">`).appendTo(".select-project")
+		for (const key in Projects) {
+			if (Projects.hasOwnProperty(key)) {
+				const e = Projects[key];
+				$(ul).append(`
+			<li>
+				<span class="type">${e.type}</span> <a href="engine/workstation/index.html?ProjectId=${e.id}">
+				<span class="name">${key}</span> 
+				</a><span class="v">${e.version}</span>
+			</li>
+		`)
+			}
+			
+		}
+		$(ul).append(`
+			<li>
+				<button>Add one</button>
+			</li>
+		`)
+		
+		ul.on("click",()=>{
+			$(".select-project").fadeOut()
+			inst = new install(Types,Shematik)
+		})
+	})
+
+</script>
+
+</html>

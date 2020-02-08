@@ -1,6 +1,7 @@
 class install {
 
 	constructor(Types, Shematik) {
+		this.data ={};
 		this.Types = Types;
 		this.Shematik = Shematik;
 		this.body = $(`<div class="select-project">`).fadeOut();
@@ -20,30 +21,40 @@ class install {
 			select += `<option value="${e}">${e}</option>`;
 		}
 		select += `</select>`
-		this.ProjectType = $(select).appendTo(td);
+		this.data.ProjectType = $(select).appendTo(td);
 		td = $(`<td>`).appendTo(tr);
-		this.ProjectName = $(`<input type="text" placeholder="Name">`).appendTo(td);
+		this.data.ProjectName = $(`<input type="text" placeholder="Name">`).appendTo(td);
 		td = $(`<td>`).appendTo(tr);
 		var button = $(`<button>next</button>`).appendTo(td);
 		button.on('click', (e) => {
 			$(e.target).attr('disabled', "")
-			self.ProjectType.attr('disabled', "")
+			self.data.ProjectType.attr('disabled', "")
 			self.overstep()
 		})
 	}
 	overstep() {
 		var self = this;
-		Shematik = this.Shematik.Project.typeField[this.ProjectType.val()];
+		Shematik = this.Shematik.Project.typeField[this.data.ProjectType.val()];
 		var key = Object.keys(Shematik)[this.CurrentStep];
 		if (!key) {
+			var data = JSON.stringify(this.data)
+			$.ajax({
+				type: "POST",
+				url: "engine/core/CreateProject.php",
+				data: `data=${data}`,
+				dataType: "json",
+				success: function (response) {
+					alert(response)
+				}
+			});
 			return "finish";
 		}
 		var var_name = `Project${key}`;
 		var CurrentField = Shematik[key]
 		if (CurrentField.type == "array") {
-			this[var_name] = []
+			this.data[var_name] = []
 		} else {
-			this[var_name] = null
+			this.data[var_name] = null
 		}
 		var addAction;
 		var tr = $(`<tr>`).appendTo(this.body)
@@ -101,16 +112,16 @@ class install {
 				}
 				if (e.value) {
 					if (CurrentField.type == "array") {
-						if (!this[var_name]) {
-							this[var_name] = []
+						if (!this.data[var_name]) {
+							this.data[var_name] = []
 						}
-						if (!this[var_name][$i]) {
-							this[var_name][$i] = {}
+						if (!this.data[var_name][$i]) {
+							this.data[var_name][$i] = {}
 						}
-						this[var_name][$i][e.value] = _field
+						this.data[var_name][$i][e.value] = _field
 					} else {
-						this[var_name] = {}
-						this[var_name][e.value] = _field
+						this.data[var_name] = {}
+						this.data[var_name][e.value] = _field
 					}
 				}
 			}
@@ -154,5 +165,52 @@ class install {
 			var diff = max - i+1;
 			$(this).find('td:eq(1)').attr("colspan",diff)
 		});
+	}
+
+	export(){
+		var exportData = {};
+		for (const key in this.data) {
+			if (this.data.hasOwnProperty(key)) {
+				const e = this.data[key];
+				var cn = e.constructor.name;
+				switch (cn) {
+					case "k":
+						exportData[key] = e.val() 
+						break;
+					case "Array":
+						var i = 0;
+						for (const iterator of e) {
+							for (const k in iterator) {
+								if (iterator.hasOwnProperty(k)) {
+									const elem = iterator[k];
+									if (!exportData[key]) {
+										exportData[key] = []
+									}
+									if (!exportData[key][i]) {
+										exportData[key][i] = {}
+									}
+									exportData[key][i][k] = elem.val()
+								}
+							}
+							i++;
+						}
+						break;
+					case "Object":
+						for (const k in Object) {
+							if (Object.hasOwnProperty(k)) {
+								const elem = Object[k];
+								if (!exportData[key]) {
+									exportData[key] = []
+								}
+								exportData[key][k] = elem.val()
+							}
+						}
+					break;
+					default:
+						break;
+				}
+			}
+		}
+		return exportData
 	}
 }
