@@ -13,7 +13,9 @@
 	<script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
 </head>
+<style>
 
+</style>
 <body>
 	<div class="select-project">
 
@@ -52,7 +54,9 @@
 				<button>Add one</button>
 			</li>
 		`)
+		
 		ul.on("click",()=>{
+			$(".select-project").fadeOut()
 			inst = new install(Types,Shematik)
 		})
 	})
