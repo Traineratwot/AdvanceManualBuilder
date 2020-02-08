@@ -20,6 +20,11 @@
 			"type": "library",
 			"name": "fdsds",
 			"minversion": "adfghb"
+		},
+		{
+			"type": "library",
+			"name": "fdsds",
+			"minversion": "adfghb"
 		}
 	],
 	"Projectlang": "py",

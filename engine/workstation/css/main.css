@@ -5,7 +5,7 @@
   html{
 	background-color: #242222;
   }
-html,body, table{
+html,body, p table{
 	padding: 0;
 	margin: 0;
 	font-size: large;

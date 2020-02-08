@@ -7,16 +7,42 @@
 		},
 		"typeField": {
 			"Library": {
+				"name":{
+					"name":"Name",
+					"short":true,
+					"type": "string",
+					"fields": {
+						"text": {
+							"placeholder": "Name"
+						}
+					}
+				},
+				"discription": {
+					"name": "Discription",
+					"type": "string",
+					"fields": {
+						"text": {
+							"value": "shortDiscription",
+							"placeholder": "Short discription"
+						},
+						"textarea": {
+							
+							"value": "longDiscription",
+							"placeholder": "Long discription"
+						}
+					}
+				},
 				"instalation": {
+					"name": "Instalation",
 					"type": "array",
 					"fields": {
 						"select": {
 							"value": "type",
 							"options": "Types.instalation"
 						},
-						"text": {
+						"textarea": {
 							"value": "text",
-							"placeholder": "dicription"
+							"placeholder": "Discription"
 						},
 						"button": {
 							"action": "add",
@@ -25,6 +51,7 @@
 					}
 				},
 				"dependences": {
+					"name": "Dependences",
 					"type": "array",
 					"fields": {
 						"select": {
@@ -46,6 +73,8 @@
 					}
 				},
 				"lang": {
+					"name": "Language",
+					"short":true,
 					"type": "string",
 					"fields": {
 						"select": {
@@ -54,16 +83,9 @@
 						}
 					}
 				},
-				"discription": {
-					"type": "string",
-					"fields": {
-						"textarea": {
-							"value": "Discription",
-							"placeholder": "discription"
-						}
-					}
-				},
 				"version": {
+					"name": "Version",
+					"short":true,
 					"type": "string",
 					"fields": {
 						"text": {
@@ -74,7 +96,18 @@
 				}
 			},
 			"REST API": {
+				"name":{
+					"name":"Name",
+					"short":true,
+					"type": "string",
+					"fields": {
+						"text": {
+							"placeholder": "Name"
+						}
+					}
+				},
 				"url": {
+					"name":"Base url",
 					"type": "string",
 					"fields": {
 						"url": {
@@ -83,6 +116,8 @@
 					}
 				},
 				"auth": {
+					"name":"Autorization type",
+					"short":true,
 					"type": "string",
 					"fields": {
 						"select": {
@@ -91,6 +126,7 @@
 					}
 				},
 				"discription": {
+					"name": "Discription",
 					"type": "string",
 					"fields": {
 						"textarea": {
@@ -99,6 +135,8 @@
 					}
 				},
 				"version": {
+					"name":"Version",
+					"short":true,
 					"type": "string",
 					"fields": {
 						"text": {

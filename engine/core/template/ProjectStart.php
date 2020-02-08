@@ -1,33 +1,35 @@
-# NAME <?=$ProjectName?>
-### Discription <?=$Projectdiscription?>
-  
+# <?=$ProjectName.PHP_EOL?>
+<?=$Projectlang?> <?=$ProjectType?> v<?=$Projectversion.PHP_EOL?>  
+### <?=$Projectdiscription?>
+
+<? if (isset($Projectinstalation)): ?>
 ## Project instalation
 ---
 
 <? foreach ($Projectinstalation as $i => $item): ?>
-Step <?=$i++?>:
+Variant <?=++$i?> <?=$item["type"]?>:
 <? switch ($item["type"]): case "html": ?>
 ```html
-<?=$item["text"].PHP_EOL?>
+<?=trim($item["text"]).PHP_EOL?>
 ```
 <? break; case "npm": ?>
 ```html
-<?=$item["text"].PHP_EOL?>
+<?=trim($item["text"]).PHP_EOL?>
 ```
 <? break; case "git": ?>
 ```html
-<?=$item["text"].PHP_EOL?>
+<?=trim($item["text"]).PHP_EOL?>
 ```
 <? break; case "composer": ?>
 ```html
-<?=$item["text"].PHP_EOL?>
+<?=trim($item["text"]).PHP_EOL?>
 ```
-<? break; endswitch; endforeach; ?>
+<? break; endswitch; endforeach; endif; ?>
 
-
-
+<? if (isset($Projectinstalation)): ?>
 ## Dependences
 ---
 <? foreach ($Projectdependences as $item): ?>
-- <?=$item["name"]?>: Version >= <?=$item["minversion"]?> minversion
+- [<?=$item["name"]?>]() >= <?=$item["minversion"]?> 
 <? endforeach; ?>
+<? endif; ?>
