@@ -2,6 +2,9 @@
 @supports (font-variation-settings: normal) {
 	html, * { font-family: 'Fira Code', Arial; }
   }
+  html{
+	background-color: #242222;
+  }
 html,body, table{
 	padding: 0;
 	margin: 0;
@@ -26,7 +29,17 @@ select, input, button,textarea, div[contenteditable] {
 table{
 	width: calc(100% - 10px);
 }
-
+.select-project, .instalition-main{
+	width: 40vw;
+	min-height: 50vh;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	background-color: aliceblue;
+	border-radius: 10px;
+	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+}
 .work-panel, .prev-panel, .tree-panel{
 	position: absolute;
 	margin: 0;
@@ -47,6 +60,7 @@ table{
 	left: 15vw;
 	background-color: #242222;
 	color :#FFFFFF;
+	transition: all .3s;
 }
 
 
@@ -57,4 +71,41 @@ table{
 	left: 55vw;
 	top: 0;
 	background-color: gainsboro
+}
+
+.ProjectList{
+	padding: 0 40px;
+}
+.ProjectList a{
+	text-decoration: none;
+	transition: all .5s;
+	color: green;
+}
+.ProjectList a:visited{
+	color: blue;
+}
+.ProjectList a:hover{
+	color: tomato;
+}
+
+.ProjectList li{
+	list-style-type: decimal;
+}
+.ProjectList li:last-child{
+	list-style-type: none;
+}
+.ProjectList .type{
+color: grey;
+text-decoration: none;
+}
+.ProjectList .name{
+font-weight: bold;
+}
+.ProjectList .v{
+	font-size: x-small;
+	color: grey;
+	text-decoration: none;
+}
+.ProjectList .v::before{
+	content: "V ";
 }

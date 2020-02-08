@@ -1,0 +1,112 @@
+{
+	"Project": {
+		"currentId": 2,
+		"ids": {
+			"0": "{name}",
+			"1": "{name2}"
+		},
+		"typeField": {
+			"Library": {
+				"Instalation": {
+					"type": "array",
+					"fields": {
+						"select": {
+							"value":"type",
+							"options": "Types.instalation"
+						},
+						"text": {
+							"value":"text",
+							"placeholder": "dicription"
+						},
+						"button": {
+							"action":"add",
+							"title": "add"
+						}
+					}
+				},
+				"Dependences": {
+					"type": "array",
+					"fields": {
+						"select": {
+							"value":"type",
+							"options": "Types.dependences"
+						},
+						"text":{
+							"value":"name",
+							"placeholder": "Name"
+
+						},
+						"text1":{
+							"value":"minversion",
+							"placeholder": "Min version"
+
+						},
+						"button": {
+							"action":"add",
+							"title": "add"
+						}
+					}
+				},
+				"Lang": {
+					"type": "string",
+					"fields": {
+						"select": {
+							"options": "Types.lang"
+						}
+					}
+				},
+				"Discription": {
+					"type": "string",
+					"fields": {
+						"textarea": {
+							"placeholder": "discription"
+						}
+					}
+				},
+				"Version": {
+					"type": "string",
+					"fields": {
+						"text": {
+							"placeholder": "version"
+						}
+					}
+				}
+			},
+			"REST API": {
+				"Url": {
+					"type": "string",
+					"fields": {
+						"url": {
+							"placeholder": "main url"
+						}
+					}
+				},
+				"Auth": {
+					"type": "string",
+					"fields": {
+						"select": {
+							"options": ["none","header","basic"]
+						}
+					}
+				},
+				"Discription": {
+					"type": "string",
+					"fields": {
+						"textarea": {
+							"placeholder": "discription"
+						}
+					}
+				},
+				"Version": {
+					"type": "string",
+					"fields": {
+						"text": {
+							"placeholder": "version"
+						}
+					}
+				}
+			}
+		}
+		
+	}
+}

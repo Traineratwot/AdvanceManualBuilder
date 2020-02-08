@@ -10,16 +10,16 @@
 	<link rel="stylesheet" href="css/input.css">
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
-	<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 	<script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 </head>
 
 <body>
 <div id="tree" class="tree-panel" > </div>
 <div id="work" class="work-panel" >
 	<header> <h1>JavaScript Library</h1></header>
-	<form class="form">
+	<div class="form">
 		<table>
 			<tr>
 				<td>
@@ -30,18 +30,18 @@
 						<option value="var">Var</option>
 					</select>
 				</td>
-				<td><input type="text" name="name_object" placeholder="Name"></td>
-				<td><button id="add_object"><i class="fas fa-save"></i></button></td>
+				<td><input type="text" id="name_object" placeholder="Name"></td>
+				<td><button id="save_object"><i class="fas fa-save"></i></button></td>
 			</tr>
 			<tr>
 				<td colspan="3">
-					<input type="text" name="ShortDiscription" placeholder="Short discription"><br>
-					<textarea type="text" name="LongDiscription" rows="3" placeholder="Long discription"></textarea>
+					<input type="text" id="ShortDiscription" placeholder="Short discription"><br>
+					<textarea type="text" id="LongDiscription" rows="3" placeholder="Long discription"></textarea>
 				</td>
 			</tr>
 		</table>
 		<table class="contructor"></table>
-	</form>
+	</div>
 </div>
 <div id="prev" class="prev-panel" > </div>
 
@@ -50,9 +50,8 @@
 var ThisNewObject;
 	$(document).ready(function() {
 		// $('.js-example-basic-single').select2();
-		ThisNewObject = new _function;
-		$("#add_object").on("click",(event)=>{
-			switch ($(event.target).val()) {
+		$("#save_object").on("click",(event)=>{
+			switch ($("#select_object").val()) {
 				case "function":
 					ThisNewObject = new _function;
 					break;
@@ -70,6 +69,7 @@ var ThisNewObject;
 				ThisNewObject = "def"
 					break;
 			}
+			$("#select_object").attr("disabled","")
 		})
 	});
 	var FileText
