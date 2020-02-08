@@ -1,17 +1,16 @@
 class install {
-
 	constructor(Types, Shematik) {
-		var self = this;
-		this.Types = Types;
+		var self 	= this;
+		this.Types	= Types;
 		this.Shematik = Shematik;
-		this.body = $(`<div class="instalition-main" style="display:none;">`).appendTo("body").fadeIn();
+		this.body 	= $(`<div class="instalition-main" style="display:none;">`).appendTo("body").fadeIn();
 		this.CurrentStep = 0;
 		this.structuer = []
 		this.currentP = null;
-		this.data = {}
+		this.data	= {}
 		this.events = [];
-		this.but = [];
-		this.iii = 0;
+		this.but 	= [];
+		this.iii 	= 0;
 		this.step1()
 		var p = $(`<p style="position:absolute;bottom:4px;width:calc(100% - 8px);">`).appendTo(this.body)
 		this.saveBut = $(`<button disabled>Save</button>`).appendTo(p)
@@ -19,7 +18,7 @@ class install {
 			var data = JSON.stringify(self.export())
 			$.ajax({
 				type: "POST",
-				url: "engine/core/CreateProject.php",
+				url:  "engine/core/CreateProject.php",
 				data: `data=${data}`,
 				dataType: "text",
 				success: function (response) {
@@ -38,9 +37,8 @@ class install {
 	}
 	step1() {
 		var self = this;
-		// this.Project.typeField
-		var i = this.nextLine();
-		var cl = this.create_select(this.Types.project).appendTo(i);
+		var i 	 = this.nextLine();
+		var cl	 = this.create_select(this.Types.project).appendTo(i);
 		var button = $(`<button>OK</button>`).appendTo(i);
 		button.on("click", (event) => {
 			self.data.Projectype = cl.val();
@@ -55,8 +53,9 @@ class install {
 		var i = 0;
 		for (const key in this.Shematik.Project.typeField[this.data.Projectype]) {
 			if (this.Shematik.Project.typeField[this.data.Projectype].hasOwnProperty(key)) {
+				var var_name = `Project${key}`;
 				let name = this.Shematik.Project.typeField[this.data.Projectype][key].name || key
-				let _d = $(`<span class="install-menu" data-i="${i++}" data-key="${key}">${name}</span> `).appendTo(this.nextLine())
+				let _d = $(`<span class="install-menu" data-i="${i++}" data-key="${key}">${name}</span> <span id="right${var_name}" class="right"></span>`).appendTo(this.nextLine())
 				if (key == "name") {
 					_d.addClass("h1")
 				}
@@ -71,9 +70,9 @@ class install {
 
 	generate(event) {
 		var self = this;
-		var et = $(event.target)
-		var key = et.attr("data-key")
-		var i = et.attr("data-i")
+		var et	 = $(event.target)
+		var key  = et.attr("data-key")
+		var i	 = et.attr("data-i")
 		var var_name = `Project${key}`;
 		$(".install-menu").removeClass('selected')
 		et.addClass('selected')
@@ -103,6 +102,7 @@ class install {
 				$(event.target).remove()
 			})
 		} else {
+			$(`#right${var_name}`).html(`(1)`)
 			this.overstep(var_name)
 		}
 		console.log(key)
@@ -163,6 +163,7 @@ class install {
 			addAction.on('click', (e) => {
 				$(e.target).attr('disabled', "");
 				self.iii++;
+				$(`#right${var_name}`).html(`(${self.iii+1})`)
 				self.overstep(var_name)
 			})
 		}
