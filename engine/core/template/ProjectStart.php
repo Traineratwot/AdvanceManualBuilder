@@ -1,5 +1,5 @@
-# <?=$ProjectName.PHP_EOL?>
-<?=$Projectlang?> <?=$ProjectType?> v<?=$Projectversion.PHP_EOL?>  
+# <?=$Projectname.PHP_EOL?>
+<?=$Projectlang?> <?=$Projecttype?> v<?=$Projectversion.PHP_EOL?>  
 ### <?=$Projectdiscription?>
 
 <? if (isset($Projectinstalation)): ?>

@@ -1,16 +1,16 @@
 class install {
 	constructor(Types, Shematik) {
-		var self 	= this;
-		this.Types	= Types;
+		var self = this;
+		this.Types = Types;
 		this.Shematik = Shematik;
-		this.body 	= $(`<div class="instalition-main" style="display:none;">`).appendTo("body").fadeIn();
+		this.body = $(`<div class="instalition-main" style="display:none;">`).appendTo("body").fadeIn();
 		this.CurrentStep = 0;
 		this.structuer = []
 		this.currentP = null;
-		this.data	= {}
+		this.data = {}
 		this.events = [];
-		this.but 	= [];
-		this.iii 	= 0;
+		this.but = [];
+		this.iii = 0;
 		this.step1()
 		var p = $(`<p style="position:absolute;bottom:4px;width:calc(100% - 8px);">`).appendTo(this.body)
 		this.saveBut = $(`<button disabled>Save</button>`).appendTo(p)
@@ -18,7 +18,7 @@ class install {
 			var data = JSON.stringify(self.export())
 			$.ajax({
 				type: "POST",
-				url:  "engine/core/CreateProject.php",
+				url: "engine/core/CreateProject.php",
 				data: `data=${data}`,
 				dataType: "text",
 				success: function (response) {
@@ -37,8 +37,8 @@ class install {
 	}
 	step1() {
 		var self = this;
-		var i 	 = this.nextLine();
-		var cl	 = this.create_select(this.Types.project).appendTo(i);
+		var i = this.nextLine();
+		var cl = this.create_select(this.Types.project).appendTo(i);
 		var button = $(`<button>OK</button>`).appendTo(i);
 		button.on("click", (event) => {
 			self.data.Projectype = cl.val();
@@ -63,16 +63,17 @@ class install {
 			}
 		}
 		$(".install-menu").on("click", (event) => {
-			this.iii = 0;
 			self.generate(event)
+			this.iii = 0;
 		})
 	}
 
 	generate(event) {
+
 		var self = this;
-		var et	 = $(event.target)
-		var key  = et.attr("data-key")
-		var i	 = et.attr("data-i")
+		var et = $(event.target)
+		var key = et.attr("data-key")
+		var i = et.attr("data-i")
 		var var_name = `Project${key}`;
 		$(".install-menu").removeClass('selected')
 		et.addClass('selected')
@@ -102,18 +103,28 @@ class install {
 				$(event.target).remove()
 			})
 		} else {
-			$(`#right${var_name}`).html(`(1)`)
-			this.overstep(var_name)
+			if (area.type == "array") {
+				if ($(`#right${var_name}`).html() == "") {
+					$(`#right${var_name}`).html(`(1)`)
+				}
+			}
+			if (this.data[var_name]) {
+				this.regenrate(var_name)
+			} else {
+				this.overstep(var_name)
+			}
 		}
 		console.log(key)
 	}
 
-	overstep(var_name) {
+	overstep(var_name, add = false) {
 		var self = this;
-		if (this.advMenu) {
-			this.advMenu.remove()
+		if (!add) {
+			if (this.advMenu) {
+				this.advMenu.remove()
+			}
+			this.advMenu = $(`<div class="adv-menu" style="display:none;">`).appendTo("body").fadeIn();
 		}
-		this.advMenu = $(`<div class="adv-menu" style="display:none;">`).appendTo("body").fadeIn();
 		var area = this.currentField
 		var addAction;
 		for (const k in area.fields) {
@@ -153,7 +164,9 @@ class install {
 						}
 						this.data[var_name][this.iii][e.value] = _field
 					} else {
-						this.data[var_name] = {}
+						if (!this.data[var_name]) {
+							this.data[var_name] = {}
+						}
 						this.data[var_name][e.value] = _field
 					}
 				}
@@ -161,13 +174,81 @@ class install {
 		}
 		if (addAction) {
 			addAction.on('click', (e) => {
-				$(e.target).attr('disabled', "");
+				$(e.target).remove()
 				self.iii++;
-				$(`#right${var_name}`).html(`(${self.iii+1})`)
-				self.overstep(var_name)
+				$(`#right${var_name}`).html(`(${self.iii + 1})`)
+				self.overstep(var_name, true)
 			})
 		}
 	}
+
+	regenrate(var_name) {
+		var self = this;
+		var Dt = this.data[var_name];
+		// var area = this.currentField;
+		var addAction;
+		if (this.advMenu) {
+			this.advMenu.remove()
+		}
+		var _field;
+		this.advMenu = $(`<div class="adv-menu" style="display:none;">`).appendTo("body").fadeIn();
+		switch (Dt.constructor.name) {
+			case "k":
+				Dt.appendTo(this.nextLine(this.advMenu))
+				break;
+			case "Array":
+				var _r = true;
+				for (const iterator of Dt) {
+					if (!iterator) {
+						self.overstep(var_name)
+						_r = false
+						break;
+					}
+					if (iterator.constructor.name == "k") {
+						iterator.appendTo(this.nextLine(this.advMenu))
+					} else if (iterator.constructor.name == "Object") {
+						for (const k in iterator) {
+							if (iterator.hasOwnProperty(k)) {
+								const elem = iterator[k];
+								if (elem.constructor.name == "k") {
+									elem.appendTo(this.nextLine(this.advMenu))
+								}
+							}
+						}
+					}
+				}
+				if (_r) {
+					_field = $(`<button>add</button>`).appendTo(this.nextLine(this.advMenu));
+					addAction = _field
+				}
+
+				break;
+			case "Object":
+				for (const k in Dt) {
+					if (Dt.hasOwnProperty(k)) {
+						const e = Dt[k];
+						if (e.constructor.name == "k") {
+							e.appendTo(this.nextLine(this.advMenu))
+						}
+					}
+				}
+				break;
+			case "String":
+
+				break;
+			default:
+				break;
+		}
+		if (addAction) {
+			addAction.on('click', (e) => {
+				$(e.target).remove()
+				self.iii = Dt.length;
+				$(`#right${var_name}`).html(`(${self.iii + 1})`)
+				self.overstep(var_name, true)
+			})
+		}
+	}
+
 
 	create_short(area) {
 		var key = Object.keys(area.fields)[0];

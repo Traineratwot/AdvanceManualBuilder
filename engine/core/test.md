@@ -1,20 +1,25 @@
-# 
-ruby  vsdadsa
+#  =-==
+http  vtyry
   
-### fdsfds
+### ytryrt
 ## Project instalation
 ---
 
 Variant 1 html:
 ```html
-ffds
+ytrytr
 ```
-Variant 2 git:
+Variant 2 html:
 ```html
-dsadsads
+tryrtyr
+```
+Variant 3 html:
+```html
+yutyuyt
 ```
 
 ## Dependences
 ---
-- [dsadsa]() >= sdadsa 
-- [sddsa]() >= dasdsa 
+- [yytr]() >= yutyu 
+- [opupo]() >= ytuyuytu 
+- [uu]() >= oopp 

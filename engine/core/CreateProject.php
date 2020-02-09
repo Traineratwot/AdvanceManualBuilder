@@ -3,6 +3,12 @@ $data = json_decode($_POST['data'],1);
 foreach($data as $key => $d){
 	$$key = $d;
 }
+$path = `/manuals/`.$Projectname;
+if (!is_dir($path)) {
+	mkdir($path);
+}
+
+
 
 ob_start();
 include "template/ProjectStart.php";
