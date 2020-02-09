@@ -27,8 +27,18 @@ class install {
 			});
 		})
 		this.DeleteBut = $(`<button disabled>Delete</button>`).appendTo(p).on("click", (event) => {
-			self.body.fadeOut()
-			self.DeleteMenu.div.fadeIn()
+			function start() {
+				self.body.fadeOut("fast");
+				self.DeleteMenu.div.fadeIn("slow");
+			}
+			if (self.advMenu) {
+				self.advMenu.fadeOut("fast",()=>{
+					self.advMenu.remove();
+					start();
+				})
+			} else {
+				start();
+			}
 			let name = ""
 			if (self.data.Projectname) {
 				name = self.data.Projectname.val()
@@ -39,7 +49,13 @@ class install {
 			self.DeleteMenu.input.attr("size", name.length)
 			self.DeleteMenu.input.attr("maxlength", name.length)
 		})
-		this.CancelBut = $(`<button>Cancel</button>`).appendTo(p).on("click", (event) => {
+		this.CancelBut = $(`<button>Cancel</button>`).appendTo(p)
+		.on("click", (event) => {
+			if (self.advMenu) {
+				self.advMenu.fadeOut("fast",()=>{
+					self.advMenu.remove();
+				})
+			}
 			$(".select-project").fadeIn()
 			self.body.fadeOut()
 		})
@@ -49,7 +65,8 @@ class install {
 		this.DeleteMenu = {}
 		this.DeleteMenu.div = $(`<div class="delete-menu" style="display:none;">`).appendTo("body")
 		this.DeleteMenu.text = $(`<p style="text-align: center"></p></br>`).appendTo(this.DeleteMenu.div)
-		this.DeleteMenu.input = $(`<input style="text-align: center">`).appendTo(this.DeleteMenu.div).on("input", (event) => {
+		this.DeleteMenu.input = $(`<input style="text-align: center">`).appendTo(this.DeleteMenu.div)
+		.on("input", (event) => {
 			if (self.DeleteMenu.input.val() == self.DeleteMenu.textToBe){
 				self.DeleteMenu.ok.removeAttr("disabled")
 			} else {
@@ -57,15 +74,19 @@ class install {
 			}
 		})
 		$(`<p class="Eenter"></p>`).appendTo(this.DeleteMenu.div)
-		this.DeleteMenu.cancel = $(`<button class="cancel"style="text-align: center">cancel</button>`).appendTo(this.DeleteMenu.div).on("click", (event) => {
-			self.body.fadeIn()
-			self.DeleteMenu.div.fadeOut(() => {
+		this.DeleteMenu.cancel = $(`<button class="cancel"style="text-align: center">cancel</button>`).appendTo(this.DeleteMenu.div)
+		.on("click", (event) => {
+			self.body.fadeIn("slow")
+			self.DeleteMenu.div.fadeOut("fast",() => {
 				self.DeleteMenu.input.val("")
 				self.DeleteMenu.ok.attr("disabled", "")
 			})
 		})
-		this.DeleteMenu.ok = $(`<button class="DELETE"style="text-align: center" disabled>DELETE</button>`).appendTo(this.DeleteMenu.div).on("click", (event) => {
+		this.DeleteMenu.ok = $(`<button class="DELETE"style="text-align: center" disabled>DELETE</button>`).appendTo(this.DeleteMenu.div)
+		.on("click", (event) => {
 			if (self.DeleteMenu.input.val() == self.DeleteMenu.textToBe){
+				self.DeleteMenu.ok.attr("disabled", "")
+				self.DeleteMenu.cancel.attr("disabled", "")
 				self.DeleteMenu.div.fadeOut(2000, () => {
 					self.DeleteMenu.input.val("")
 					$(".select-project").fadeIn("slow")
@@ -136,10 +157,10 @@ class install {
 			}
 			this.data[var_name].focus()
 			this.data[var_name].on('change blur', (event) => {
-				if (var_name == "Projectname") {
-					et.html($(event.target).val())
-				} else if (!$(event.target).val()) {
+				if (!$(event.target).val()) {
 					et.html(`${area.name}`)
+				} else if (var_name == "Projectname") {
+					et.html($(event.target).val())
 				} else {
 					et.html(`${area.name}:<span class="right">${$(event.target).val()}</span>`)
 				}
