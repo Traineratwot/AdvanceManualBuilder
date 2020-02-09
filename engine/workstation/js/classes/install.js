@@ -26,8 +26,51 @@ class install {
 				}
 			});
 		})
+		this.DeleteBut = $(`<button disabled>Delete</button>`).appendTo(p).on("click", (event) => {
+			self.body.fadeOut()
+			self.DeleteMenu.div.fadeIn()
+			let name = ""
+			if (self.data.Projectname) {
+				name = self.data.Projectname.val()
+			}
+			self.DeleteMenu.text.html(`This action <strong>cannot</strong> be undone. This will permanently delete the <strong>${name}</strong> project.<br><br>Please type <strong>${name || "confirm"}</strong> to confirm.`)
+			name = name || "confirm"
+			self.DeleteMenu.textToBe = name
+			self.DeleteMenu.input.attr("size", name.length)
+			self.DeleteMenu.input.attr("maxlength", name.length)
+		})
 		this.CancelBut = $(`<button>Cancel</button>`).appendTo(p).on("click", (event) => {
-
+			$(".select-project").fadeIn()
+			self.body.fadeOut()
+		})
+	}
+	create_delete() {
+		let self = this
+		this.DeleteMenu = {}
+		this.DeleteMenu.div = $(`<div class="delete-menu" style="display:none;">`).appendTo("body")
+		this.DeleteMenu.text = $(`<p style="text-align: center"></p></br>`).appendTo(this.DeleteMenu.div)
+		this.DeleteMenu.input = $(`<input style="text-align: center">`).appendTo(this.DeleteMenu.div).on("input", (event) => {
+			if (self.DeleteMenu.input.val() == self.DeleteMenu.textToBe){
+				self.DeleteMenu.ok.removeAttr("disabled")
+			} else {
+				self.DeleteMenu.ok.attr("disabled", "")
+			}
+		})
+		$(`<p class="Eenter"></p>`).appendTo(this.DeleteMenu.div)
+		this.DeleteMenu.cancel = $(`<button class="cancel"style="text-align: center">cancel</button>`).appendTo(this.DeleteMenu.div).on("click", (event) => {
+			self.body.fadeIn()
+			self.DeleteMenu.div.fadeOut(() => {
+				self.DeleteMenu.input.val("")
+				self.DeleteMenu.ok.attr("disabled", "")
+			})
+		})
+		this.DeleteMenu.ok = $(`<button class="DELETE"style="text-align: center" disabled>DELETE</button>`).appendTo(this.DeleteMenu.div).on("click", (event) => {
+			if (self.DeleteMenu.input.val() == self.DeleteMenu.textToBe){
+				self.DeleteMenu.div.fadeOut(2000, () => {
+					self.DeleteMenu.input.val("")
+					$(".select-project").fadeIn("slow")
+				})
+			}
 		})
 	}
 	nextLine(to = this.body) {
@@ -50,6 +93,8 @@ class install {
 	step2() {
 		var self = this;
 		this.saveBut.removeAttr("disabled")
+		this.DeleteBut.removeAttr("disabled")
+		this.create_delete()
 		var i = 0;
 		for (const key in this.Shematik.Project.typeField[this.data.Projectype]) {
 			if (this.Shematik.Project.typeField[this.data.Projectype].hasOwnProperty(key)) {

@@ -1,0 +1,150 @@
+{
+	"Project": {
+		"currentId": 2,
+		"ids": {
+			"0": "{name}",
+			"1": "{name2}"
+		},
+		"typeField": {
+			"Library": {
+				"name":{
+					"name":"Name",
+					"short":true,
+					"type": "string",
+					"fields": {
+						"text": {
+							"placeholder": "Name"
+						}
+					}
+				},
+				"discription": {
+					"name": "Discription",
+					"type": "string",
+					"fields": {
+						"text": {
+							"value": "shortDiscription",
+							"placeholder": "Short discription"
+						},
+						"textarea": {
+							
+							"value": "longDiscription",
+							"placeholder": "Long discription"
+						}
+					}
+				},
+				"instalation": {
+					"name": "Instalation",
+					"type": "array",
+					"fields": {
+						"select": {
+							"value": "type",
+							"options": "Types.instalation"
+						},
+						"textarea": {
+							"value": "text",
+							"placeholder": "Discription"
+						},
+						"button": {
+							"action": "add",
+							"title": "add"
+						}
+					}
+				},
+				"dependences": {
+					"name": "Dependences",
+					"type": "array",
+					"fields": {
+						"select": {
+							"value": "type",
+							"options": "Types.dependences"
+						},
+						"text": {
+							"value": "name",
+							"placeholder": "Name"
+						},
+						"text1": {
+							"value": "minversion",
+							"placeholder": "Min version"
+						},
+						"button": {
+							"action": "add",
+							"title": "add"
+						}
+					}
+				},
+				"lang": {
+					"name": "Language",
+					"short":true,
+					"type": "string",
+					"fields": {
+						"select": {
+							"value": "Lang",
+							"options": "Types.lang"
+						}
+					}
+				},
+				"version": {
+					"name": "Version",
+					"short":true,
+					"type": "string",
+					"fields": {
+						"text": {
+							"value": "Version",
+							"placeholder": "version"
+						}
+					}
+				}
+			},
+			"REST API": {
+				"name":{
+					"name":"Name",
+					"short":true,
+					"type": "string",
+					"fields": {
+						"text": {
+							"placeholder": "Name"
+						}
+					}
+				},
+				"url": {
+					"name":"Base url",
+					"type": "string",
+					"fields": {
+						"url": {
+							"placeholder": "main url"
+						}
+					}
+				},
+				"auth": {
+					"name":"Autorization type",
+					"short":true,
+					"type": "string",
+					"fields": {
+						"select": {
+							"options": ["none", "header", "basic"]
+						}
+					}
+				},
+				"discription": {
+					"name": "Discription",
+					"type": "string",
+					"fields": {
+						"textarea": {
+							"placeholder": "discription"
+						}
+					}
+				},
+				"version": {
+					"name":"Version",
+					"short":true,
+					"type": "string",
+					"fields": {
+						"text": {
+							"placeholder": "version"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -78,7 +78,7 @@ table {
 	min-width: 200px;
 	max-width: 250px;
 }
-.instalition-main , .adv-menu{
+.instalition-main, .adv-menu, .delete-menu{
 
 	position: absolute;
 	top: 50%;
@@ -86,6 +86,38 @@ table {
 	border-radius: 10px;
 	padding: 4px;
 	box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.75);
+}
+.delete-menu{
+	left: 50%;
+	width: 400px;
+	min-height: 200px;
+	height: fit-content;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+.delete-menu input{
+	min-width: 100px;
+	max-width: 400px;
+	width: fit-content !important;
+}
+.delete-menu .Eenter{
+	min-height: 45px;
+}
+.delete-menu .DELETE{
+	color: #F00;
+	right: 5%;
+}
+.delete-menu .DELETE:disabled{
+	color: rgba(255, 0, 0, 0.5);
+}
+.delete-menu .cancel{
+	left: 5%;
+}
+.delete-menu button{
+	bottom: 10px;
+	width: 90px;
+	position: absolute;
+	max-width: 90px;
 }
 .adv-menu{
 	width: 60vw;
