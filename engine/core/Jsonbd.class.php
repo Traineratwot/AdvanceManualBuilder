@@ -9,12 +9,16 @@ class JsonBd
 		"config" => [],
 		"databases" => []
 	];
+	private $TablePatern = [
+		"AutoIncrements" => [],
+		"rows" => []
+	];
 	public function __construct($path, $prefix = "jbd_")
 	{
 		$this->prefix = $prefix;
 		if (!is_dir($path)) {
 			if (!mkdir($path)) {
-				$this->log[] = [__LINE__,__FUNCTION__, "Не удалось создать папку"];
+				$this->log[] = [__LINE__, __FUNCTION__, "Не удалось создать папку"];
 				return false;
 			}
 		}
@@ -33,14 +37,14 @@ class JsonBd
 		}
 	}
 
-	public function setDb($database) 
+	public function setDb($database)
 	{
 		if ($this->invalidName($database)) {
-			$this->log[] = [__LINE__,__FUNCTION__, "Не правильное имя базы данных <<$database>>"];
+			$this->log[] = [__LINE__, __FUNCTION__, "Не правильное имя базы данных <<$database>>"];
 			return false;
 		}
 		if (@array_key_exists($database, $this->shema["databases"]) === false) {
-			$this->log[] = [__LINE__,__FUNCTION__, "<<$database>> Не существует"];
+			$this->log[] = [__LINE__, __FUNCTION__, "<<$database>> Не существует"];
 			return false;
 		}
 		$this->currentDb = $database;
@@ -51,43 +55,104 @@ class JsonBd
 	 * INSERT
 	 *
 	 * @param mixed $bdtb
-	 * @param mixed $values [fieldname,value]
+	 * @param mixed $values [fieldname=>value,]
 	 * @return void
 	 */
-	public function INSERT($bdtb,$values) 
+	public function INSERT($bdtb, $values)
 	{
-		$args = func_get_args();
-		$bdtb = array_shift($args);
-		$Table = $bdtb;
-		if (!$this->currentDb) {
-			$_bdtb = explode('.',$bdtb);
+		$_bdtb = explode('.', $bdtb);
+		if (count($_bdtb) == 2) {
 			$Table = $_bdtb[1];
 			if (!$this->setDb($_bdtb[0])) {
 				return false;
 			}
+		}else if($this->currentDb){
+			$Table = $_bdtb;
 		}
-		foreach ($values as $key => $val) {
-			if (gettype($val) != 'array') {
-				$this->log[] = [__LINE__,__FUNCTION__, "не верный формат"];
-				continue;
-				$fieldname  = $val[0];
-				$value 		= $val[1];
-				if ($this->invalidName($fieldname)) {
-					$this->log[] = [__LINE__,__FUNCTION__, "Не правильное имя базы данных <<$fieldname>>"];
+		$row = [];
+		$tb = json_decode(file_get_contents("$this->path/$this->currentDb/$Table.json"), 1);
+		$keyfieldVal = null;
+		foreach ($this->shema['databases'][$this->currentDb][$Table]['fields'] as $key => $FieldShema) {
+			if ($FieldShema["index"] and $FieldShema["auto_increment"] and isset($values[$key])) {
+				$fieldname  = $key;
+				$value 		= $values[$key];
+				if (gettype($value) != $FieldShema['type'] and ($FieldShema['type'] != "date" or gettype($value) != "integer")) {
+					$this->log[] = [__LINE__, __FUNCTION__, "Не верный тип данных $value в $fieldname ожидалось " . $FieldShema['type']];
+					continue;
+				}
+				foreach ($tb['rows'] as $k => $v) {
+					if ($k == $key and $v == $value) {
+						$this->log[] = [__LINE__, __FUNCTION__, "Не запись с таки ключом уже существует"];
+						return false;
+					}
+				}
+				if ((int)$value > (int)$tb['AutoIncrements'][$key]) {
+					$row[$key] = (int)$value;
+					$tb['AutoIncrements'][$key] = (int)$value;
+				}else{
+					(int)$tb['AutoIncrements'][$key]++;
+					$this->log[] = [__LINE__, __FUNCTION__, "Перестань баловаться c AutoIncrement! убери поле или поставь ".(string)$tb['AutoIncrements'][$key]];
 					return false;
 				}
-				$shema = $this->shema[$this->currentDb][$Table][$fieldname];
-				if()$shema['type'];
+			} else {
+				if (isset($values[$key]) and gettype($values) == 'array') {
+					$fieldname  = $key;
+					$value 		= $values[$key];
+					if (gettype($value) != $FieldShema['type'] and ($FieldShema['type'] != "date" or gettype($value) != "integer")) {
+						$this->log[] = [__LINE__, __FUNCTION__, "Не верный тип данных $value в $fieldname ожидалось " . $FieldShema['type']];
+						continue;
+					}
+					$row[$key] = $value;
+				} else {
+					if ($FieldShema["auto_increment"]) {
+						(int)$tb['AutoIncrements'][$key]++;
+						$row[$key] = (int)$tb['AutoIncrements'][$key];
+						
+					} else {
+						if ($FieldShema['type'] == "date" and $FieldShema['defult_value'] = -1) {
+							$row[$key] = date("U");
+						}else{
+							$row[$key] = $FieldShema['defult_value'];
+						}
+					}
+				}
 			}
-			
+			if ($FieldShema["index"]) {
+				$keyfieldVal = $row[$key];
+			}
 		}
+		if ($keyfieldVal) {
+			$tb["rows"][$keyfieldVal] = $row;
+		} else {
+			$tb["rows"][] = $row;
+		}
+		$this->tableSave($bdtb,$tb);
 	}
 
-	public function checkModel()
+	private function tableSave($bdtb,$td){
+		$_bdtb = explode('.', $bdtb);
+		if (count($_bdtb) == 2) {
+			$Table = $_bdtb[1];
+			if (!$this->setDb($_bdtb[0])) {
+				return false;
+			}
+		}else if($this->currentDb){
+			$Table = $_bdtb;
+		}
+		if(!$td = json_encode($td,256)){
+			return false;
+		}
+		if(!file_put_contents("$this->path/$this->currentDb/$Table.json",$td)){
+			return false;
+		}
+		return true;
+	}
+
+	private function checkModel()
 	{
 		if (!is_file($this->model)) {
 			if (!file_put_contents($this->model, json_encode($this->shema, 256))) {
-				$this->log[] = [__LINE__,__FUNCTION__, "Не удалось создать Information_Shema"];
+				$this->log[] = [__LINE__, __FUNCTION__, "Не удалось создать Information_Shema"];
 				return false;
 			}
 		}
@@ -97,8 +162,8 @@ class JsonBd
 
 	public function createBd($name)
 	{
-		if ($this->invalidName($name)){
-			$this->log[] = [__LINE__,__FUNCTION__,"не удалось создать недопустимое имя: <<".$name.">>"];
+		if ($this->invalidName($name)) {
+			$this->log[] = [__LINE__, __FUNCTION__, "не удалось создать недопустимое имя: <<" . $name . ">>"];
 			return false;
 		}
 		if (!is_dir($this->path . "/" . $name)) {
@@ -110,13 +175,13 @@ class JsonBd
 			$this->shema["databases"][$name] = [];
 			return $this->shema_save();
 		}
-		$this->log[] = [__LINE__,__FUNCTION__, "<<$name>> уже существует"];
+		$this->log[] = [__LINE__, __FUNCTION__, "<<$name>> уже существует"];
 		return true;
 	}
 	private function shema_save()
 	{
 		if (!file_put_contents($this->model, json_encode($this->shema, 256))) {
-			$this->log[] = [__LINE__,__FUNCTION__, "Не удалось сохранить Information_Shema"];
+			$this->log[] = [__LINE__, __FUNCTION__, "Не удалось сохранить Information_Shema"];
 			return false;
 		}
 		return $this;
@@ -138,15 +203,16 @@ class JsonBd
 	public function createTable($database, $name, $fields)
 	{
 		$Table = [];
+		$pattern = $this->TablePatern;
 		$args = func_get_args();
 		$database = array_shift($args);
 		$name = array_shift($args);
 		if (@array_key_exists($database, $this->shema["databases"]) === false) {
-			$this->log[] = [__LINE__,__FUNCTION__, "<<$database>> Не существует"];
+			$this->log[] = [__LINE__, __FUNCTION__, "<<$database>> Не существует"];
 			return false;
 		}
 		if (@array_key_exists($name, $this->shema["databases"][$database])) {
-			$this->log[] = [__LINE__,__FUNCTION__, "<<$name>> Уже существует "];
+			$this->log[] = [__LINE__, __FUNCTION__, "<<$name>> Уже существует "];
 			return false;
 		}
 		foreach ($args as $key => $value) {
@@ -158,39 +224,46 @@ class JsonBd
 				"auto_increment" => false,
 			];
 			if (!isset($value["name"]) or !isset($value["type"])) {
-				$this->log[] = ["не удалось добавить поле <<$key>> нет типа или имени"];
+				$this->log[] = [__LINE__, __FUNCTION__, "не удалось добавить поле <<$key>> нет типа или имени"];
 				continue;
 			}
-			
-			if ($this->invalidName($value["name"])){
-				$this->log[] = ["не удалось добавить поле <<$key>> недопустимое имя: <<".$value["name"].">>"];
+
+			if ($this->invalidName($value["name"])) {
+				$this->log[] = [__LINE__, __FUNCTION__, "не удалось добавить поле <<$key>> недопустимое имя: <<" . $value["name"] . ">>"];
 				continue;
 			}
 			$feild_pattern["name"] = $value['name'];
+			$feild_pattern["type"] = $value["type"];
 			switch ($value["type"]) {
-				case 'string':
+				case "string":
 					if (!isset($value["defult_value"])) {
-						$feild_pattern["defult_value"] = '';
+						$feild_pattern["defult_value"] = "";
 					}
 					break;
-				case 'int':
+				case "int":
+				case "integer":
+					$feild_pattern["type"] = "integer";
 					if (!isset($value["defult_value"])) {
 						$feild_pattern["defult_value"] = 0;
 					}
 					break;
-				case 'float':
+				case "float":
+				case "double":
+					$feild_pattern["type"] = "double";
 					if (!isset($value["defult_value"])) {
 						$feild_pattern["defult_value"] = 0.0;
 					}
 					break;
-				case 'bool':
+				case "bool":
+				case "boolean":
+					$feild_pattern["type"] = "boolean";
 					if (!isset($value["defult_value"])) {
 						$feild_pattern["defult_value"] = false;
 					}
 					break;
-				case 'date': //timesamp
+				case "date": //timesamp
 					if (!isset($value["defult_value"])) {
-						$feild_pattern["defult_value"] = date('U');
+						$feild_pattern["defult_value"] = -1;
 					}
 					break;
 
@@ -199,23 +272,40 @@ class JsonBd
 					continue 2;
 					break;
 			}
-			$feild_pattern["type"] = $value["type"];
-			$feild_pattern["index"] = $value["index"];
-			$feild_pattern["auto_increment"] = $value["auto_increment"];
+			
+			$feild_pattern["index"] = (bool) $value["index"];
+			$feild_pattern["auto_increment"] = (bool) $value["auto_increment"];
+			if ((bool) $value["auto_increment"]) {
+				if ($feild_pattern["type"] == "integer") {
+					$pattern["AutoIncrements"][$value["name"]] = 0;
+				} else {
+					$this->log[] = [__LINE__, __FUNCTION__, "не верный тип данных для autoIncrement должно быть integer"];
+					return false;
+				}
+			}
 			if ($value["index"]) {
 				$Table["index"] = $value['name'];
 			}
 			$Table["fields"][$value['name']] = $feild_pattern;
 		}
 		$this->shema["databases"][$database][$name] = $Table;
-		$this->shema_save();
+		if (!$this->shema_save()) {
+			return false;
+		}
+
+		if (is_dir("$this->path/$database")) {
+			if (!file_put_contents("$this->path/$database/$name.json", json_encode($pattern, 256))) {
+				return false;
+			};
+		}
 		return $this;
 	}
 
 
-	
-	private function invalidName($name){
-		if (preg_match('/[^A-Za-z0-9_]+/', $name)){
+
+	private function invalidName($name)
+	{
+		if (preg_match('/[^A-Za-z0-9_]+/', $name)) {
 			return true;
 		}
 		return false;

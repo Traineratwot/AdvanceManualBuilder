@@ -85,6 +85,8 @@ class install {
 		this.DeleteMenu.ok = $(`<button class="DELETE"style="text-align: center" disabled>DELETE</button>`).appendTo(this.DeleteMenu.div)
 		.on("click", (event) => {
 			if (self.DeleteMenu.input.val() == self.DeleteMenu.textToBe){
+				// var particles = new Particles('.DELETE');
+				// particles.disintegrate();
 				self.DeleteMenu.ok.attr("disabled", "")
 				self.DeleteMenu.cancel.attr("disabled", "")
 				self.DeleteMenu.div.fadeOut(2000, () => {
