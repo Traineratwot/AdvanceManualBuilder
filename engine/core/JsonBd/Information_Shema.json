@@ -1,25 +1,25 @@
 {
 	"config": [],
 	"databases": {
-		"test": {
+		"test3": {
 			"td": {
 				"index": "rtr",
-				"fields": [
-					{
+				"fields": {
+					"rtr": {
 						"name": "rtr",
 						"type": "int",
 						"defult_value": "",
 						"index": true,
 						"auto_increment": true
 					},
-					{
+					"jhj": {
 						"name": "jhj",
 						"type": "string",
 						"defult_value": "",
 						"index": false,
 						"auto_increment": false
 					}
-				]
+				}
 			}
 		}
 	}

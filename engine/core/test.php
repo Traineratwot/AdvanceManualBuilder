@@ -3,7 +3,7 @@ include "Jsonbd.class.php";
 ob_start();
 $test = new JsonBd("JsonBd");
 $test->createTable(
-	'test',
+	'test3',
 	"td",
 	[
 		"name" => "rtr",
