@@ -43,16 +43,11 @@ $test->createTable(
 	]
 );
 
-$test->INSERT('test.td',[
-"Test_string"=>"я первая строка",
-"Test_bool" => true
-]);
-$test->INSERT('test.td',[
-	"Test_string"=>"я первая строка",
-	"Test_bool" => false
-]);
-$test->INSERT('test.td',[
-	"Test_bool" => true
+$test->INSERT('test.td', [
+	"Test_string" 	=> "я строка",
+	"Test_bool" 	=> true,
+	"Test_double" 	=> 1.5,
+	"Test_date"  	=> date('U'),
 ]);
 $enter = ob_get_contents();
 var_dump($enter);

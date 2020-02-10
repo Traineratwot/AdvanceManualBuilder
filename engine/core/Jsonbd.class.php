@@ -285,8 +285,8 @@ class JsonBd
 					break;
 			}
 			
-			$feild_pattern["index"] = (bool) $value["index"];
-			$feild_pattern["auto_increment"] = (bool) $value["auto_increment"];
+			$feild_pattern["index"] = (bool) $value["index"]?:false;
+			$feild_pattern["auto_increment"] = (bool) $value["auto_increment"]?:false;
 			if ((bool) $value["auto_increment"]) {
 				if ($feild_pattern["type"] == "integer") {
 					$pattern["AutoIncrements"][$value["name"]] = 0;
