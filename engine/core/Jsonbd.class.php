@@ -94,7 +94,7 @@ class JsonBd
 					$this->log[] = [__LINE__, __FUNCTION__, "Перестань баловаться c AutoIncrement! убери поле или поставь ".(string)$tb['AutoIncrements'][$key]];
 					return false;
 				}
-			} else {
+			}else{
 				if (isset($values[$key]) and gettype($values) == 'array') {
 					$fieldname  = $key;
 					$value 		= $values[$key];
@@ -114,6 +114,18 @@ class JsonBd
 						}else{
 							$row[$key] = $FieldShema['defult_value'];
 						}
+					}
+				}
+			}
+			if($FieldShema["index"] and !$FieldShema["auto_increment"]){
+				if (!isset($values[$key]) ) {
+					$this->log[] = [__LINE__, __FUNCTION__, "отсутствует index"];
+					return false;
+				}
+				foreach ($tb['rows'] as $k => $v) {
+					if ($v[$key] == $values[$key]) {
+						$this->log[] = [__LINE__, __FUNCTION__, "запись с таким ключом уже существует"];
+						return false;
 					}
 				}
 			}
