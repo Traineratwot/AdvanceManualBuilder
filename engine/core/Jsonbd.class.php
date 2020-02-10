@@ -51,7 +51,7 @@ class JsonBd
 	 * INSERT
 	 *
 	 * @param mixed $bdtb
-	 * @param mixed $values [fieldname=>value]
+	 * @param mixed $values [fieldname,value]
 	 * @return void
 	 */
 	public function INSERT($bdtb,$values) 
@@ -66,7 +66,21 @@ class JsonBd
 				return false;
 			}
 		}
-		
+		foreach ($values as $key => $val) {
+			if (gettype($val) != 'array') {
+				$this->log[] = [__LINE__,__FUNCTION__, "не верный формат"];
+				continue;
+				$fieldname  = $val[0];
+				$value 		= $val[1];
+				if ($this->invalidName($fieldname)) {
+					$this->log[] = [__LINE__,__FUNCTION__, "Не правильное имя базы данных <<$fieldname>>"];
+					return false;
+				}
+				$shema = $this->shema[$this->currentDb][$Table][$fieldname];
+				if()$shema['type'];
+			}
+			
+		}
 	}
 
 	public function checkModel()
