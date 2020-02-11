@@ -1,11 +1,10 @@
 <?php
 include "Jsonbd.class.php";
 ob_start();
-$test = new JsonBd("JsonBd");
-$test->createBd('test');
+$test = new JsonBd("JsonBd", "Project");
+$test->createBd('');
 $test->createTable(
-	'test',
-	"td",
+	'',
 	[
 		"name" => "Test_int",
 		"type" => "integer",
@@ -14,41 +13,19 @@ $test->createTable(
 		"auto_increment" => true,
 	],
 	[
-		"name" => "Test_string",
-		"type" => "string",
-		"defult_value" => "я красавчик",
-		"index" => false,
-		"auto_increment" => false,
-	],
-	[
-		"name" => "Test_bool",
-		"type" => "bool",
-		"defult_value" => "",
-		"index" => false,
-		"auto_increment" => false,
-	],
-	[
-		"name" => "Test_double",
-		"type" => "double",
-		"defult_value" => "",
-		"index" => false,
-		"auto_increment" => false,
-	],
-	[
-		"name" => "Test_date",
-		"type" => "date",
-		"defult_value" => "",
+		"name" => "Test_array",
+		"type" => "array",
 		"index" => false,
 		"auto_increment" => false,
 	]
 );
 
-$test->INSERT('test.td', [
-	"Test_string" 	=> "я строка",
-	"Test_bool" 	=> true,
-	"Test_double" 	=> 1.5,
-	"Test_date"  	=> date('U'),
-]);
+// $test->INSERT('test.td2', [
+// 	"Test_array" 	=> "я строка",
+// ], [
+// 	"Test_array" 	=> [1, 2, 454, 56, 7, 6],
+// ]);
+$result = $test->SELECT('test.td', ["Test_string"], 2);
 $enter = ob_get_contents();
-var_dump($enter);
+var_dump($result);
 var_dump($test);
