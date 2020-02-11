@@ -83,7 +83,7 @@ class JsonBd
 					$fieldname  = $key;
 					$value 		= $values[$key];
 					if (gettype($value) != $FieldShema['type'] and ($FieldShema['type'] != "date" or gettype($value) != "integer")) {
-						$this->log[] = [__LINE__, __FUNCTION__, "Не верный тип данных $value в $fieldname ожидалось " . $FieldShema['type']];
+						$this->log[] = [__LINE__, __FUNCTION__, "Не верный тип данных <<$value>> в <<$fieldname>> ожидалось <<" . $FieldShema['type'] . ">>"];
 						continue;
 					}
 					foreach ($tb['rows'] as $k => $v) {
@@ -105,8 +105,8 @@ class JsonBd
 						$fieldname  = $key;
 						$value 		= $values[$key];
 						if (gettype($value) != $FieldShema['type'] and ($FieldShema['type'] != "date" or gettype($value) != "integer")) {
-							$this->log[] = [__LINE__, __FUNCTION__, "Не верный тип данных $value в $fieldname ожидалось " . $FieldShema['type']];
-							$values[$key] = $FieldShema['defult_value'];
+							$this->log[] = [__LINE__, __FUNCTION__, "Не верный тип данных <<$value>> в <<$fieldname>> ожидалось <<" . $FieldShema['type'] . ">>"];
+							$value = $FieldShema['defult_value'];
 						}
 						$row[$key] = $value;
 					} else {
@@ -293,6 +293,11 @@ class JsonBd
 				case "date": //timesamp
 					if (!isset($value["defult_value"])) {
 						$feild_pattern["defult_value"] = -1;
+					}
+					break;
+				case "array":
+					if (!isset($value["defult_value"])) {
+						$feild_pattern["defult_value"] = [];
 					}
 					break;
 
