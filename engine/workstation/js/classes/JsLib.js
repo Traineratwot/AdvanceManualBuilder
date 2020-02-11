@@ -1,4 +1,4 @@
-class ProjectTree(){
+class ProjectTree{
 	
 }
 
