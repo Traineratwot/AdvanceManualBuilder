@@ -14,7 +14,6 @@ class JsonBd
 	];
 	public function __construct($path, $database = null)
 	{
-		$this->prefix = $prefix;
 		if (!is_dir($path)) {
 			if (!mkdir($path)) {
 				$this->log[] = [__LINE__, __FUNCTION__, "Не удалось создать папку"];
