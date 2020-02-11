@@ -1,0 +1,30 @@
+{
+	"AutoIncrements": {
+		"id": 0
+	},
+	"rows": {
+		"кирилл": {
+			"name": "кирилл",
+			"PorjectData": {
+				"Projectype": "Library",
+				"Projectname": "кирилл",
+				"Projectdiscription": "апвпаввпа",
+				"Projectinstalation": [
+					{
+						"type": "npm",
+						"text": "авпапв"
+					}
+				],
+				"Projectdependences": [
+					{
+						"type": "library",
+						"name": "апвавп",
+						"minversion": "апвавп"
+					}
+				],
+				"Projectlang": "py",
+				"Projectversion": "ап"
+			}
+		}
+	}
+}

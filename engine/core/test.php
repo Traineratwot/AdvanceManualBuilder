@@ -1,19 +1,19 @@
 <?php
 include "Jsonbd.class.php";
 ob_start();
-$test = new JsonBd("JsonBd", "Project");
-$test->createBd('');
+$test = new JsonBd("../..");
+$test->createBd('BD');
 $test->createTable(
-	'',
+	'Projects',
 	[
-		"name" => "Test_int",
+		"name" => "id",
 		"type" => "integer",
 		"defult_value" => "",
 		"index" => true,
 		"auto_increment" => true,
 	],
 	[
-		"name" => "Test_array",
+		"name" => "PorjectData",
 		"type" => "array",
 		"index" => false,
 		"auto_increment" => false,
@@ -25,7 +25,6 @@ $test->createTable(
 // ], [
 // 	"Test_array" 	=> [1, 2, 454, 56, 7, 6],
 // ]);
-$result = $test->SELECT('test.td', ["Test_string"], 2);
 $enter = ob_get_contents();
 var_dump($result);
 var_dump($test);

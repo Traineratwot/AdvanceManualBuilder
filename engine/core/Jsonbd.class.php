@@ -73,7 +73,7 @@ class JsonBd
 				return false;
 			}
 		} else if ($this->currentDb) {
-			$Table = $_bdtb;
+			$Table = $bdtb;
 		}
 		$row = [];
 		$tb = json_decode(file_get_contents("$this->path/$this->currentDb/$Table.json"), 1);
@@ -160,7 +160,7 @@ class JsonBd
 				return false;
 			}
 		} else if ($this->currentDb) {
-			$Table = $_bdtb;
+			$Table = $bdtb;
 		}
 		if (!$td = json_encode($td, 256)) {
 			return false;
@@ -237,7 +237,7 @@ class JsonBd
 				return false;
 			}
 		} else if ($this->currentDb) {
-			$name = $_bdtb;
+			$name = $bdtb;
 		}
 		$pattern = $this->TablePatern;
 		$database = $this->currentDb;
@@ -355,7 +355,7 @@ class JsonBd
 				return false;
 			}
 		} else if ($this->currentDb) {
-			$Table = $_bdtb;
+			$Table = $bdtb;
 		}
 		$database = $this->currentDb;
 		$result = [];
