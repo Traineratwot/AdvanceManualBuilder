@@ -53,12 +53,11 @@
 		var Project = {};
 		$.get("../../BD/Projects.json", '',
 			function (data, textStatus, jqXHR) {
-				Project = data['rows']["<?=$_GET['ProjectId']?>"]
+				Project = data['rows'][new URLSearchParams(window.location.search).get('ProjectId')]
 			},
 			"json"
 		);
-
-
+		
 		var ThisNewObject;
 		$(document).ready(function () {
 			// $('.js-example-basic-single').select2();
