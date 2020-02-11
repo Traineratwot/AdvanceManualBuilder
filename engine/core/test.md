@@ -1,15 +1,5 @@
-# кирилл
-py  vап
+# Projects
+  v
   
-### апвпаввпа
-## Project instalation
----
+### 
 
-Variant 1 npm:
-```html
-авпапв
-```
-
-## Dependences
----
-- [апвавп]() >= апвавп 

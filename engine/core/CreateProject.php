@@ -12,15 +12,15 @@ $path = "../../Projects/$Projectname";
 if (!is_dir($path)) {
 	mkdir($path);
 }
-// file_put_contents("../../Projects/$Projectname/index.json", json_encode($data, 256));
 
 $BD->INSERT('Projects',[
 	"name"=>$Projectname,
 	'PorjectData'=>$data
 	]);
+file_put_contents($BD->currentDbPath."/$Projectname.json", "");
 
 ob_start();
 include "template/ProjectStart.php";
 $MarkDown = ob_get_contents();
 file_put_contents("test.md", $MarkDown);
-var_dump($BD->log);
+// var_dump($BD);

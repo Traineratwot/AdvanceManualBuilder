@@ -392,6 +392,24 @@ class JsonBd
 		return $result;
 	}
 
+	public function DELETE($bdtb,$rowindex){
+		$args = func_get_args();
+		$bdtb = array_shift($args);
+		$_bdtb = explode('.', $bdtb);
+		if (count($_bdtb) == 2) {
+			$Table = $_bdtb[1];
+			if (!$this->setDb($_bdtb[0])) {
+				return false;
+			}
+		} else if ($this->currentDb) {
+			$Table = $bdtb;
+		}
+		$tb = json_decode(file_get_contents("$this->path/$this->currentDb/$Table.json"), 1);
+		$ids = $this->shema['databases'][$this->currentDb][$Table]['index'];
+		unset($tb['rows'][$Table][$rowindex]);
+		$this->tableSave($bdtb,$tb);
+	}
+
 	private function invalidName($name)
 	{
 		if (preg_match('/[^A-Za-z0-9_]+/', $name)) {

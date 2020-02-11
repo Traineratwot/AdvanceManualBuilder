@@ -3,27 +3,27 @@
 		"id": 0
 	},
 	"rows": {
-		"кирилл": {
-			"name": "кирилл",
+		"Test": {
+			"name": "Test",
 			"PorjectData": {
 				"Projectype": "Library",
-				"Projectname": "кирилл",
-				"Projectdiscription": "апвпаввпа",
+				"Projectname": "Test",
+				"Projectdiscription": "длинное подобно жизни кита и бессмысленное подобно смерти описание",
 				"Projectinstalation": [
 					{
-						"type": "npm",
-						"text": "авпапв"
+						"type": "html",
+						"text": "описание устновки"
 					}
 				],
 				"Projectdependences": [
 					{
 						"type": "library",
-						"name": "апвавп",
-						"minversion": "апвавп"
+						"name": "зависимость",
+						"minversion": "01"
 					}
 				],
-				"Projectlang": "py",
-				"Projectversion": "ап"
+				"Projectlang": "php",
+				"Projectversion": "2.2"
 			}
 		}
 	}

@@ -90,6 +90,7 @@ class install {
 				self.DeleteMenu.ok.attr("disabled", "")
 				self.DeleteMenu.cancel.attr("disabled", "")
 				self.DeleteMenu.div.fadeOut(2000, () => {
+					self.delete()
 					self.DeleteMenu.input.val("")
 					$(".select-project").fadeIn("slow")
 				})
@@ -135,7 +136,6 @@ class install {
 			this.iii = 0;
 		})
 	}
-
 	generate(event) {
 
 		var self = this;
@@ -184,7 +184,6 @@ class install {
 		}
 		console.log(key)
 	}
-
 	overstep(var_name, add = false) {
 		var self = this;
 		if (!add) {
@@ -249,7 +248,6 @@ class install {
 			})
 		}
 	}
-
 	regenrate(var_name) {
 		var self = this;
 		var Dt = this.data[var_name];
@@ -316,8 +314,6 @@ class install {
 			})
 		}
 	}
-
-
 	create_short(area) {
 		var key = Object.keys(area.fields)[0];
 		var _field;
@@ -407,5 +403,17 @@ class install {
 			}
 		}
 		return exportData
+	}
+	DeleteProject(){
+		var self = this;
+		$.ajax({
+			type: "POST",
+			url: "engine/core/DeleteProject.php",
+			data: "name="+self.data.Projectname.val(),
+			dataType: "text",
+			success: function (response) {
+				loadProjects()
+			}
+		});
 	}
 }
