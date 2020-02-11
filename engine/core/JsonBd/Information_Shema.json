@@ -1,0 +1,47 @@
+{
+	"config": [],
+	"databases": {
+		"test": {
+			"td": {
+				"index": "Test_int",
+				"fields": {
+					"Test_int": {
+						"name": "Test_int",
+						"type": "integer",
+						"defult_value": "",
+						"index": true,
+						"auto_increment": true
+					},
+					"Test_string": {
+						"name": "Test_string",
+						"type": "string",
+						"defult_value": "",
+						"index": false,
+						"auto_increment": false
+					},
+					"Test_bool": {
+						"name": "Test_bool",
+						"type": "boolean",
+						"defult_value": "",
+						"index": false,
+						"auto_increment": false
+					},
+					"Test_double": {
+						"name": "Test_double",
+						"type": "double",
+						"defult_value": "",
+						"index": false,
+						"auto_increment": false
+					},
+					"Test_date": {
+						"name": "Test_date",
+						"type": "date",
+						"defult_value": "",
+						"index": false,
+						"auto_increment": false
+					}
+				}
+			}
+		}
+	}
+}

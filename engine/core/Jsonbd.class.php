@@ -2,7 +2,6 @@
 class JsonBd
 {
 	public $log = [];
-	public $prefix;
 	private $model = "Information_Shema.json";
 	private $currentDb = null;
 	private $shema =  [
@@ -13,7 +12,7 @@ class JsonBd
 		"AutoIncrements" => [],
 		"rows" => []
 	];
-	public function __construct($path, $prefix = "jbd_")
+	public function __construct($path, $database = null)
 	{
 		$this->prefix = $prefix;
 		if (!is_dir($path)) {
@@ -34,6 +33,9 @@ class JsonBd
 				"databases" => []
 			];
 			$this->shema_save();
+		}
+		if ($database) {
+			$this->setDb($database);
 		}
 	}
 
@@ -60,101 +62,108 @@ class JsonBd
 	 */
 	public function INSERT($bdtb, $values)
 	{
+		$args = func_get_args();
+		$bdtb = array_shift($args);
 		$_bdtb = explode('.', $bdtb);
 		if (count($_bdtb) == 2) {
 			$Table = $_bdtb[1];
 			if (!$this->setDb($_bdtb[0])) {
 				return false;
 			}
-		}else if($this->currentDb){
+		} else if ($this->currentDb) {
 			$Table = $_bdtb;
 		}
 		$row = [];
 		$tb = json_decode(file_get_contents("$this->path/$this->currentDb/$Table.json"), 1);
 		$keyfieldVal = null;
-		foreach ($this->shema['databases'][$this->currentDb][$Table]['fields'] as $key => $FieldShema) {
-			if ($FieldShema["index"] and $FieldShema["auto_increment"] and isset($values[$key])) {
-				$fieldname  = $key;
-				$value 		= $values[$key];
-				if (gettype($value) != $FieldShema['type'] and ($FieldShema['type'] != "date" or gettype($value) != "integer")) {
-					$this->log[] = [__LINE__, __FUNCTION__, "Не верный тип данных $value в $fieldname ожидалось " . $FieldShema['type']];
-					continue;
-				}
-				foreach ($tb['rows'] as $k => $v) {
-					if ($k == $key and $v == $value) {
-						$this->log[] = [__LINE__, __FUNCTION__, "Не запись с таки ключом уже существует"];
-						return false;
-					}
-				}
-				if ((int)$value > (int)$tb['AutoIncrements'][$key]) {
-					$row[$key] = (int)$value;
-					$tb['AutoIncrements'][$key] = (int)$value;
-				}else{
-					(int)$tb['AutoIncrements'][$key]++;
-					$this->log[] = [__LINE__, __FUNCTION__, "Перестань баловаться c AutoIncrement! убери поле или поставь ".(string)$tb['AutoIncrements'][$key]];
-					return false;
-				}
-			}else{
-				if (isset($values[$key]) and gettype($values) == 'array') {
+		foreach ($args as $values) {
+			# code...
+			foreach ($this->shema['databases'][$this->currentDb][$Table]['fields'] as $key => $FieldShema) {
+				if ($FieldShema["index"] and $FieldShema["auto_increment"] and isset($values[$key])) {
 					$fieldname  = $key;
 					$value 		= $values[$key];
 					if (gettype($value) != $FieldShema['type'] and ($FieldShema['type'] != "date" or gettype($value) != "integer")) {
 						$this->log[] = [__LINE__, __FUNCTION__, "Не верный тип данных $value в $fieldname ожидалось " . $FieldShema['type']];
 						continue;
 					}
-					$row[$key] = $value;
-				} else {
-					if ($FieldShema["auto_increment"]) {
-						(int)$tb['AutoIncrements'][$key]++;
-						$row[$key] = (int)$tb['AutoIncrements'][$key];
-						
+					foreach ($tb['rows'] as $k => $v) {
+						if ($k == $key and $v == $value) {
+							$this->log[] = [__LINE__, __FUNCTION__, "Не запись с таки ключом уже существует"];
+							return false;
+						}
+					}
+					if ((int) $value > (int) $tb['AutoIncrements'][$key]) {
+						$row[$key] = (int) $value;
+						$tb['AutoIncrements'][$key] = (int) $value;
 					} else {
-						if ($FieldShema['type'] == "date" and $FieldShema['defult_value'] = -1) {
-							$row[$key] = date("U");
-						}else{
-							$row[$key] = $FieldShema['defult_value'];
+						(int) $tb['AutoIncrements'][$key]++;
+						$this->log[] = [__LINE__, __FUNCTION__, "Перестань баловаться c AutoIncrement! убери поле или поставь " . (string) $tb['AutoIncrements'][$key]];
+						return false;
+					}
+				} else {
+					if (isset($values[$key]) and gettype($values) == 'array') {
+						$fieldname  = $key;
+						$value 		= $values[$key];
+						if (gettype($value) != $FieldShema['type'] and ($FieldShema['type'] != "date" or gettype($value) != "integer")) {
+							$this->log[] = [__LINE__, __FUNCTION__, "Не верный тип данных $value в $fieldname ожидалось " . $FieldShema['type']];
+							$values[$key] = $FieldShema['defult_value'];
+						}
+						$row[$key] = $value;
+					} else {
+						if ($FieldShema["auto_increment"]) {
+							(int) $tb['AutoIncrements'][$key]++;
+							$row[$key] = (int) $tb['AutoIncrements'][$key];
+						} else {
+							if ($FieldShema['type'] == "date" and $FieldShema['defult_value'] = -1) {
+								$row[$key] = date("U");
+							} else {
+								$row[$key] = $FieldShema['defult_value'];
+							}
 						}
 					}
 				}
-			}
-			if($FieldShema["index"] and !$FieldShema["auto_increment"]){
-				if (!isset($values[$key]) ) {
-					$this->log[] = [__LINE__, __FUNCTION__, "отсутствует index"];
-					return false;
-				}
-				foreach ($tb['rows'] as $k => $v) {
-					if ($v[$key] == $values[$key]) {
-						$this->log[] = [__LINE__, __FUNCTION__, "запись с таким ключом уже существует"];
+				if ($FieldShema["index"] and !$FieldShema["auto_increment"]) {
+					if (!isset($values[$key])) {
+						$this->log[] = [__LINE__, __FUNCTION__, "отсутствует index"];
 						return false;
 					}
+					foreach ($tb['rows'] as $k => $v) {
+						if ($v[$key] == $values[$key]) {
+							$this->log[] = [__LINE__, __FUNCTION__, "запись с таким ключом уже существует"];
+							return false;
+						}
+					}
+				}
+				if ($FieldShema["index"]) {
+					$keyfieldVal = $row[$key];
 				}
 			}
-			if ($FieldShema["index"]) {
-				$keyfieldVal = $row[$key];
+			if ($keyfieldVal) {
+				$tb["rows"][$keyfieldVal] = $row;
+			} else {
+				$tb["rows"][] = $row;
 			}
+			$this->tableSave($bdtb, $tb);
 		}
-		if ($keyfieldVal) {
-			$tb["rows"][$keyfieldVal] = $row;
-		} else {
-			$tb["rows"][] = $row;
-		}
-		$this->tableSave($bdtb,$tb);
+
+		return $this;
 	}
 
-	private function tableSave($bdtb,$td){
+	private function tableSave($bdtb, $td)
+	{
 		$_bdtb = explode('.', $bdtb);
 		if (count($_bdtb) == 2) {
 			$Table = $_bdtb[1];
 			if (!$this->setDb($_bdtb[0])) {
 				return false;
 			}
-		}else if($this->currentDb){
+		} else if ($this->currentDb) {
 			$Table = $_bdtb;
 		}
-		if(!$td = json_encode($td,256)){
+		if (!$td = json_encode($td, 256)) {
 			return false;
 		}
-		if(!file_put_contents("$this->path/$this->currentDb/$Table.json",$td)){
+		if (!file_put_contents("$this->path/$this->currentDb/$Table.json", $td)) {
 			return false;
 		}
 		return true;
@@ -212,13 +221,21 @@ class JsonBd
 	 *
 	 * @return void
 	 */
-	public function createTable($database, $name, $fields)
+	public function createTable($bdtb, $fields)
 	{
-		$Table = [];
-		$pattern = $this->TablePatern;
 		$args = func_get_args();
-		$database = array_shift($args);
-		$name = array_shift($args);
+		$bdtb = array_shift($args);
+		$_bdtb = explode('.', $bdtb);
+		if (count($_bdtb) == 2) {
+			$name = $_bdtb[1];
+			if (!$this->setDb($_bdtb[0])) {
+				return false;
+			}
+		} else if ($this->currentDb) {
+			$name = $_bdtb;
+		}
+		$pattern = $this->TablePatern;
+		$database = $this->currentDb;
 		if (@array_key_exists($database, $this->shema["databases"]) === false) {
 			$this->log[] = [__LINE__, __FUNCTION__, "<<$database>> Не существует"];
 			return false;
@@ -284,9 +301,9 @@ class JsonBd
 					continue 2;
 					break;
 			}
-			
-			$feild_pattern["index"] = (bool) $value["index"]?:false;
-			$feild_pattern["auto_increment"] = (bool) $value["auto_increment"]?:false;
+
+			$feild_pattern["index"] = (bool) $value["index"] ?: false;
+			$feild_pattern["auto_increment"] = (bool) $value["auto_increment"] ?: false;
 			if ((bool) $value["auto_increment"]) {
 				if ($feild_pattern["type"] == "integer") {
 					$pattern["AutoIncrements"][$value["name"]] = 0;
@@ -312,8 +329,60 @@ class JsonBd
 		}
 		return $this;
 	}
-
-
+	/**
+	 * SELECT
+	 *
+	 * @param  string $bdtb
+	 * @param  array $fields = ["name"]
+	 * @param  array $where = index
+	 *
+	 * @return void
+	 */
+	public function SELECT($bdtb, $fields = [], $where = null)
+	{
+		$_bdtb = explode('.', $bdtb);
+		if (count($_bdtb) == 2) {
+			$Table = $_bdtb[1];
+			if (!$this->setDb($_bdtb[0])) {
+				return false;
+			}
+		} else if ($this->currentDb) {
+			$Table = $_bdtb;
+		}
+		$database = $this->currentDb;
+		$result = [];
+		$tb = json_decode(file_get_contents("$this->path/$this->currentDb/$Table.json"), 1);
+		$tb = $tb['rows'];
+		if ($where === null) {
+			if ($fields) {
+				foreach ($tb as $key => $value) {
+					foreach ($value as $k => $val) {
+						if (array_search($k, $fields) !== false) {
+							$result[$key][$k] = $value[$k];
+						}
+					}
+				}
+				return $result;
+			} else {
+				$result[$key] = $value;
+			}
+			return $tb;
+		}
+		foreach ($tb as $key => $value) {
+			if ($key == $where) {
+				if ($fields) {
+					foreach ($value as $k => $val) {
+						if (array_search($k, $fields) !== false) {
+							$result[$key][$k] = $value[$k];
+						}
+					}
+				} else {
+					$result[$key] = $value;
+				}
+			}
+		}
+		return $result;
+	}
 
 	private function invalidName($name)
 	{
