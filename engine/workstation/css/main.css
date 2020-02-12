@@ -55,7 +55,9 @@ table {
 	margin-inline-end: 0px;
 	font-weight: bold;
 }
-
+.fit_text{
+	width: fit-content;
+}
 .instalition-main p{
 	/* border: 1px red; */
 }

@@ -3,16 +3,16 @@
 		"id": 0
 	},
 	"rows": {
-		"Test": {
-			"name": "Test",
+		"TEST": {
+			"name": "TEST",
 			"PorjectData": {
 				"Projectype": "Library",
-				"Projectname": "Test",
-				"Projectdiscription": "длинное подобно жизни кита и бессмысленное подобно смерти описание",
+				"Projectname": "TEST",
+				"Projectdiscription": "Длинное описание",
 				"Projectinstalation": [
 					{
 						"type": "html",
-						"text": "описание устновки"
+						"text": "установка"
 					}
 				],
 				"Projectdependences": [
@@ -23,7 +23,7 @@
 					}
 				],
 				"Projectlang": "php",
-				"Projectversion": "2.2"
+				"Projectversion": "01"
 			}
 		}
 	}

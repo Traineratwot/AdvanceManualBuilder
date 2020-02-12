@@ -2,9 +2,13 @@
 include "Jsonbd.class.php";
 $data = json_decode($_POST['data'],1);
 extract($data);
+
 // $project = new JsonBd("../../Projects/$Projectname");
 $BD = new JsonBd("../..", 'BD');
 $path = "../../Projects";
+if (file_exists($BD->currentDbPath."/$Projectname.json")) {
+	die;
+}
 if (!is_dir($path)) {
 	mkdir($path);
 }
@@ -17,7 +21,12 @@ $BD->INSERT('Projects',[
 	"name"=>$Projectname,
 	'PorjectData'=>$data
 	]);
-file_put_contents($BD->currentDbPath."/$Projectname.json", "");
+$patten = [
+	"tree" => [],
+	"chuncks" => []
+];
+	
+file_put_contents($BD->currentDbPath."/$Projectname.json", json_encode($patten,256));
 
 ob_start();
 include "template/ProjectStart.php";

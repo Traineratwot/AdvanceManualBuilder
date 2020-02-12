@@ -1,19 +1,12 @@
-class ProjectTree{
-	
-}
-
-
-
-class _object{
-
+class _object {
 	constructor(name, ShortDisc = null, LongDisc = null) {
-		this.SELECTOR	= $(".contructor");
+		this.SELECTOR = $(".contructor");
 		this.SELECTOR.html("");
-		this.arguments	= [...arguments];
-		this.name 		= name;
-		this.ShortDisc	= ShortDisc;
-		this.LongDisc	= LongDisc;
-		this.types		= `
+		this.arguments = [...arguments];
+		this.name = name;
+		this.ShortDisc = ShortDisc;
+		this.LongDisc = LongDisc;
+		this.types = `
 			<option value="String">String</option>
 			<option value="Number">Number</option>
 			<option value="Boolean">Boolean</option>
@@ -21,33 +14,33 @@ class _object{
 			<option value="Object">Object</option>
 			<option value="Array">Array</option>
 			<option value="Any">Any</option>
-		`
+		`;
 		let args = [...arguments];
 		if (args.length >= 3) {
-			args.shift()
-			args.shift()
-			args.shift()
-			this.__constructor(...args)
+			args.shift();
+			args.shift();
+			args.shift();
+			this.__constructor(...args);
 		} else {
-			this.__constructor()
+			this.__constructor();
 		}
 	}
 
-	__constructor(){}
+	__constructor() {}
 
 	nextLine(to = this.body) {
-		this.currentP = $(`<p>`).appendTo(to)
+		this.currentP = $(`<p>`).appendTo(to);
 		this.structuer.push(this.currentP);
-		return this.currentP
+		return this.currentP;
 	}
 }
 
-class _function extends _object{
-	__constructor(){
+class _function extends _object {
+	__constructor() {
 		// this.param = [];
 		// this.addParam()
 	}
-	addParam(){
+	addParam() {
 		// var Itr 	= $(`<tr>`).appendTo(this.SELECTOR);
 		// var Itd 	= $(`<td>`).appendTo(Itr);
 		// var Iselect	= $(`<select name="type">${this.types}</select>`).appendTo(Itd)
@@ -64,22 +57,25 @@ class _function extends _object{
 		// 	Idisc,
 		// })
 	}
-	addReturn(){
+	addReturn() {}
+}
+class _class extends _object {
+	__constructor() {}
+}
+class _const extends _object {
+	__constructor() {}
+}
+class _var extends _object {
+	__constructor() {}
+}
 
-	}
-}
-class _class extends _object{
-	__constructor(){
-		
-	}
-}
-class _const extends _object{
-	__constructor(){
-		
-	}
-}
-class _var extends _object{
-	__constructor(){
-		
-	}
+var Maxies = {
+	function: class extends _function {},
+	class: class extends _class {},
+	const: class extends _const {},
+	var: class extends _var {},
+};
+
+function CreateClass(Type) {
+	return new Maxies[Type]()
 }

@@ -53,20 +53,82 @@
 
 	<script src="js/classes/JsLib.js"></script>
 	<script>
-		
-		var CreatChunkMenu = new SCM([
 
-		]);
+		function fit_text(elem, parent = false) {
+			elem.each(function (index, element) {
+				if (!parent) {
+					parent = $(this).parent()
+				}
+				var parentW = parent.width()
+				var elemW = $(this).width()
+				var elemF = parseInt($(this).css('fontSize'));
+				var i = 256
+				if (parentW > elemW) {
+					while (parentW > elemW) {
+						if (i-- <= 0 || elemF > 256) {
+							break;
+						}
+						$(this).css({ fontSize: `${++elemF}px` });
+						elemW = $(this).width()
+					}
+				} else {
+					while (parentW < elemW) {
+						if (i-- <= 0 || elemF < 2) {
+							break;
+						}
+						$(this).css({ fontSize: `${--elemF}px` });
+						elemW = $(this).width()
+					}
+				}
+			});
 
-		var Project = {};
+			return elem
+		}
+
+
+		var Project, Shematik, Types = {};
+		var ThisNewObject, CreatChunkMenu;
+		var _Projects, _Shematik, _Types = false
 		$.get("../../BD/Projects.json", '',
 			function (data, textStatus, jqXHR) {
 				Project = data['rows'][new URLSearchParams(window.location.search).get('ProjectId')]
+				fit_text($(`<h1 class="fit_text">${Project.name + "132165465465"}</h1>`).appendTo("#tree"))
+				_Projects = true;
 			},
 			"json"
 		);
-		
-		var ThisNewObject;
+		$.get("json/Shematik.json", '',
+			function (data, textStatus, jqXHR) {
+				Shematik = data;
+				_Shematik = true;
+			},
+			"json"
+		);
+		$.get("json/Types.json", '',
+			function (data, textStatus, jqXHR) {
+				Types = data;
+				_Types = true;
+			},
+			"json"
+		);
+
+
+		function initSCM() {
+			var menu = [];
+			Types.chuncsType[Project.PorjectData.Projectype].forEach(element => {
+				menu.push({
+					items: element,
+					function: (e, self, AnyValue) => {
+						ThisNewObject = CreateClass(element)
+					}
+				})
+			});
+			CreatChunkMenu = new SCM(menu);
+		}
+		$(".NewChuncs").on("click", function (event) {
+			CreatChunkMenu.show(event);
+		});
+
 		$(document).ready(function () {
 			// $('.js-example-basic-single').select2();
 			$("#save_object").on("click", (event) => {
@@ -110,6 +172,19 @@
 		convert()
 		$("#work").on("keydown", convert())
 
+
+
+		$(document).ready(function () {
+			var iload = setInterval(() => {
+				if (_Projects === true && _Shematik === true && _Types === true) {
+					clearInterval(iload)
+					initSCM()
+				}
+			}, 10);
+		});
+		$(window).on('resize', function () {
+			fit_text($('.fit_text'))
+		});
 	</script>
 </body>
 
