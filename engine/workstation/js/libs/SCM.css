@@ -1,0 +1,24 @@
+div.SCM {
+	z-index: 9999;
+	margin: 0;
+	box-shadow: inset 2px 2px 5px 0px rgba(0,0,0,0.75);
+	background-color: #fff;
+	padding: 5px 20px 5px 5px;
+	overflow: hidden;
+}
+div.SCM ul{
+	padding: 0;
+	margin: 0;
+}
+div.SCM li.SCM{
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	list-style-type:none;
+	border-bottom: 1px solid;
+	transition-duration: 0.5s;
+}
+div.SCM li.SCM:hover{
+	box-shadow:none;
+	transform: translate(10px)
+}
