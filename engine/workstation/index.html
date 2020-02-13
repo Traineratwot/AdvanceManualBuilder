@@ -11,49 +11,26 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
 	<link rel="stylesheet" href="js/libs/SCM.css">
-
-	<script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css?ver=5.12.1">
 	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 	<script src="js/libs/SCM.js"></script>
+	<script src="js/libs/useless.lib.js"></script>
+
 </head>
 
 <body>
 	<div id="tree" class="tree-panel">
-		<header></header>	
+		<header></header>
+		<div id="content"></div>	
 	</div>
 	<div id="work" class="work-panel">
-		<header>
-			<h1>JavaScript Library</h1>
-		</header>
-		<div class="form">
-			<table>
-				<tr>
-					<td style="width: 5em;">
-						<select style="width: 5em;" class="js-example-basic-single" name="select_object"
-							id="select_object">
-							<option value="function">ƒ(x)</option>
-							<option value="class">Class</option>
-							<option value="const">Const</option>
-							<option value="var">Var</option>
-						</select>
-					</td>
-					<td><input type="text" id="name_object" placeholder="Name"></td>
-					<td><button id="save_object"><i class="fas fa-save"></i></button></td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<input type="text" id="ShortDiscription" placeholder="Short discription"><br>
-						<textarea type="text" id="LongDiscription" rows="3" placeholder="Long discription"></textarea>
-					</td>
-				</tr>
-			</table>
-			<table class="contructor"></table>
+		<header></header>
+		<div id="edit_panel" class="form">
 		</div>
 	</div>
 	<div id="prev" class="prev-panel"> </div>
 
-	<script src="js/libs/useless.lib.js"></script>
 	<script src="js/classes/Library.class.js"></script>
 	<script src="js/classes/workstation.js"></script>
 </body>

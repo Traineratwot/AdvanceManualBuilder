@@ -145,12 +145,11 @@
 			}
 		}
 	},
-	"function": {
+	"Chuncs": {
 		"typeField": {
-			"input": {
+			"function": {
 				"name": {
 					"name": "Name",
-					"short": true,
 					"type": "string",
 					"fields": {
 						"text": {
@@ -172,26 +171,25 @@
 						}
 					}
 				},
-				"datatype": {
-					"name": "Dependences",
+				"input": {
+					"name": "input",
 					"type": "array",
 					"fields": {
 						"select": {
 							"value": "datatype",
-							"options": "Types.dependences"
+							"options": "Types.dataType"
+						},
+						"checkbox": {
+							"value": "optional",
+							"labal":"Optional"
+						},
+						"text": {
+							"value": "shortDiscription",
+							"placeholder": "Short discription"
 						},
 						"button": {
 							"action": "add",
 							"title": "add"
-						}
-					}
-				},
-				"mustbe": {
-					"name": "Dependences",
-					"type": "bool",
-					"fields": {
-						"checkbox": {
-							"value": "mustbe"
 						}
 					}
 				}

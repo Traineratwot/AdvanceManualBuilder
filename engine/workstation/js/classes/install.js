@@ -363,7 +363,14 @@ class install {
 				var cn = e.constructor.name;
 				switch (cn) {
 					case "k":
-						exportData[key] = e.val()
+						if (!exportData[key]) {
+							exportData[key] = []
+						}
+						if (e.val() != "on" && e.val() != "off") {
+							exportData[key] = e.val()
+						} else {
+							exportData[key] = e.prop("checked")
+						}
 						break;
 					case "Array":
 						var i = 0;
@@ -376,22 +383,35 @@ class install {
 									}
 									if (!exportData[key][i]) {
 										exportData[key][i] = {}
+									}									
+									if (elem.val() != "on" && elem.val() != "off") {
+										exportData[key][i][k] = elem.val()
+									} else {
+										exportData[key][i][k] = elem.prop("checked")
 									}
-									exportData[key][i][k] = elem.val()
 								}
 							}
 							i++;
 						}
 						break;
 					case "Object":
+						var i = 0;
 						for (const k in e) {
 							if (e.hasOwnProperty(k)) {
 								const elem = e[k];
 								if (!exportData[key]) {
-									exportData[key] = ''
+									exportData[key] = []
 								}
-								exportData[key] = elem.val()
+								if (!exportData[key][i]) {
+									exportData[key][i] = {}
+								}
+								if (elem.val() != "on" && elem.val() != "off") {
+									exportData[key][i][k] = elem.val()
+								} else {
+									exportData[key][i][k] = elem.prop("checked")
+								}
 							}
+							i++;
 						}
 						break;
 					case "String":

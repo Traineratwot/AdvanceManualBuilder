@@ -1,15 +1,15 @@
 {
-	"instalation":[
+	"instalation": [
 		"html",
 		"npm",
 		"git",
 		"composer"
 	],
-	"dependences":[
+	"dependences": [
 		"library",
 		"framework"
 	],
-	"lang":[
+	"lang": [
 		"php",
 		"js",
 		"py",
@@ -18,19 +18,26 @@
 		"http",
 		"other"
 	],
-	"project":[
+	"project": [
 		"Library",
 		"REST API"
 	],
-	"chuncsType":{
-		"Library":[
-			"functions",
+	"chuncsType": {
+		"Library": [
+			"function",
 			"class",
 			"var",
 			"const"
 		],
-		"REST API":[
-
-		]
-	}
+		"REST API": []
+	},
+	"dataType": [
+		"String",
+		"Number",
+		"Boolean",
+		"Function",
+		"Object",
+		"Array",
+		"mixed"
+	]
 }

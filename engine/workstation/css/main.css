@@ -59,6 +59,60 @@ table {
 	width: fit-content;
 	width: min-content;
 }
+.menu_item{
+	position: relative;
+	border-radius: 0 10px 0 10px;
+	float: left;
+	padding: 10px;
+	margin-left: 8px;
+	height: 20px;
+	text-align: center;
+}
+.menu_item::before{
+	color: #242222;
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	position: relative;
+	left: 50%;
+	top:20px;
+	transform: translate(-50%,-50%);
+	content: "\f0d7";
+}
+.menu_item:hover{
+	box-shadow: 2px 2px 2px 0px rgba(193, 248, 255, 0.75);
+}
+.menu_item .selected{
+	box-shadow: 2px 2px 2px 0px rgba(193, 248, 255, 0.75);
+}
+.menu_item:hover::before{
+	color: rgba(193, 248, 255, 0.75);
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	position: relative;
+	left: 50%;
+	top:22px;
+	transform: translate(-50%,-50%);
+	content: "\f0d7";
+}
+
+.menu_item .selected::before{
+	color: rgba(193, 248, 255, 0.75);
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	position: relative;
+	left: 50%;
+	top:22px;
+	transform: translate(-50%,-50%);
+	content: "\f0d7";
+}
+/*	👦🏿👦🏿👦🏿👦🏿👦🏿
+		👧🏻		*/
+
+.toolbox{
+	position: relative;
+	top: 50px;
+	width: 90%;
+}
 .instalition-main p{
 	/* border: 1px red; */
 }

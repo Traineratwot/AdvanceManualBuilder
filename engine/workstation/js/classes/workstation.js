@@ -1,14 +1,18 @@
-
-
-
-var Project, Shematik, Types = {};
+var Project, Shematik, Types,Properties = {};
 var ThisNewObject, CreatChunkMenu, FileText;
-var _Projects, _Shematik, _Types = false
+var _Projects, _Shematik, _Types,_Properties = false
 $.get("../../BD/Projects.json", '',
 	function (data, textStatus, jqXHR) {
 		Project = data['rows'][new URLSearchParams(window.location.search).get('ProjectId')]
 		fit_text($(`<h1 class="fit_text">${Project.name}</h1>`).appendTo("#tree header"))
 		_Projects = true;
+	},
+	"json"
+);
+$.get(`../../BD/${new URLSearchParams(window.location.search).get('ProjectId')}.json`, '',
+	function (data, textStatus, jqXHR) {
+		Properties = data;
+		_Properties = true;
 	},
 	"json"
 );
@@ -39,9 +43,15 @@ function initSCM() {
 	});
 	CreatChunkMenu = new SCM(menu);
 }
-$(".NewChuncs").on("click", function (event) {
-	CreatChunkMenu.show(event);
-});
+
+function renderTree() {
+	$("#tree #content").html("");
+	var ul = $(`<ul>`).appendTo("#tree #content");
+	if (!Object.keys(Properties.tree).length) {
+		$(`<li class="NewChuncs">➕добавить</li>`).appendTo(ul);
+	}
+}
+
 //TODO depricated
 
 // $(document).ready(function () {
@@ -91,13 +101,17 @@ $("#work").on("keydown", convert())
 
 $(document).ready(function () {
 	var iload = setInterval(() => {
-		if (_Projects === true && _Shematik === true && _Types === true) {
+		if (_Projects === true && _Shematik === true && _Types === true && _Properties === true) {
 			clearInterval(iload);
+			renderTree()
 			$(window).on('resize', function () {
 				fit_text($('.fit_text'))
 			});
 			convert();
 			initSCM();
+			$(".NewChuncs").on("click", function (event) {
+				CreatChunkMenu.show(event);
+			});
 		}
 	}, 10);
 });
