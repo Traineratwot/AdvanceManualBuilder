@@ -19,7 +19,9 @@
 </head>
 
 <body>
-	<div id="tree" class="tree-panel"> </div>
+	<div id="tree" class="tree-panel">
+		<header></header>	
+	</div>
 	<div id="work" class="work-panel">
 		<header>
 			<h1>JavaScript Library</h1>
@@ -51,141 +53,9 @@
 	</div>
 	<div id="prev" class="prev-panel"> </div>
 
-	<script src="js/classes/JsLib.js"></script>
-	<script>
-
-		function fit_text(elem, parent = false) {
-			elem.each(function (index, element) {
-				if (!parent) {
-					parent = $(this).parent()
-				}
-				var parentW = parent.width()
-				var elemW = $(this).width()
-				var elemF = parseInt($(this).css('fontSize'));
-				var i = 256
-				if (parentW > elemW) {
-					while (parentW > elemW) {
-						if (i-- <= 0 || elemF > 256) {
-							break;
-						}
-						$(this).css({ fontSize: `${++elemF}px` });
-						elemW = $(this).width()
-					}
-				} else {
-					while (parentW < elemW) {
-						if (i-- <= 0 || elemF < 2) {
-							break;
-						}
-						$(this).css({ fontSize: `${--elemF}px` });
-						elemW = $(this).width()
-					}
-				}
-			});
-
-			return elem
-		}
-
-
-		var Project, Shematik, Types = {};
-		var ThisNewObject, CreatChunkMenu;
-		var _Projects, _Shematik, _Types = false
-		$.get("../../BD/Projects.json", '',
-			function (data, textStatus, jqXHR) {
-				Project = data['rows'][new URLSearchParams(window.location.search).get('ProjectId')]
-				fit_text($(`<h1 class="fit_text">${Project.name + "132165465465"}</h1>`).appendTo("#tree"))
-				_Projects = true;
-			},
-			"json"
-		);
-		$.get("json/Shematik.json", '',
-			function (data, textStatus, jqXHR) {
-				Shematik = data;
-				_Shematik = true;
-			},
-			"json"
-		);
-		$.get("json/Types.json", '',
-			function (data, textStatus, jqXHR) {
-				Types = data;
-				_Types = true;
-			},
-			"json"
-		);
-
-
-		function initSCM() {
-			var menu = [];
-			Types.chuncsType[Project.PorjectData.Projectype].forEach(element => {
-				menu.push({
-					items: element,
-					function: (e, self, AnyValue) => {
-						ThisNewObject = CreateClass(element)
-					}
-				})
-			});
-			CreatChunkMenu = new SCM(menu);
-		}
-		$(".NewChuncs").on("click", function (event) {
-			CreatChunkMenu.show(event);
-		});
-
-		$(document).ready(function () {
-			// $('.js-example-basic-single').select2();
-			$("#save_object").on("click", (event) => {
-				switch ($("#select_object").val()) {
-					case "function":
-						ThisNewObject = new _function;
-						break;
-					case "class":
-						ThisNewObject = new _class;
-						break;
-					case "const":
-						ThisNewObject = new _const;
-						break;
-					case "var":
-						ThisNewObject = new _var;
-						break;
-
-					default:
-						ThisNewObject = "def"
-						break;
-				}
-				$("#select_object").attr("disabled", "")
-			})
-		});
-		var FileText
-		$.ajax({
-			type: "GET",
-			url: "/Untitled_Document.md",
-			dataType: "text",
-			success: function (response) {
-				FileText = response;
-				convert(response)
-			}
-		});
-		var converter = new showdown.Converter();
-		//IT IS LIVE !!!!!!!!!!!!!!!!!!!!!!!!!!
-		function convert(text) {
-			html = converter.makeHtml(text);
-			$("#prev").html(html);
-		}
-		convert()
-		$("#work").on("keydown", convert())
-
-
-
-		$(document).ready(function () {
-			var iload = setInterval(() => {
-				if (_Projects === true && _Shematik === true && _Types === true) {
-					clearInterval(iload)
-					initSCM()
-				}
-			}, 10);
-		});
-		$(window).on('resize', function () {
-			fit_text($('.fit_text'))
-		});
-	</script>
+	<script src="js/libs/useless.lib.js"></script>
+	<script src="js/classes/Library.class.js"></script>
+	<script src="js/classes/workstation.js"></script>
 </body>
 
 </html>

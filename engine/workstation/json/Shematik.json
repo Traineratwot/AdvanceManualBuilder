@@ -1,15 +1,10 @@
 {
 	"Project": {
-		"currentId": 2,
-		"ids": {
-			"0": "{name}",
-			"1": "{name2}"
-		},
 		"typeField": {
 			"Library": {
-				"name":{
-					"name":"Name",
-					"short":true,
+				"name": {
+					"name": "Name",
+					"short": true,
 					"type": "string",
 					"fields": {
 						"text": {
@@ -26,7 +21,6 @@
 							"placeholder": "Short discription"
 						},
 						"textarea": {
-							
 							"value": "longDiscription",
 							"placeholder": "Long discription"
 						}
@@ -74,7 +68,7 @@
 				},
 				"lang": {
 					"name": "Language",
-					"short":true,
+					"short": true,
 					"type": "string",
 					"fields": {
 						"select": {
@@ -85,7 +79,7 @@
 				},
 				"version": {
 					"name": "Version",
-					"short":true,
+					"short": true,
 					"type": "string",
 					"fields": {
 						"text": {
@@ -96,9 +90,9 @@
 				}
 			},
 			"REST API": {
-				"name":{
-					"name":"Name",
-					"short":true,
+				"name": {
+					"name": "Name",
+					"short": true,
 					"type": "string",
 					"fields": {
 						"text": {
@@ -107,7 +101,7 @@
 					}
 				},
 				"url": {
-					"name":"Base url",
+					"name": "Base url",
 					"type": "string",
 					"fields": {
 						"url": {
@@ -116,12 +110,16 @@
 					}
 				},
 				"auth": {
-					"name":"Autorization type",
-					"short":true,
+					"name": "Autorization type",
+					"short": true,
 					"type": "string",
 					"fields": {
 						"select": {
-							"options": ["none", "header", "basic"]
+							"options": [
+								"none",
+								"header",
+								"basic"
+							]
 						}
 					}
 				},
@@ -135,8 +133,8 @@
 					}
 				},
 				"version": {
-					"name":"Version",
-					"short":true,
+					"name": "Version",
+					"short": true,
 					"type": "string",
 					"fields": {
 						"text": {
@@ -146,6 +144,58 @@
 				}
 			}
 		}
+	},
+	"function": {
+		"typeField": {
+			"input": {
+				"name": {
+					"name": "Name",
+					"short": true,
+					"type": "string",
+					"fields": {
+						"text": {
+							"placeholder": "Name"
+						}
+					}
+				},
+				"discription": {
+					"name": "Discription",
+					"type": "string",
+					"fields": {
+						"text": {
+							"value": "shortDiscription",
+							"placeholder": "Short discription"
+						},
+						"textarea": {
+							"value": "longDiscription",
+							"placeholder": "Long discription"
+						}
+					}
+				},
+				"datatype": {
+					"name": "Dependences",
+					"type": "array",
+					"fields": {
+						"select": {
+							"value": "datatype",
+							"options": "Types.dependences"
+						},
+						"button": {
+							"action": "add",
+							"title": "add"
+						}
+					}
+				},
+				"mustbe": {
+					"name": "Dependences",
+					"type": "bool",
+					"fields": {
+						"checkbox": {
+							"value": "mustbe"
+						}
+					}
+				}
+			}
+		}
 	}
-	
 }

@@ -57,6 +57,7 @@ table {
 }
 .fit_text{
 	width: fit-content;
+	width: min-content;
 }
 .instalition-main p{
 	/* border: 1px red; */
