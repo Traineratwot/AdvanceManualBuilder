@@ -51,53 +51,37 @@ function renderTree() {
 		$(`<li class="NewChuncs">➕добавить</li>`).appendTo(ul);
 	}
 }
-
-//TODO depricated
-
-// $(document).ready(function () {
-// 	// $('.js-example-basic-single').select2();
-// 	$("#save_object").on("click", (event) => {
-// 		switch ($("#select_object").val()) {
-// 			case "function":
-// 				ThisNewObject = new _function;
-// 				break;
-// 			case "class":
-// 				ThisNewObject = new _class;
-// 				break;
-// 			case "const":
-// 				ThisNewObject = new _const;
-// 				break;
-// 			case "var":
-// 				ThisNewObject = new _var;
-// 				break;
-
-// 			default:
-// 				ThisNewObject = "def"
-// 				break;
-// 		}
-// 		$("#select_object").attr("disabled", "")
-// 	})
-// });
-
-$.ajax({
-	type: "GET",
-	url: "/Untitled_Document.md",
-	dataType: "text",
-	success: function (response) {
-		FileText = response;
-		convert(response)
+function Preview() {
+	if(ThisNewObject){
+	SEND = {}
+	SEND.data = ThisNewObject.export()
+	$.ajax({
+		type: "POST",
+		url: "../../engine/core/addChuncks.php",
+		data: SEND,
+		dataType: "text",
+		success: function (response) {
+			convert(response);
+			
+		}
+	});
+}
+}
+var whiletrue
+function prev(stop = false) { 
+	if (!stop) {
+		whiletrue = setInterval(() => {
+			Preview()
+		}, 1000);	
+	}else{
+		clearInterval(whiletrue);
 	}
-});
+}
 var converter = new showdown.Converter();
-//IT IS LIVE !!!!!!!!!!!!!!!!!!!!!!!!!!
 function convert(text) {
 	html = converter.makeHtml(text);
 	$("#prev").html(html);
 }
-
-$("#work").on("keydown", convert())
-
-
 
 $(document).ready(function () {
 	var iload = setInterval(() => {

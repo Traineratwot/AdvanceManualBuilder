@@ -1,6 +1,6 @@
 <?
 include "Jsonbd.class.php";
-$data = json_decode($_POST['data'], 1);
+$data = $_POST['data'];
 
 $BD = new JsonBd("../..", 'BD');
 if ($_POST['save']) {

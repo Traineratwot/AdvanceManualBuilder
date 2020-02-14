@@ -84,11 +84,11 @@ table {
 .menu_item:hover {
 	box-shadow: 2px 2px 2px 0px rgba(193, 248, 255, 0.75);
 }
-.menu_item .selected {
+.menu_item.selected {
 	box-shadow: 2px 2px 2px 0px rgba(193, 248, 255, 0.75);
 }
 .menu_item:hover::before {
-	color: rgba(193, 248, 255, 0.75);
+	color: rgba(193, 248, 255, 0.75) !important;
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 	position: relative;
@@ -98,7 +98,7 @@ table {
 	content: "\f0d7";
 }
 
-.menu_item .selected::before {
+.menu_item.selected::before {
 	color: rgba(193, 248, 255, 0.75);
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
@@ -113,7 +113,7 @@ table {
 
 .toolbox {
 	position: relative;
-	
+	top:10px;
 	width: 90%;
 }
 .toolbox .tool-block {

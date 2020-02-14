@@ -43,6 +43,10 @@ class _objects {
 	}
 
 	overstep(var_name, add = false) {
+		if (this.data[var_name]) {
+			return this.regenrate(var_name)
+			
+		}
 		var self = this;
 		if (!add) {
 			if (this.conteiner.toolbox) {
@@ -96,7 +100,11 @@ class _objects {
 						if (!this.data[var_name]) {
 							this.data[var_name] = {}
 						}
-						this.data[var_name][e.value] = _field
+						if (e.short && e.short == true) {
+							this.data[var_name] = _field
+						}else{
+							this.data[var_name][e.value] = _field
+						}
 					}
 				}
 			}
@@ -110,6 +118,73 @@ class _objects {
 			})
 		}
 	}
+	regenrate(var_name) {
+		var self = this;
+		var Dt = this.data[var_name];
+		// var area = this.currentField;
+		var addAction;
+		if (this.conteiner.toolbox) {
+			this.conteiner.toolbox.remove()
+		}
+		var _field;
+		this.conteiner.toolbox = $(`<div class="toolbox">`).appendTo(this.conteiner.body);
+		switch (Dt.constructor.name) {
+			case "k":
+				Dt.appendTo(this.nextLine(this.conteiner.toolbox))
+				break;
+			case "Array":
+				var _r = true;
+				for (const iterator of Dt) {
+					if (!iterator) {
+						self.overstep(var_name)
+						_r = false
+						break;
+					}
+					if (iterator.constructor.name == "k") {
+						iterator.appendTo(this.nextLine(this.conteiner.toolbox))
+					} else if (iterator.constructor.name == "Object") {
+						for (const k in iterator) {
+							if (iterator.hasOwnProperty(k)) {
+								const elem = iterator[k];
+								if (elem.constructor.name == "k") {
+									elem.appendTo(this.nextLine(this.conteiner.toolbox))
+								}
+							}
+						}
+					}
+				}
+				if (_r) {
+					_field = $(`<button>add</button>`).appendTo(this.nextLine(this.conteiner.toolbox));
+					addAction = _field
+				}
+
+				break;
+			case "Object":
+				for (const k in Dt) {
+					if (Dt.hasOwnProperty(k)) {
+						const e = Dt[k];
+						if (e.constructor.name == "k") {
+							e.appendTo(this.nextLine(this.conteiner.toolbox))
+						}
+					}
+				}
+				break;
+			case "String":
+
+				break;
+			default:
+				break;
+		}
+		if (addAction) {
+			addAction.on('click', (e) => {
+				$(e.target).remove()
+				self.iii = Dt.length;
+				$(`#right${var_name}`).html(`(${self.iii + 1})`)
+				self.overstep(var_name, true)
+			})
+		}
+	}
+
 	create_select(values) {
 		let _field = `<select>`;
 		if (typeof values == 'object') {

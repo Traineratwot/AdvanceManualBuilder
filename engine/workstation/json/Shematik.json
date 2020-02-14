@@ -153,6 +153,8 @@
 					"type": "string",
 					"fields": {
 						"text": {
+							"short": true,
+							"value":"Name",
 							"placeholder": "Name"
 						}
 					}
