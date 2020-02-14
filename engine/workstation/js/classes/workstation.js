@@ -1,8 +1,8 @@
-var Project, Shematik, Types,Properties = {};
+var Project, Shematik, Types, Properties = {};
 var ThisNewObject, CreatChunkMenu, FileText;
-var _Projects, _Shematik, _Types,_Properties = false
+var _Projects, _Shematik, _Types, _Properties = false
 $.get("../../BD/Projects.json", '',
-	function (data, textStatus, jqXHR) {
+	function (data) {
 		Project = data['rows'][new URLSearchParams(window.location.search).get('ProjectId')]
 		fit_text($(`<h1 class="fit_text">${Project.name}</h1>`).appendTo("#tree header"))
 		_Projects = true;
@@ -10,21 +10,21 @@ $.get("../../BD/Projects.json", '',
 	"json"
 );
 $.get(`../../BD/${new URLSearchParams(window.location.search).get('ProjectId')}.json`, '',
-	function (data, textStatus, jqXHR) {
+	function (data) {
 		Properties = data;
 		_Properties = true;
 	},
 	"json"
 );
 $.get("json/Shematik.json", '',
-	function (data, textStatus, jqXHR) {
+	function (data) {
 		Shematik = data;
 		_Shematik = true;
 	},
 	"json"
 );
 $.get("json/Types.json", '',
-	function (data, textStatus, jqXHR) {
+	function (data) {
 		Types = data;
 		_Types = true;
 	},
@@ -52,28 +52,28 @@ function renderTree() {
 	}
 }
 function Preview() {
-	if(ThisNewObject){
-	SEND = {}
-	SEND.data = ThisNewObject.export()
-	$.ajax({
-		type: "POST",
-		url: "../../engine/core/addChuncks.php",
-		data: SEND,
-		dataType: "text",
-		success: function (response) {
-			convert(response);
-			
-		}
-	});
-}
+	if (ThisNewObject) {
+		SEND = {}
+		SEND.data = ThisNewObject.export()
+		$.ajax({
+			type: "POST",
+			url: "../../engine/core/addChuncks.php",
+			data: SEND,
+			dataType: "text",
+			success: function (response) {
+				convert(response);
+
+			}
+		});
+	}
 }
 var whiletrue
-function prev(stop = false) { 
+function prev(stop = false) {
 	if (!stop) {
 		whiletrue = setInterval(() => {
 			Preview()
-		}, 1000);	
-	}else{
+		}, 1000);
+	} else {
 		clearInterval(whiletrue);
 	}
 }

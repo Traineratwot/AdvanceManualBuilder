@@ -27,11 +27,11 @@ class _objects {
 		self = this;
 		this.conteiner.body.html("")
 		this.conteiner.Chunc = this.Shematik.Chuncs.typeField[this.constructor.name.trim('_')]
-		this.conteiner.menu = $(`<menu style="height:1em;">`).appendTo(this.conteiner.body);
+		this.conteiner.menu  = $(`<menu style="height:1em;">`).appendTo(this.conteiner.body);
 		$.each(this.conteiner.Chunc, (indexInArray, valueOfElement) => {
 			$(`<div class='menu_item' data-Field="${indexInArray}">${indexInArray}</div>`).appendTo(self.conteiner.menu)
 				.on("click", (e) => {
-					var currentField = $(e.target).attr("data-Field")
+					var currentField  = $(e.target).attr("data-Field")
 					self.currentField = this.conteiner.Chunc[currentField]
 					$(".menu_item").removeClass("selected");
 					$(e.target).addClass("selected")
@@ -69,9 +69,7 @@ class _objects {
 						_field = `<input type="text" placeholder="${e.placeholder}">`;
 						break;
 					case "textarea":
-						_field = `
-							<textarea rows="3" placeholder="${e.placeholder}"></textarea>
-							`;
+						_field = `<textarea rows="3" placeholder="${e.placeholder}"></textarea>`;
 						break;
 					case "button":
 						_field = `<button>${e.title}</button>`;
@@ -248,15 +246,15 @@ class _objects {
 							if (e.hasOwnProperty(k)) {
 								const elem = e[k];
 								if (!exportData[key]) {
-									exportData[key] = []
+									exportData[key] = {}
 								}
-								if (!exportData[key][i]) {
-									exportData[key][i] = {}
-								}
+								// if (!exportData[key][i]) {
+								// 	exportData[key][i] = {}
+								// }
 								if (elem.val() != "on" && elem.val() != "off") {
-									exportData[key][i][k] = elem.val()
+									exportData[key][k] = elem.val()
 								} else {
-									exportData[key][i][k] = elem.prop("checked")
+									exportData[key][k] = elem.prop("checked")
 								}
 							}
 							i++;
