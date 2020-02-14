@@ -28,7 +28,7 @@ button {
 }
 
 /* form element visual styles */
-input,
+input:not([type=checkbox]),
 textarea,div[contenteditable] {
 	vertical-align: middle;
 	border-radius: 4px;
@@ -37,7 +37,7 @@ textarea,div[contenteditable] {
 	padding-right: 8px;
 	transition: 0.25s;
 }
-input:focus,
+input:not([type=checkbox]):focus,
 textarea:focus,div[contenteditable]:focus {
 	background: #fff;
 	border: 1px solid #555;

@@ -27,7 +27,7 @@ class _objects {
 		self = this;
 		this.conteiner.body.html("")
 		this.conteiner.Chunc = this.Shematik.Chuncs.typeField[this.constructor.name.trim('_')]
-		this.conteiner.menu = $("<menu>").appendTo(this.conteiner.body);
+		this.conteiner.menu = $(`<menu style="height:1em;">`).appendTo(this.conteiner.body);
 		$.each(this.conteiner.Chunc, (indexInArray, valueOfElement) => {
 			$(`<div class='menu_item' data-Field="${indexInArray}">${indexInArray}</div>`).appendTo(self.conteiner.menu)
 				.on("click", (e) => {
@@ -35,6 +35,7 @@ class _objects {
 					self.currentField = this.conteiner.Chunc[currentField]
 					$(".menu_item").removeClass("selected");
 					$(e.target).addClass("selected")
+					self.structuer = [];
 					self.overstep(currentField)
 				})
 		});
@@ -47,8 +48,9 @@ class _objects {
 			if (this.conteiner.toolbox) {
 				this.conteiner.toolbox.remove()
 			}
-			this.conteiner.toolbox = $(`<div class="toolbox" style="display:none;">`).appendTo(this.conteiner.body).fadeIn();
+			this.conteiner.toolbox = $(`<div class="toolbox">`).appendTo(this.conteiner.body);
 		}
+		var block =  $(`<div class="tool-block" style="display:none;">`).appendTo(this.conteiner.toolbox).fadeIn()
 		var area = this.currentField
 		var addAction;
 		for (const k in area.fields) {
@@ -77,7 +79,7 @@ class _objects {
 						_field = `<input type="${k}" placeholder="${e.placeholder}">`;
 						break;
 				}
-				_field = $(_field).appendTo(this.nextLine(this.conteiner.toolbox));
+				_field = $(_field).appendTo(this.nextLine(block));
 				if (e.action == 'add') {
 					addAction = _field
 				}
@@ -127,6 +129,7 @@ class _objects {
 	}
 	export() {
 		var exportData = {};
+		exportData.ClassType = this.constructor.name;
 		for (const key in this.data) {
 			if (this.data.hasOwnProperty(key)) {
 				const e = this.data[key];

@@ -18,11 +18,14 @@ h1 table {
 	font-size: large;
 	font-family: Arial;
 }
-input,select,textarea,button {
+input,
+select,
+textarea,
+button {
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 }
-.install-menu{
+.install-menu {
 	cursor: pointer;
 }
 .install-menu.selected {
@@ -55,11 +58,11 @@ table {
 	margin-inline-end: 0px;
 	font-weight: bold;
 }
-.fit_text{
+.fit_text {
 	width: fit-content;
 	width: min-content;
 }
-.menu_item{
+.menu_item {
 	position: relative;
 	border-radius: 0 10px 0 10px;
 	float: left;
@@ -68,64 +71,68 @@ table {
 	height: 20px;
 	text-align: center;
 }
-.menu_item::before{
+.menu_item::before {
 	color: #242222;
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 	position: relative;
 	left: 50%;
-	top:20px;
-	transform: translate(-50%,-50%);
+	top: 20px;
+	transform: translate(-50%, -50%);
 	content: "\f0d7";
 }
-.menu_item:hover{
+.menu_item:hover {
 	box-shadow: 2px 2px 2px 0px rgba(193, 248, 255, 0.75);
 }
-.menu_item .selected{
+.menu_item .selected {
 	box-shadow: 2px 2px 2px 0px rgba(193, 248, 255, 0.75);
 }
-.menu_item:hover::before{
+.menu_item:hover::before {
 	color: rgba(193, 248, 255, 0.75);
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 	position: relative;
 	left: 50%;
-	top:22px;
-	transform: translate(-50%,-50%);
+	top: 22px;
+	transform: translate(-50%, -50%);
 	content: "\f0d7";
 }
 
-.menu_item .selected::before{
+.menu_item .selected::before {
 	color: rgba(193, 248, 255, 0.75);
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 	position: relative;
 	left: 50%;
-	top:22px;
-	transform: translate(-50%,-50%);
+	top: 22px;
+	transform: translate(-50%, -50%);
 	content: "\f0d7";
 }
 /*	👦🏿👦🏿👦🏿👦🏿👦🏿
 		👧🏻		*/
 
-.toolbox{
+.toolbox {
 	position: relative;
-	top: 50px;
+	
 	width: 90%;
 }
-.instalition-main p{
+.toolbox .tool-block {
+	border: solid;
+	margin: 0 0 15px;
+}
+.instalition-main p {
 	/* border: 1px red; */
 }
-.instalition-main .left{
+.instalition-main .left {
 	float: left;
 }
-.instalition-main .right{
+.instalition-main .right {
 	float: right;
 }
 .no_calc {
 	width: 100%;
 }
-.instalition-main{
+.instalition-main {
 	transform: translate(-50%, -50%);
 	left: 15%;
 	width: 10vw;
@@ -135,8 +142,9 @@ table {
 	min-width: 200px;
 	max-width: 250px;
 }
-.instalition-main, .adv-menu, .delete-menu{
-
+.instalition-main,
+.adv-menu,
+.delete-menu {
 	position: absolute;
 	top: 50%;
 	background-color: aliceblue;
@@ -144,7 +152,7 @@ table {
 	padding: 4px;
 	box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.75);
 }
-.delete-menu{
+.delete-menu {
 	left: 50%;
 	width: 400px;
 	min-height: 200px;
@@ -152,31 +160,31 @@ table {
 	transform: translate(-50%, -50%);
 	text-align: center;
 }
-.delete-menu input{
+.delete-menu input {
 	min-width: 100px;
 	max-width: 400px;
 	width: fit-content !important;
 }
-.delete-menu .Eenter{
+.delete-menu .Eenter {
 	min-height: 45px;
 }
-.delete-menu .DELETE{
-	color: #F00;
+.delete-menu .DELETE {
+	color: #f00;
 	right: 5%;
 }
-.delete-menu .DELETE:disabled{
+.delete-menu .DELETE:disabled {
 	color: rgba(255, 0, 0, 0.5);
 }
-.delete-menu .cancel{
+.delete-menu .cancel {
 	left: 5%;
 }
-.delete-menu button{
+.delete-menu button {
 	bottom: 10px;
 	width: 90px;
 	position: absolute;
 	max-width: 90px;
 }
-.adv-menu{
+.adv-menu {
 	width: 60vw;
 	height: fit-content;
 	min-height: 200px;
