@@ -52,16 +52,16 @@ function renderTree() {
 		if (data.selected.length) {
 			var node = data.instance.get_node(data.selected[0])
 			var id = data.instance.get_node(data.selected[0]).original.id
-			console.log(node);
-			if (id <= 0) {
-				id = Math.abs(id);
-				CreatChunkMenu.show(null,id);
-			}else{
-				parent = node.parent
+			parent = node.parent
 				if (!parent || parent == "#") {
 					parent = 0
 				}
-				ThisNewObject = CreateClass(Properties.chunks[id].ClassType,parent,Properties.chunks[id])
+			//console.log(node);
+			if (id <= 0) {
+				id = Math.abs(id);
+				CreatChunkMenu.show(null,[parent,-1]);
+			}else{
+				ThisNewObject = CreateClass(Properties.chunks[id].ClassType,[parent,id],Properties.chunks[id])
 			}
 			//alert('The selected node is: ' + data.instance.get_node(data.selected[0]).id);
 		}
@@ -82,12 +82,14 @@ function Preview() {
 		SEND.project = Project
 		$.ajax({
 			type: "POST",
-			url: "../../engine/core/addchunks.php",
+			url: "../../engine/core/addChunks.php",
 			data: SEND,
 			dataType: "text",
 			success: function (response) {
 				convert(response);
-
+				document.querySelectorAll('pre code').forEach((block) => {
+					hljs.highlightBlock(block);
+				});
 			}
 		});
 	}
@@ -98,10 +100,11 @@ function save(){
 		SEND.parent = ThisNewObject.Parent
 		SEND.data = ThisNewObject.export()
 		SEND.project = Project
+		SEND.id = ThisNewObject.id || -1
 		SEND.save = true
 		$.ajax({
 			type: "POST",
-			url: "../../engine/core/addchunks.php",
+			url: "../../engine/core/addChunks.php",
 			data: SEND,
 			dataType: "text",
 			success: function (response) {
@@ -125,6 +128,9 @@ function prev(stop = false) {
 				hljs.highlightBlock(block);
 			});
 		}, 100);
+		setTimeout(() => {
+			whiletrue = true
+		}, 1100);
 	}
 }
 var converter = new showdown.Converter();

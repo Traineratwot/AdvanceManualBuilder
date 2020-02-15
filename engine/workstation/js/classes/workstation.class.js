@@ -8,16 +8,28 @@ class _objects {
 		this.structuer = []
 		this.data = {};
 		this.iii = 0;
-		var DataImport = false;
+		this.DataImport = false;
+		this.menuArray = {}
 		let args = arguments;
 		if (args.length > 0) {
-			this.Parent = this.arguments[0][1] || 0;
-			DataImport = this.arguments[0][2] || false;
+			this.Parent = this.arguments[0][1][0] || 0;
+			this.id = this.arguments[0][1][1] || 0;
+			this.DataImport = this.arguments[0][2] || false;
 			this.__constructor(...this.arguments);
 		} else {
 			this.__constructor();
 		}
-		this.step1(DataImport)
+		this.step1()
+		if (this.DataImport) {
+			$.each(this.menuArray, function (indexInArray, valueOfElement) { 
+				$(valueOfElement).trigger("click");
+			});
+			var keys = Object.keys(this.menuArray)
+			this.menuArray[keys[0]].trigger("click");
+		}else{
+			var keys = Object.keys(this.menuArray)
+			this.menuArray[keys[0]].trigger("click");
+		}
 	}
 	__constructor() { }
 
@@ -26,29 +38,30 @@ class _objects {
 		this.structuer.push(this.currentP);
 		return this.currentP;
 	}
-	step1(DataImport = false) {
+	step1() {
 		self = this;
 		this.conteiner.body.html("")
 		this.conteiner.Chunk = this.Shematik.Chunks.typeField[this.constructor.name.trim('_')]
 		this.conteiner.menu = $(`<menu style="height:1em;">`).appendTo(this.conteiner.body);
 		$.each(this.conteiner.Chunk, (indexInArray, valueOfElement) => {
-			$(`<div class='menu_item' data-Field="${indexInArray}">${indexInArray}</div>`).appendTo(self.conteiner.menu)
+			self.menuArray[indexInArray] = $(`<div class='menu_item' data-Field="${indexInArray}">${indexInArray}</div>`).appendTo(self.conteiner.menu)
 				.on("click", (e) => {
 					var currentField = $(e.target).attr("data-Field")
 					self.currentField = this.conteiner.Chunk[currentField]
 					$(".menu_item").removeClass("selected");
 					$(e.target).addClass("selected")
 					self.structuer = [];
-					var addAction = self.overstep(currentField, false, DataImport)
-					if (DataImport) {
-						if (DataImport[currentField].constructor.name == 'Array') {
-							if (DataImport[currentField].length > 1) {
-								for (let i = 1; i < DataImport[currentField].length; i++) {
+					self.iii = 0;
+					var addAction = self.overstep(currentField, false, self.DataImport)
+					if (self.DataImport) {
+						if (self.DataImport[currentField].constructor.name == 'Array') {
+							if (self.DataImport[currentField].length > 1) {
+								for (let i = 1; i < self.DataImport[currentField].length; i++) {
 									if (addAction) {
 										addAction.remove()
 										self.iii++;
 										$(`#right${currentField}`).html(`(${self.iii + 1})`)
-										self.overstep(currentField, true,DataImport)
+										self.overstep(currentField, true,self.DataImport)
 									}
 								}
 							}
@@ -123,18 +136,20 @@ class _objects {
 						}
 					}
 				}
+				var NewValue
 				if (DataImport) {
 					if (typeof DataImport[var_name][e.varName] !== 'undefined') {
-						var NewValue = DataImport[var_name][e.varName]
+						NewValue = DataImport[var_name][e.varName]
 					} else if (typeof DataImport[var_name][this.iii][e.varName] !== 'undefined') {
-						var NewValue = DataImport[var_name][this.iii][e.varName]
+						NewValue = DataImport[var_name][this.iii][e.varName]
 					} else {
-						var NewValue = DataImport[var_name]
+						NewValue = DataImport[var_name]
 					}
 					switch (k.replace(/\d/g, '')) {
 						case "select":
 							$(_field).find("option").each(function (index, element) {
-								if ($(element).val().indexOf(NewValue) > 0) {
+								var vsfu = $(element).val()
+								if (NewValue.indexOf(vsfu) >= 0) {
 									$(element).prop('selected', true);
 								}
 							});

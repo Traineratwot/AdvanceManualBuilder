@@ -5,12 +5,17 @@ extract($_POST['project'], EXTR_PREFIX_ALL, "pro");
 
 if ($_POST['save']) {
 	$Tree = json_decode(file_get_contents("../../BD/$pro_name.json"), 1);
-	$i = count($Tree["chunks"])+1;
+	$id = (int) $_POST['id'] ?: -1;
+	if ($id < 0) {
+		$i = count($Tree["chunks"]) + 1;
+	} else {
+		$i = $id;
+	}
 	$Tree["chunks"][$i] = $data;
 	$push = [
 		"id" => $i,
 		"text" => "<span class='data_ClassType'>$data_ClassType</span>.<span class='data_name'>$data_name</span>",
-		"state"=> [ "opened"=> true ],
+		"state" => ["opened" => true],
 		"children" => [
 			[
 				"id" => -$i,
@@ -18,10 +23,10 @@ if ($_POST['save']) {
 			],
 		]
 	];
-	if ((int) $_POST['parent'] == 0) {
-		$Tree["tree"][] = $push;
+	if ((int) $_POST['parent'] != 0 or $id < 0) {
+		recursiveFindValue($Tree["tree"], (int) $_POST['parent'], $id, $push); 
 	} else {
-		recursiveFindValue($Tree["tree"], (int) $_POST['parent'], $push);
+		$Tree["tree"][] = $push;
 	}
 	file_put_contents("../../BD/$pro_name.json", json_encode($Tree, 256));
 	file_put_contents("../../Projects/$pro_name/$data_ClassType.$data_name.md", generate());
@@ -37,14 +42,18 @@ function generate()
 	return ob_get_clean();
 }
 
-function recursiveFindValue(&$arr, $val, $set)
+function recursiveFindValue(&$arr, $val, $id, $set)
 {
 	for ($i = 0; $i < count($arr); $i++) {
 		$value = &$arr[$i];
 		if ($value['id'] == $val) {
-			$value['children'][] = $set;
+			if ($id < 0) {
+				$value['children'][] = $set;
+			} else {
+				$value['children'][$id-1] = $set;
+			}
 			return;
 		}
-		recursiveFindValue($arr, $val, $set);
 	}
+	return recursiveFindValue($arr, $val, $id, $set);
 }

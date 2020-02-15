@@ -27,7 +27,7 @@
         },
         "2": {
             "ClassType": "function",
-            "name": "_fdfsd",
+            "name": "_Test_save2",
             "discription": {
                 "shortDiscription": "fdsfd",
                 "longDiscription": "fsdfdfds"
@@ -60,7 +60,7 @@
                 {
                     "Name": "Marks",
                     "datatype": [
-                        "Function"
+                        "Boolean"
                     ],
                     "defult": "",
                     "shortDiscription": ""
@@ -100,7 +100,7 @@
                 },
                 {
                     "id": 2,
-                    "text": "<span class='data_ClassType'>function<\/span>.<span class='data_name'>_fdfsd<\/span>",
+                    "text": "<span class='data_ClassType'>function<\/span>.<span class='data_name'>_Test_save2<\/span>",
                     "state": {
                         "opened": true
                     },
