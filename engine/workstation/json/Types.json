@@ -22,7 +22,7 @@
 		"Library",
 		"REST API"
 	],
-	"chuncsType": {
+	"ChunksType": {
 		"Library": [
 			"function",
 			"class",

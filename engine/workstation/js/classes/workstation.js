@@ -33,11 +33,11 @@ $.get("json/Types.json", '',
 
 function initSCM() {
 	var menu = [];
-	Types.chuncsType[Project.PorjectData.Projectype].forEach(element => {
+	Types.ChunksType[Project.PorjectData.Projectype].forEach(element => {
 		menu.push({
 			item: element,
 			function: (e, self, AnyValue) => {
-				ThisNewObject = CreateClass(element)
+				ThisNewObject = CreateClass(element,AnyValue)
 			}
 		})
 	});
@@ -45,19 +45,44 @@ function initSCM() {
 }
 
 function renderTree() {
+	
 	$("#tree #content").html("");
-	var ul = $(`<ul>`).appendTo("#tree #content");
-	if (!Object.keys(Properties.tree).length) {
-		$(`<li class="NewChuncs">➕добавить</li>`).appendTo(ul);
-	}
+	$('#tree #content')
+	.on("changed.jstree", function (e, data) {
+		if (data.selected.length) {
+			var node = data.instance.get_node(data.selected[0])
+			var id = data.instance.get_node(data.selected[0]).original.id
+			console.log(node);
+			if (id <= 0) {
+				id = Math.abs(id);
+				CreatChunkMenu.show(null,id);
+			}else{
+				parent = node.parent
+				if (!parent || parent == "#") {
+					parent = 0
+				}
+				ThisNewObject = CreateClass(Properties.chunks[id].ClassType,parent,Properties.chunks[id])
+			}
+			//alert('The selected node is: ' + data.instance.get_node(data.selected[0]).id);
+		}
+	})
+	.jstree({
+		'core': {
+			'multiple': false,
+			'data': Properties.tree
+		}
+	});
 }
+
+
 function Preview() {
 	if (ThisNewObject) {
 		SEND = {}
 		SEND.data = ThisNewObject.export()
+		SEND.project = Project
 		$.ajax({
 			type: "POST",
-			url: "../../engine/core/addChuncks.php",
+			url: "../../engine/core/addchunks.php",
 			data: SEND,
 			dataType: "text",
 			success: function (response) {
@@ -67,7 +92,26 @@ function Preview() {
 		});
 	}
 }
-var whiletrue
+function save(){
+	if (ThisNewObject) {
+		SEND = {}
+		SEND.parent = ThisNewObject.Parent
+		SEND.data = ThisNewObject.export()
+		SEND.project = Project
+		SEND.save = true
+		$.ajax({
+			type: "POST",
+			url: "../../engine/core/addchunks.php",
+			data: SEND,
+			dataType: "text",
+			success: function (response) {
+				convert(response);
+
+			}
+		});
+	}
+}
+var whiletrue = true;
 function prev(stop = false) {
 	if (!stop && whiletrue) {
 		whiletrue = setInterval(() => {
@@ -99,7 +143,7 @@ $(document).ready(function () {
 			});
 			convert();
 			initSCM();
-			$(".NewChuncs").on("click", function (event) {
+			$(".NewChunks").on("click", function (event) {
 				CreatChunkMenu.show(event);
 			});
 		}

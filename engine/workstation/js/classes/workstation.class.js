@@ -2,19 +2,22 @@ class _objects {
 	constructor() {
 		this.conteiner = {}
 		this.conteiner.body = $("#edit_panel");
-		this.arguments = [...arguments];
+		this.arguments = arguments;
 		this.Types = Types
 		this.Shematik = Shematik;
 		this.structuer = []
 		this.data = {};
 		this.iii = 0;
-		this.step1()
-		let args = [...arguments];
+		var DataImport = false;
+		let args = arguments;
 		if (args.length > 0) {
-			this.__constructor(...args);
+			this.Parent = this.arguments[0][1] || 0;
+			DataImport = this.arguments[0][2] || false;
+			this.__constructor(...this.arguments);
 		} else {
 			this.__constructor();
 		}
+		this.step1(DataImport)
 	}
 	__constructor() { }
 
@@ -23,30 +26,43 @@ class _objects {
 		this.structuer.push(this.currentP);
 		return this.currentP;
 	}
-	step1() {
+	step1(DataImport = false) {
 		self = this;
 		this.conteiner.body.html("")
-		this.conteiner.Chunc = this.Shematik.Chuncs.typeField[this.constructor.name.trim('_')]
-		this.conteiner.menu  = $(`<menu style="height:1em;">`).appendTo(this.conteiner.body);
-		$.each(this.conteiner.Chunc, (indexInArray, valueOfElement) => {
+		this.conteiner.Chunk = this.Shematik.Chunks.typeField[this.constructor.name.trim('_')]
+		this.conteiner.menu = $(`<menu style="height:1em;">`).appendTo(this.conteiner.body);
+		$.each(this.conteiner.Chunk, (indexInArray, valueOfElement) => {
 			$(`<div class='menu_item' data-Field="${indexInArray}">${indexInArray}</div>`).appendTo(self.conteiner.menu)
 				.on("click", (e) => {
-					var currentField  = $(e.target).attr("data-Field")
-					self.currentField = this.conteiner.Chunc[currentField]
+					var currentField = $(e.target).attr("data-Field")
+					self.currentField = this.conteiner.Chunk[currentField]
 					$(".menu_item").removeClass("selected");
 					$(e.target).addClass("selected")
 					self.structuer = [];
-					self.overstep(currentField)
+					var addAction = self.overstep(currentField, false, DataImport)
+					if (DataImport) {
+						if (DataImport[currentField].constructor.name == 'Array') {
+							if (DataImport[currentField].length > 1) {
+								for (let i = 1; i < DataImport[currentField].length; i++) {
+									if (addAction) {
+										addAction.remove()
+										self.iii++;
+										$(`#right${currentField}`).html(`(${self.iii + 1})`)
+										self.overstep(currentField, true,DataImport)
+									}
+								}
+							}
+						}
+					}
 				})
 		});
 		this.conteiner.toolbox = $(`<div class="toolbox">`).appendTo(this.conteiner.body)
 	}
 
-	overstep(var_name, add = false) {
-		
+	overstep(var_name, add = false, DataImport = false) {
 		var self = this;
 		if (!add) {
-			if (this.data[var_name]) {
+			if (this.data[var_name] && !DataImport) {
 				return this.regenrate(var_name)
 			}
 			if (this.conteiner.toolbox) {
@@ -55,7 +71,7 @@ class _objects {
 			this.conteiner.toolbox = $(`<div class="toolbox">`).appendTo(this.conteiner.body);
 
 		}
-		var block =  $(`<div class="tool-block" style="display:none;">`).appendTo(this.conteiner.toolbox).fadeIn()
+		var block = $(`<div class="tool-block" style="display:none;">`).appendTo(this.conteiner.toolbox).fadeIn()
 		var area = this.currentField
 		var addAction;
 		for (const k in area.fields) {
@@ -102,9 +118,38 @@ class _objects {
 						}
 						if (e.short && e.short == true) {
 							this.data[var_name] = _field
-						}else{
+						} else {
 							this.data[var_name][e.varName] = _field
 						}
+					}
+				}
+				if (DataImport) {
+					if (typeof DataImport[var_name][e.varName] !== 'undefined') {
+						var NewValue = DataImport[var_name][e.varName]
+					} else if (typeof DataImport[var_name][this.iii][e.varName] !== 'undefined') {
+						var NewValue = DataImport[var_name][this.iii][e.varName]
+					} else {
+						var NewValue = DataImport[var_name]
+					}
+					switch (k.replace(/\d/g, '')) {
+						case "select":
+							$(_field).find("option").each(function (index, element) {
+								if ($(element).val().indexOf(NewValue) > 0) {
+									$(element).prop('selected', true);
+								}
+							});
+							break;
+						case "textarea":
+							_field.html(NewValue)
+							break;
+						case "checkbox":
+							if (NewValue) {
+								_field.prop('checked', true);
+							}
+							break;
+						default:
+							_field.val(NewValue)
+							break;
 					}
 				}
 			}
@@ -116,7 +161,9 @@ class _objects {
 				$(`#right${var_name}`).html(`(${self.iii + 1})`)
 				self.overstep(var_name, true)
 			})
+			return addAction;
 		}
+		return false;
 	}
 	regenrate(var_name) {
 		var self = this;
@@ -188,12 +235,12 @@ class _objects {
 	create_select(e) {
 		if (e.attr) {
 			var _field = `<select ${e.attr.join(' ')}>`;
-		}else{
+		} else {
 			var _field = `<select>`;
 		}
-		if(!e.options){
+		if (!e.options) {
 			var values = e
-		}else{
+		} else {
 			var values = e.options
 		}
 		if (typeof values == 'object') {
@@ -240,7 +287,7 @@ class _objects {
 									}
 									if (!exportData[key][i]) {
 										exportData[key][i] = {}
-									}									
+									}
 									if (elem.val() != "on" && elem.val() != "off") {
 										exportData[key][i][k] = elem.val()
 									} else {
@@ -280,6 +327,9 @@ class _objects {
 			}
 		}
 		return exportData
+	}
+	import() {
+
 	}
 }
 
@@ -326,5 +376,5 @@ var Maxies = {
 };
 
 function CreateClass(Type) {
-	return new Maxies[Type]()
+	return new Maxies[Type](arguments)
 }

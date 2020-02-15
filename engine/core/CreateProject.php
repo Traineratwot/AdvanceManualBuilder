@@ -22,8 +22,10 @@ $BD->INSERT('Projects',[
 	'PorjectData'=>$data
 	]);
 $patten = [
-	"tree" => [],
-	"chuncks" => []
+	"tree" => [
+		"root"=>[],
+	],
+	"chunks" => []
 ];
 	
 file_put_contents($BD->currentDbPath."/$Projectname.json", json_encode($patten,256));
