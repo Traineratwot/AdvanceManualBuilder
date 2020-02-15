@@ -17,49 +17,115 @@ input {
 	height: 20px;
 	width: 220px;
 	padding: 3px 8px;
+	color: #dfe2e5;
+	background-color: #373535;
 }
-textarea,div[contenteditable] {
+textarea,
+div[contenteditable] {
 	padding: 3px;
 	width: 300px;
 	vertical-align: middle;
+	color: #dfe2e5;
+	background-color: #373535;
+	border: 1px solid #bebcbc;
 }
 button {
 	vertical-align: middle;
+	color: #dfe2e5;
+	background-color: #373535;
 }
 
+select option {
+	color: #dfe2e5;
+	background-color: #373535;
+}
+
+textarea::-webkit-scrollbar,
+select::-webkit-scrollbar,
+div[contenteditable]::-webkit-scrollbar {
+	width: 3px;
+	height: 3px;
+}
+textarea::-webkit-scrollbar-button,
+select::-webkit-scrollbar-button,
+div[contenteditable]::-webkit-scrollbar-button {
+	background-color: #666;
+}
+textarea::-webkit-scrollbar-track,
+select::-webkit-scrollbar-track,
+div[contenteditable]::-webkit-scrollbar-track {
+	background-color: #999;
+}
+textarea::-webkit-scrollbar-track-piece,
+select::-webkit-scrollbar-track-piece,
+div[contenteditable]::-webkit-scrollbar-track-piece {
+	background-color: #373535;
+}
+textarea::-webkit-scrollbar-thumb,
+select::-webkit-scrollbar-thumb,
+div[contenteditable]::-webkit-scrollbar-thumb {
+	height: 50px;
+	background-color: #f92672;
+	border-radius: 3px;
+}
+textarea::-webkit-scrollbar-corner,
+select::-webkit-scrollbar-corner,
+div[contenteditable]::-webkit-scrollbar-corner {
+	background-color: #999;
+}
+textarea::-webkit-resizer,
+select::-webkit-resizer,
+div[contenteditable]::-webkit-resizer {
+	background-color: #666;
+}
+
+input[data-lable]::after {
+	position: relative;
+	display: block;
+	padding: 3px 6px;
+	content: attr(data-lable);
+	background-color: #373535;
+	width: min-content;
+	left: 45px;
+	top: -2px;
+	box-shadow: 0px 0px 3px #373535, 0 10px 15px #373535 inset;
+	font-size: small;
+}
 /* form element visual styles */
-input:not([type=checkbox]),
-textarea,div[contenteditable] {
+input:not([type="checkbox"]),
+textarea,
+div[contenteditable] {
 	vertical-align: middle;
 	border-radius: 4px;
-	border: 1px solid #aaa;
-	box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
+	border: 1px solid #bebcbc;
+	box-shadow: 0px 0px 3px #373535, 0 10px 15px #373535 inset;
 	padding-right: 8px;
 	transition: 0.25s;
 }
-input:not([type=checkbox]):focus,
-textarea:focus,div[contenteditable]:focus {
-	background: #fff;
-	border: 1px solid #555;
-	box-shadow: 0 0 3px #aaa;
+input:not([type="checkbox"]):focus,
+textarea:focus,
+div[contenteditable]:focus {
+	background: #373535;
+	border: 1px solid #bebcbc;
+	box-shadow: 0 0 3px #373535;
 }
 
 /* === HTML5 validation styles === */
 input:required,
 textarea:required {
-	background: #fff url(images/red_asterisk.png) no-repeat 98% center;
+	background: #373535 url(images/red_asterisk.png) no-repeat 98% center;
 }
 input:required:valid,
 textarea:required:valid,
 div[contenteditable]:focus:valid {
-	background: #fff url(images/valid.png) no-repeat 98% center;
+	background: #373535 url(images/valid.png) no-repeat 98% center;
 	box-shadow: 0 0 5px #5cd053;
 	border-color: #28921f;
 }
 input:focus:invalid,
 textarea:focus:invalid,
 div[contenteditable]:focus:invalid {
-	background: #fff url(images/invalid.png) no-repeat 98% center;
+	background: #373535 url(images/invalid.png) no-repeat 98% center;
 	box-shadow: 0 0 5px #d45252;
 	border-color: #b03535;
 }
@@ -68,7 +134,7 @@ div[contenteditable]:focus:invalid {
 .form_hint {
 	background: #d45252;
 	border-radius: 3px 3px 3px 3px;
-	color: white;
+	color: #dfe2e5;
 	margin-left: 8px;
 	padding: 0 6px;
 	z-index: 999; /* hints stay above all other elements */

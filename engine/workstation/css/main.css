@@ -4,6 +4,9 @@
 	* {
 		font-family: "Fira Code", Arial;
 	}
+	pre *{
+		font-family: "Fira Code", Arial !important;
+	}
 }
 html {
 	background-color: #242222;
@@ -88,7 +91,7 @@ table {
 	box-shadow: 2px 2px 2px 0px rgba(193, 248, 255, 0.75);
 }
 .menu_item:hover::before {
-	color: rgba(193, 248, 255, 0.75) !important;
+	color: #dfe2e5 !important;
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 	position: relative;
@@ -97,21 +100,7 @@ table {
 	transform: translate(-50%, -50%);
 	content: "\f0d7";
 }
-input[data-lable]{
-	background-color: #ffffff;
-}
-input[data-lable]::after{
-    position: relative;
-    display: block;
-    padding: 3px 6px;
-    content: attr(data-lable);
-    background-color: azure;
-    width: min-content;
-    left: 45px;
-    top: -2px;
-    box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
-    font-size: small;
-   }
+
 .menu_item.selected::before {
 	color: rgba(193, 248, 255, 0.75);
 	font-family: "Font Awesome 5 Free";
@@ -128,10 +117,9 @@ input[data-lable]::after{
 .toolbox {
 	position: relative;
 	top:10px;
-	width: 90%;
 }
 .toolbox .tool-block {
-	border: solid;
+	border: solid #dfe2e557;
 	margin: 0 0 15px;
 }
 .instalition-main p {
@@ -230,13 +218,16 @@ input[data-lable]::after{
 	overflow: auto;
 }
 .tree-panel {
+	color: #f8f8f2;
 	top: 0;
 	width: calc(15vw - 15px);
 	height: 100vh;
 	left: 0;
-	background-color: palevioletred;
+	/* background-color: palevioletred; */
 }
 .work-panel {
+	outline: solid 1px #f8f8f2;
+
 	width: calc(40vw - 10px);
 	height: 100vh;
 	top: 0;
@@ -247,12 +238,13 @@ input[data-lable]::after{
 }
 
 .prev-panel {
+	color: #f8f8f2;
 	top: 0;
 	width: calc(45vw - 20px);
 	height: 100vh;
 	left: 55vw;
 	top: 0;
-	background-color: gainsboro;
+	/* background-color: gainsboro; */
 }
 
 .ProjectList {
@@ -291,3 +283,4 @@ input[data-lable]::after{
 .ProjectList .v::before {
 	content: "V ";
 }
+

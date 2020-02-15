@@ -15,6 +15,7 @@
                         "Number"
                     ],
                     "defult": "999",
+                    "optional": true,
                     "shortDiscription": ""
                 }
             ],
@@ -36,9 +37,12 @@
                 {
                     "Name": "fdsf",
                     "datatype": [
-                        "String"
+                        "String",
+                        "Number",
+                        "Boolean"
                     ],
                     "defult": "fdsfds",
+                    "optional": "false",
                     "shortDiscription": "fsdfdsfds"
                 }
             ],
@@ -60,9 +64,11 @@
                 {
                     "Name": "Marks",
                     "datatype": [
-                        "Boolean"
+                        "Boolean",
+                        "Array"
                     ],
                     "defult": "",
+                    "optional": "true",
                     "shortDiscription": ""
                 },
                 {
@@ -71,6 +77,7 @@
                         "Function"
                     ],
                     "defult": "",
+                    "optional": "false",
                     "shortDiscription": ""
                 }
             ],
@@ -85,7 +92,22 @@
     "tree": [
         {
             "id": 0,
-            "text": "add"
+            "text": "add",
+            "children": {
+                "2": {
+                    "id": 3,
+                    "text": "<span class='data_ClassType'>function<\/span>.<span class='data_name'>Communizm<\/span>",
+                    "state": {
+                        "opened": true
+                    },
+                    "children": [
+                        {
+                            "id": -3,
+                            "text": "add"
+                        }
+                    ]
+                }
+            }
         },
         {
             "id": 1,

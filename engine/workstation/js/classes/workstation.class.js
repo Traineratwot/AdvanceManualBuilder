@@ -24,12 +24,9 @@ class _objects {
 			$.each(this.menuArray, function (indexInArray, valueOfElement) { 
 				$(valueOfElement).trigger("click");
 			});
-			var keys = Object.keys(this.menuArray)
-			this.menuArray[keys[0]].trigger("click");
-		}else{
-			var keys = Object.keys(this.menuArray)
-			this.menuArray[keys[0]].trigger("click");
 		}
+		var keys = Object.keys(this.menuArray)
+			this.menuArray[keys[0]].trigger("click");
 	}
 	__constructor() { }
 
@@ -42,7 +39,7 @@ class _objects {
 		self = this;
 		this.conteiner.body.html("")
 		this.conteiner.Chunk = this.Shematik.Chunks.typeField[this.constructor.name.trim('_')]
-		this.conteiner.menu = $(`<menu style="height:1em;">`).appendTo(this.conteiner.body);
+		this.conteiner.menu = $(`<menu style="display: inline-block;">`).appendTo(this.conteiner.body);
 		$.each(this.conteiner.Chunk, (indexInArray, valueOfElement) => {
 			self.menuArray[indexInArray] = $(`<div class='menu_item' data-Field="${indexInArray}">${indexInArray}</div>`).appendTo(self.conteiner.menu)
 				.on("click", (e) => {
@@ -97,19 +94,19 @@ class _objects {
 						_field = this.create_select(e);
 						break;
 					case "text":
-						_field = `<input ${e.attr.join(' ')} type="text" placeholder="${e.placeholder}">`;
+						_field = `<input title="${e.placeholder || ''}" ${e.attr.join(' ')} type="text" placeholder="${e.placeholder || ''}">`;
 						break;
 					case "textarea":
-						_field = `<textarea ${e.attr.join(' ')} rows="3" placeholder="${e.placeholder}"></textarea>`;
+						_field = `<textarea title="${e.placeholder || ''}" ${e.attr.join(' ')} rows="3" placeholder="${e.placeholder || ''}"></textarea>`;
 						break;
 					case "button":
-						_field = `<button ${e.attr.join(' ')} >${e.title}</button>`;
+						_field = `<button title="${e.title || ''}" ${e.attr.join(' ')} >${e.title}</button>`;
 						break;
 					case "checkbox":
-						_field = `<input ${e.attr.join(' ')} data-lable="${e.lable}" style="width:40px !important" type="checkbox">`;
+						_field = `<input title="${e.lable || ''}" ${e.attr.join(' ')} data-lable="${e.lable}" title="${e.lable || ''}" style="width:40px !important" type="checkbox">`;
 						break;
 					default:
-						_field = `<input ${e.attr.join(' ')} type="${k}" placeholder="${e.placeholder}">`;
+						_field = `<input title="${e.placeholder || ''}" ${e.attr.join(' ')} type="${k}" placeholder="${e.placeholder || ''}">`;
 						break;
 				}
 				_field = $(_field).appendTo(this.nextLine(block));
@@ -158,8 +155,10 @@ class _objects {
 							_field.html(NewValue)
 							break;
 						case "checkbox":
-							if (NewValue) {
+							if (NewValue == "true") {
 								_field.prop('checked', true);
+							}else{
+								_field.prop('checked', false);
 							}
 							break;
 						default:
@@ -249,7 +248,7 @@ class _objects {
 
 	create_select(e) {
 		if (e.attr) {
-			var _field = `<select ${e.attr.join(' ')}>`;
+			var _field = `<select title="${e.title || ''}" ${e.attr.join(' ')}>`;
 		} else {
 			var _field = `<select>`;
 		}

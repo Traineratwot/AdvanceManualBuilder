@@ -154,7 +154,7 @@
 					"fields": {
 						"text": {
 							"short": true,
-							"varName":"Name",
+							"varName": "Name",
 							"placeholder": "Name"
 						}
 					}
@@ -178,11 +178,11 @@
 					"type": "array",
 					"fields": {
 						"text": {
-							"varName":"Name",
+							"varName": "Name",
 							"placeholder": "Name"
 						},
 						"select": {
-							"attr":[
+							"attr": [
 								"multiple"
 							],
 							"varName": "datatype",
@@ -191,6 +191,10 @@
 						"text2": {
 							"varName": "defult",
 							"placeholder": "defult"
+						},
+						"checkbox": {
+							"varName": "optional",
+							"lable": "optional"
 						},
 						"text1": {
 							"varName": "shortDiscription",
@@ -207,7 +211,7 @@
 					"type": "string",
 					"fields": {
 						"select": {
-							"attr":[
+							"attr": [
 								"multiple"
 							],
 							"varName": "datatype",

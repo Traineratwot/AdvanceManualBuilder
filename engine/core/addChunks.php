@@ -23,10 +23,10 @@ if ($_POST['save']) {
 			],
 		]
 	];
-	if ((int) $_POST['parent'] != 0 or $id < 0) {
-		recursiveFindValue($Tree["tree"], (int) $_POST['parent'], $id, $push); 
-	} else {
+	if ((int) $_POST['parent'] != 0 and $id < 0) {
 		$Tree["tree"][] = $push;
+	} else {
+		recursiveFindValue($Tree["tree"], (int) $_POST['parent'], $id, $push); 
 	}
 	file_put_contents("../../BD/$pro_name.json", json_encode($Tree, 256));
 	file_put_contents("../../Projects/$pro_name/$data_ClassType.$data_name.md", generate());

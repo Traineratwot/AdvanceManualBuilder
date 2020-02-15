@@ -130,7 +130,7 @@ function prev(stop = false) {
 		}, 100);
 		setTimeout(() => {
 			whiletrue = true
-		}, 1100);
+		}, 900);
 	}
 }
 var converter = new showdown.Converter();
