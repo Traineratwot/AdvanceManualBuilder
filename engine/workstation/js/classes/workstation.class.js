@@ -43,16 +43,17 @@ class _objects {
 	}
 
 	overstep(var_name, add = false) {
-		if (this.data[var_name]) {
-			return this.regenrate(var_name)
-			
-		}
+		
 		var self = this;
 		if (!add) {
+			if (this.data[var_name]) {
+				return this.regenrate(var_name)
+			}
 			if (this.conteiner.toolbox) {
 				this.conteiner.toolbox.remove()
 			}
 			this.conteiner.toolbox = $(`<div class="toolbox">`).appendTo(this.conteiner.body);
+
 		}
 		var block =  $(`<div class="tool-block" style="display:none;">`).appendTo(this.conteiner.toolbox).fadeIn()
 		var area = this.currentField
@@ -61,31 +62,32 @@ class _objects {
 			if (area.fields.hasOwnProperty(k)) {
 				const e = area.fields[k];
 				var _field;
+				e.attr = e.attr || [];
 				switch (k.replace(/\d/g, '')) {
 					case "select":
-						_field = this.create_select(e.options);
+						_field = this.create_select(e);
 						break;
 					case "text":
-						_field = `<input type="text" placeholder="${e.placeholder}">`;
+						_field = `<input ${e.attr.join(' ')} type="text" placeholder="${e.placeholder}">`;
 						break;
 					case "textarea":
-						_field = `<textarea rows="3" placeholder="${e.placeholder}"></textarea>`;
+						_field = `<textarea ${e.attr.join(' ')} rows="3" placeholder="${e.placeholder}"></textarea>`;
 						break;
 					case "button":
-						_field = `<button>${e.title}</button>`;
+						_field = `<button ${e.attr.join(' ')} >${e.title}</button>`;
 						break;
 					case "checkbox":
-						_field = `<input data-lable="${e.labal}" style="width:40px !important" type="checkbox">`;
+						_field = `<input ${e.attr.join(' ')} data-lable="${e.lable}" style="width:40px !important" type="checkbox">`;
 						break;
 					default:
-						_field = `<input type="${k}" placeholder="${e.placeholder}">`;
+						_field = `<input ${e.attr.join(' ')} type="${k}" placeholder="${e.placeholder}">`;
 						break;
 				}
 				_field = $(_field).appendTo(this.nextLine(block));
 				if (e.action == 'add') {
 					addAction = _field
 				}
-				if (e.value) {
+				if (e.varName) {
 					if (area.type == "array") {
 						if (!this.data[var_name]) {
 							this.data[var_name] = []
@@ -93,7 +95,7 @@ class _objects {
 						if (!this.data[var_name][this.iii]) {
 							this.data[var_name][this.iii] = {}
 						}
-						this.data[var_name][this.iii][e.value] = _field
+						this.data[var_name][this.iii][e.varName] = _field
 					} else {
 						if (!this.data[var_name]) {
 							this.data[var_name] = {}
@@ -101,7 +103,7 @@ class _objects {
 						if (e.short && e.short == true) {
 							this.data[var_name] = _field
 						}else{
-							this.data[var_name][e.value] = _field
+							this.data[var_name][e.varName] = _field
 						}
 					}
 				}
@@ -183,8 +185,17 @@ class _objects {
 		}
 	}
 
-	create_select(values) {
-		let _field = `<select>`;
+	create_select(e) {
+		if (e.attr) {
+			var _field = `<select ${e.attr.join(' ')}>`;
+		}else{
+			var _field = `<select>`;
+		}
+		if(!e.options){
+			var values = e
+		}else{
+			var values = e.options
+		}
 		if (typeof values == 'object') {
 			for (const val of values) {
 				_field += `<option value="${val}">${val}</option>`

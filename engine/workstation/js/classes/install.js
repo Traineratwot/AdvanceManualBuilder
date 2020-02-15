@@ -198,30 +198,29 @@ class install {
 			if (area.fields.hasOwnProperty(k)) {
 				const e = area.fields[k];
 				var _field;
+				e.attr = e.attr || [];
 				switch (k.replace(/\d/g, '')) {
 					case "select":
 						_field = this.create_select(e.options);
 						break;
 					case "text":
-						_field = `<input type="text" placeholder="${e.placeholder}">`;
+						_field = `<input ${e.attr.join(' ')} type="text" placeholder="${e.placeholder}">`;
 						break;
 					case "textarea":
-						_field = `
-							<textarea rows="3" placeholder="${e.placeholder}"></textarea>
-							`;
+						_field = `<textarea ${e.attr.join(' ')} rows="3" placeholder="${e.placeholder}"></textarea>`;
 						break;
 					case "button":
-						_field = `<button>${e.title}</button>`;
+						_field = `<button ${e.attr.join(' ')}>${e.title}</button>`;
 						break;
 					default:
-						_field = `<input type="${k}" placeholder="${e.placeholder}">`;
+						_field = `<input ${e.attr.join(' ')} type="${k}" placeholder="${e.placeholder}">`;
 						break;
 				}
 				_field = $(_field).appendTo(this.nextLine(this.advMenu));
 				if (e.action == 'add') {
 					addAction = _field
 				}
-				if (e.value) {
+				if (e.varName) {
 					if (area.type == "array") {
 						if (!this.data[var_name]) {
 							this.data[var_name] = []
@@ -229,12 +228,12 @@ class install {
 						if (!this.data[var_name][this.iii]) {
 							this.data[var_name][this.iii] = {}
 						}
-						this.data[var_name][this.iii][e.value] = _field
+						this.data[var_name][this.iii][e.varName] = _field
 					} else {
 						if (!this.data[var_name]) {
 							this.data[var_name] = {}
 						}
-						this.data[var_name][e.value] = _field
+						this.data[var_name][e.varName] = _field
 					}
 				}
 			}
@@ -317,29 +316,39 @@ class install {
 	create_short(area) {
 		var key = Object.keys(area.fields)[0];
 		var _field;
+		area.fields[key].attr = area.fields[key].attr || [];
 		switch (key.replace(/\d/g, '')) {
 			case "select":
-				_field = this.create_select(area.fields[key].options)
+				_field = this.create_select(area.fields[key])
 				break;
 			case "text":
-				_field = `<input type="text" placeholder="${area.fields[key].placeholder}">`;
+				_field = `<input ${area.fields[key].attr.join(' ')} type="text" placeholder="${area.fields[key].placeholder}">`;
 				break;
 			case "textarea":
 				_field = `
-				<textarea rows="3" placeholder="${area.fields[key].placeholder}"></textarea>
+				<textarea rows="3" ${area.fields[key].attr.join(' ')} placeholder="${area.fields[key].placeholder}"></textarea>
 				`;
 				break;
 			case "button":
-				_field = `<button>${area.fields[key].title}</button>`;
+				_field = `<button ${area.fields[key].attr.join(' ')}>${area.fields[key].title}</button>`;
 				break;
 			default:
-				_field = `<input type="${key}" placeholder="${area.fields[key].placeholder}">`;
+				_field = `<input ${area.fields[key].attr.join(' ')} type="${key}" placeholder="${area.fields[key].placeholder}">`;
 				break;
 		}
 		return $(_field);
 	}
-	create_select(values) {
-		let _field = `<select>`;
+	create_select(e) {
+		if (e.attr) {
+			var _field = `<select ${e.attr.join(' ')}>`;
+		}else{
+			var _field = `<select>`;
+		}
+		if(!e.options){
+			var	values = e
+		}else{
+			var	values = e.options
+		}
 		if (typeof values == 'object') {
 			for (const val of values) {
 				_field += `<option value="${val}">${val}</option>`

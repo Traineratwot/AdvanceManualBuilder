@@ -38,6 +38,8 @@
 		"Function",
 		"Object",
 		"Array",
-		"mixed"
+		"mixed",
+		"null",
+		"none"
 	]
 }

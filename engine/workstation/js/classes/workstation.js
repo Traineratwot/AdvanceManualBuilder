@@ -69,12 +69,18 @@ function Preview() {
 }
 var whiletrue
 function prev(stop = false) {
-	if (!stop) {
+	if (!stop && whiletrue) {
 		whiletrue = setInterval(() => {
 			Preview()
 		}, 1000);
 	} else {
 		clearInterval(whiletrue);
+		whiletrue = false;
+		setTimeout(() => {
+			document.querySelectorAll('pre code').forEach((block) => {
+				hljs.highlightBlock(block);
+			});
+		}, 100);
 	}
 }
 var converter = new showdown.Converter();

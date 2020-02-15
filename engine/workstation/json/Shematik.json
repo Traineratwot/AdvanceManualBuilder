@@ -17,11 +17,11 @@
 					"type": "string",
 					"fields": {
 						"text": {
-							"value": "shortDiscription",
+							"varName": "shortDiscription",
 							"placeholder": "Short discription"
 						},
 						"textarea": {
-							"value": "longDiscription",
+							"varName": "longDiscription",
 							"placeholder": "Long discription"
 						}
 					}
@@ -31,11 +31,11 @@
 					"type": "array",
 					"fields": {
 						"select": {
-							"value": "type",
+							"varName": "type",
 							"options": "Types.instalation"
 						},
 						"textarea": {
-							"value": "text",
+							"varName": "text",
 							"placeholder": "Discription"
 						},
 						"button": {
@@ -49,15 +49,15 @@
 					"type": "array",
 					"fields": {
 						"select": {
-							"value": "type",
+							"varName": "type",
 							"options": "Types.dependences"
 						},
 						"text": {
-							"value": "name",
+							"varName": "name",
 							"placeholder": "Name"
 						},
 						"text1": {
-							"value": "minversion",
+							"varName": "minversion",
 							"placeholder": "Min version"
 						},
 						"button": {
@@ -72,7 +72,7 @@
 					"type": "string",
 					"fields": {
 						"select": {
-							"value": "Lang",
+							"varName": "Lang",
 							"options": "Types.lang"
 						}
 					}
@@ -83,7 +83,7 @@
 					"type": "string",
 					"fields": {
 						"text": {
-							"value": "Version",
+							"varName": "Version",
 							"placeholder": "version"
 						}
 					}
@@ -154,7 +154,7 @@
 					"fields": {
 						"text": {
 							"short": true,
-							"value":"Name",
+							"varName":"Name",
 							"placeholder": "Name"
 						}
 					}
@@ -164,11 +164,11 @@
 					"type": "string",
 					"fields": {
 						"text": {
-							"value": "shortDiscription",
+							"varName": "shortDiscription",
 							"placeholder": "Short discription"
 						},
 						"textarea": {
-							"value": "longDiscription",
+							"varName": "longDiscription",
 							"placeholder": "Long discription"
 						}
 					}
@@ -177,21 +177,45 @@
 					"name": "input",
 					"type": "array",
 					"fields": {
+						"text": {
+							"varName":"Name",
+							"placeholder": "Name"
+						},
 						"select": {
-							"value": "datatype",
+							"attr":[
+								"multiple"
+							],
+							"varName": "datatype",
 							"options": "Types.dataType"
 						},
-						"checkbox": {
-							"value": "optional",
-							"labal":"Optional"
+						"text2": {
+							"varName": "defult",
+							"placeholder": "defult"
 						},
-						"text": {
-							"value": "shortDiscription",
+						"text1": {
+							"varName": "shortDiscription",
 							"placeholder": "Short discription"
 						},
 						"button": {
 							"action": "add",
 							"title": "add"
+						}
+					}
+				},
+				"renurn": {
+					"name": "input",
+					"type": "string",
+					"fields": {
+						"select": {
+							"attr":[
+								"multiple"
+							],
+							"varName": "datatype",
+							"options": "Types.dataType"
+						},
+						"text": {
+							"varName": "shortDiscription",
+							"placeholder": "Short discription"
 						}
 					}
 				}
