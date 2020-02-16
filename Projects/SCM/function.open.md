@@ -1,7 +1,7 @@
 ```
-function Communizm() {
+function open() {
 
-return mixed //СССР 2.0
+return Object //This
 }
 
 ```
@@ -16,23 +16,20 @@ return mixed //СССР 2.0
 	</tr>
 			
 		<tr class="md-row">
-			<td class="md-td">Marks </td>
-			<td class="md-td">Boolean, 
-Array </td>
+			<td class="md-td">event </td>
+			<td class="md-td">Object </td>
 			<td class="md-td"></td>
 			<td class="md-td">true</td>
 			<td class="md-td"></td>
 		</tr>
 			
 		<tr class="md-row">
-			<td class="md-td">Engels </td>
-			<td class="md-td">Function </td>
+			<td class="md-td">AnyVAlue </td>
+			<td class="md-td">mixed </td>
 			<td class="md-td"></td>
-			<td class="md-td">false</td>
+			<td class="md-td">true</td>
 			<td class="md-td"></td>
 		</tr>
 	</table>
-### востанавливает СССР
-- Cвергает путина
-- Воскрешает ленина
-- Устанавливает диктатуру пролитариата
+### открыть
+Открывает меню

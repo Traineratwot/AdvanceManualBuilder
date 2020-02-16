@@ -28,45 +28,56 @@
 <script src="engine/workstation/js/classes/install.js"></script>
 <script>
 	var inst;
-	var Types;
+	var Types, Shematik, Projects = {}
+	var _Projects, _Shematik, _Types = false
 	$.getJSON("engine/workstation/json/Types.json", (data) => {
 		Types = data;
+		_Types = true;
 	})
-	var Shematik;
 	$.getJSON("engine/workstation/json/Shematik.json", (data) => {
 		Shematik = data;
+		_Shematik = true;
 	})
-	var Projects;
+	$.getJSON("BD/Projects.json", (data) => {
+		Projects = data.rows;
+		_Projects = true;
+	});
+
 	function loadProjects() {
-		$.getJSON("BD/Projects.json", (data) => {
-			Projects = data.rows;
-			var ul = $(`<ul class="ProjectList">`).appendTo(".select-project")
-			for (const key in Projects) {
-				if (Projects.hasOwnProperty(key)) {
-					const e = Projects[key];
-					$(ul).append(`
+		var ul = $(`<ul class="ProjectList">`).appendTo(".select-project")
+		for (const key in Projects) {
+			if (Projects.hasOwnProperty(key)) {
+				const e = Projects[key];
+				$(ul).append(`
 			<li>
 				<span class="type">${e.PorjectData.Projectype}</span> <a href="engine/workstation/index.html?ProjectId=${e.name}">
 				<span class="name">${key}</span> 
 				</a><span class="v">${e.PorjectData.Projectversion}</span>
 			</li>
 		`)
-				}
-
 			}
-			$(ul).append(`
+
+		}
+		$(ul).append(`
 			<li>
 				<button>Add one</button>
 			</li>
 		`)
 
-			ul.on("click", () => {
-				$(".select-project").fadeOut()
-				inst = new install(Types, Shematik)
-			})
+		ul.on("click", () => {
+			$(".select-project").fadeOut()
+			inst = new install(Types, Shematik)
 		})
+
 	}
-	loadProjects();
+
+	var iload = setInterval(() => {
+		if (_Projects === true && _Shematik === true && _Types === true) {
+			clearInterval(iload);
+			loadProjects();
+		}
+	}, 10);
+
 </script>
 
 </html>

@@ -223,6 +223,87 @@
 						}
 					}
 				}
+			},
+			"class":{
+				"name": {
+					"name": "Name",
+					"type": "string",
+					"fields": {
+						"text": {
+							"short": true,
+							"varName": "Name",
+							"placeholder": "Name"
+						}
+					}
+				},
+				"discription": {
+					"name": "Discription",
+					"type": "string",
+					"fields": {
+						"text": {
+							"varName": "shortDiscription",
+							"placeholder": "Short discription"
+						},
+						"textarea": {
+							"varName": "longDiscription",
+							"placeholder": "Long discription"
+						}
+					}
+				}
+			},
+			"var":{
+				"name": {
+					"name": "Name",
+					"type": "string",
+					"fields": {
+						"text": {
+							"short": true,
+							"varName": "Name",
+							"placeholder": "Name"
+						}
+					}
+				},
+				"discription": {
+					"name": "Discription",
+					"type": "string",
+					"fields": {
+						"text": {
+							"varName": "shortDiscription",
+							"placeholder": "Short discription"
+						},
+						"textarea": {
+							"varName": "longDiscription",
+							"placeholder": "Long discription"
+						}
+					}
+				}
+			},
+			"const":{
+				"name": {
+					"name": "Name",
+					"type": "string",
+					"fields": {
+						"text": {
+							"short": true,
+							"varName": "Name",
+							"placeholder": "Name"
+						}
+					}
+				},
+				"discription": {
+					"name": "Discription",
+					"type": "string",
+					"fields": {
+						"text": {
+							"varName": "shortDiscription",
+							"placeholder": "Short discription"
+						},
+						"textarea": {
+							"varName": "longDiscription",
+							"placeholder": "Long discription"
+						}
+					}
+				}
 			}
 		}
 	}

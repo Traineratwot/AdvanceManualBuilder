@@ -12,8 +12,8 @@ class _objects {
 		this.menuArray = {}
 		let args = arguments;
 		if (args.length > 0) {
-			this.Parent = this.arguments[0][1][0] || 0;
-			this.id = this.arguments[0][1][1] || 0;
+			this.Parent = parseInt(this.arguments[0][1][0]) || 0;
+			this.id = parseInt(this.arguments[0][1][1]) || 0;
 			this.DataImport = this.arguments[0][2] || false;
 			this.__constructor(...this.arguments);
 		} else {
@@ -21,12 +21,12 @@ class _objects {
 		}
 		this.step1()
 		if (this.DataImport) {
-			$.each(this.menuArray, function (indexInArray, valueOfElement) { 
+			$.each(this.menuArray, function (indexInArray, valueOfElement) {
 				$(valueOfElement).trigger("click");
 			});
 		}
 		var keys = Object.keys(this.menuArray)
-			this.menuArray[keys[0]].trigger("click");
+		this.menuArray[keys[0]].trigger("click");
 	}
 	__constructor() { }
 
@@ -51,15 +51,13 @@ class _objects {
 					self.iii = 0;
 					var addAction = self.overstep(currentField, false, self.DataImport)
 					if (self.DataImport) {
-						if (self.DataImport[currentField].constructor.name == 'Array') {
-							if (self.DataImport[currentField].length > 1) {
-								for (let i = 1; i < self.DataImport[currentField].length; i++) {
-									if (addAction) {
-										addAction.remove()
-										self.iii++;
-										$(`#right${currentField}`).html(`(${self.iii + 1})`)
-										self.overstep(currentField, true,self.DataImport)
-									}
+						if (typeof self.DataImport[currentField] !== 'undefined' && self.DataImport[currentField].constructor.name == 'Array' && self.DataImport[currentField].length > 1) {
+							for (let i = 1; i < self.DataImport[currentField].length; i++) {
+								if (addAction) {
+									addAction.remove()
+									self.iii++;
+									$(`#right${currentField}`).html(`(${self.iii + 1})`)
+									self.overstep(currentField, true, self.DataImport)
 								}
 							}
 						}
@@ -135,12 +133,14 @@ class _objects {
 				}
 				var NewValue
 				if (DataImport) {
-					if (typeof DataImport[var_name][e.varName] !== 'undefined') {
+					if (typeof DataImport[var_name] !== 'undefined' && typeof DataImport[var_name][e.varName] !== 'undefined') {
 						NewValue = DataImport[var_name][e.varName]
-					} else if (typeof DataImport[var_name][this.iii][e.varName] !== 'undefined') {
+					} else if (typeof DataImport[var_name] !== 'undefined' && typeof DataImport[var_name][this.iii] !== 'undefined' && typeof DataImport[var_name][this.iii][e.varName] !== 'undefined') {
 						NewValue = DataImport[var_name][this.iii][e.varName]
-					} else {
+					} else if (typeof DataImport[var_name] !== 'undefined') {
 						NewValue = DataImport[var_name]
+					} else {
+						NewValue = null
 					}
 					switch (k.replace(/\d/g, '')) {
 						case "select":
@@ -157,7 +157,7 @@ class _objects {
 						case "checkbox":
 							if (NewValue == "true") {
 								_field.prop('checked', true);
-							}else{
+							} else {
 								_field.prop('checked', false);
 							}
 							break;

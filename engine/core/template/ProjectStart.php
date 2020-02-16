@@ -1,8 +1,10 @@
 # <?=$Projectname.PHP_EOL?>
 <?=$Projectlang?> <?=$Projecttype?> v<?=$Projectversion.PHP_EOL?>  
+
 ### <?=$Projectdiscription?>
 
 <? if (isset($Projectinstalation)): ?>
+
 ## Project instalation
 ---
 
@@ -27,6 +29,7 @@ Variant <?=++$i?> <?=$item["type"]?>:
 <? break; endswitch; endforeach; endif; ?>
 
 <? if (isset($Projectinstalation)): ?>
+	
 ## Dependences
 ---
 <? foreach ($Projectdependences as $item): ?>

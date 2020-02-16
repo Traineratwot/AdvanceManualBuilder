@@ -238,9 +238,10 @@ table {
 }
 
 .prev-panel {
-	color: #f8f8f2;
-	top: 0;
-	width: calc(45vw - 20px);
+    padding: 0 20px;
+    color: #f8f8f2;
+    top: 0;
+    width: calc(45vw - 40px);
 	height: 100vh;
 	left: 55vw;
 	top: 0;

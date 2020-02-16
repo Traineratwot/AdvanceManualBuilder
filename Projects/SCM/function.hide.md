@@ -1,7 +1,7 @@
 ```
-function _Test_save2() {
+function hide() {
 
-return Function //fsd
+return Object //this
 }
 
 ```
@@ -16,14 +16,12 @@ return Function //fsd
 	</tr>
 			
 		<tr class="md-row">
-			<td class="md-td">fdsf </td>
-			<td class="md-td">String, 
-Number, 
-Boolean </td>
-			<td class="md-td">fdsfds</td>
-			<td class="md-td">false</td>
-			<td class="md-td">fsdfdsfds</td>
+			<td class="md-td">event </td>
+			<td class="md-td">Object </td>
+			<td class="md-td"></td>
+			<td class="md-td">true</td>
+			<td class="md-td"></td>
 		</tr>
 	</table>
-### fdsfd
-fsdfdfds
+### скрыть
+Скрывает меню

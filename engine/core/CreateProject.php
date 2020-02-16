@@ -1,8 +1,15 @@
 <?php
+extract($_POST['data']['PorjectData']);
+if ((int)$_POST['prev'] == 1) {
+	extract($_POST['data']);
+	ob_start();
+	include "template/ProjectStart.php";
+	$MarkDown = ob_get_contents();
+	return;
+}
 include "Jsonbd.class.php";
-$data = json_decode($_POST['data'],1);
-extract($data);
-
+// $data = json_decode($_POST['data'],1);
+// extract($data);
 // $project = new JsonBd("../../Projects/$Projectname");
 $BD = new JsonBd("../..", 'BD');
 $path = "../../Projects";
@@ -23,7 +30,10 @@ $BD->INSERT('Projects',[
 	]);
 $patten = [
 	"tree" => [
-		"root"=>[],
+		[
+			"id" => -9999,
+			"text" => "add"
+		]
 	],
 	"chunks" => []
 ];
@@ -33,5 +43,5 @@ file_put_contents($BD->currentDbPath."/$Projectname.json", json_encode($patten,2
 ob_start();
 include "template/ProjectStart.php";
 $MarkDown = ob_get_contents();
-file_put_contents("test.md", $MarkDown);
+file_put_contents("$path/$Projectname.md", $MarkDown);
 // var_dump($BD);

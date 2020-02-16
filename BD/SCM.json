@@ -1,0 +1,112 @@
+{
+	"tree": [
+		{
+			"id": -999,
+			"text": "add"
+		},
+		{
+			"id": 1,
+			"text": "<span class='data_ClassType'>class<\/span>.<span class='data_name'>SCM<\/span>",
+			"state": {
+				"opened": true
+			},
+			"children": [
+				{
+					"id": -1,
+					"text": "add"
+				},
+				{
+					"id": 2,
+					"text": "<span class='data_ClassType'>function<\/span>.<span class='data_name'>open<\/span>",
+					"state": {
+						"opened": true
+					},
+					"children": [
+						{
+							"id": -2,
+							"text": "add"
+						}
+					]
+				},
+				{
+					"id": 3,
+					"text": "<span class='data_ClassType'>function<\/span>.<span class='data_name'>hide<\/span>",
+					"state": {
+						"opened": true
+					},
+					"children": [
+						{
+							"id": -3,
+							"text": "add"
+						}
+					]
+				}
+			]
+		}
+	],
+	"chunks": {
+		"1": {
+			"ClassType": "class",
+			"name": "SCM"
+		},
+		"2": {
+			"ClassType": "function",
+			"name": "open",
+			"discription": {
+				"shortDiscription": "открыть",
+				"longDiscription": "Открывает меню"
+			},
+			"input": [
+				{
+					"Name": "event",
+					"datatype": [
+						"Object"
+					],
+					"defult": "",
+					"optional": "true",
+					"shortDiscription": ""
+				},
+				{
+					"Name": "AnyVAlue",
+					"datatype": [
+						"mixed"
+					],
+					"defult": "",
+					"optional": "true",
+					"shortDiscription": ""
+				}
+			],
+			"renurn": {
+				"datatype": [
+					"Object"
+				],
+				"shortDiscription": "This"
+			}
+		},
+		"3": {
+			"ClassType": "function",
+			"name": "hide",
+			"discription": {
+				"shortDiscription": "скрыть",
+				"longDiscription": "Скрывает меню"
+			},
+			"input": [
+				{
+					"Name": "event",
+					"datatype": [
+						"Object"
+					],
+					"defult": "",
+					"optional": "true",
+					"shortDiscription": ""
+				}
+			],
+			"renurn": {
+				"datatype": [
+					"Object"
+				],
+				"shortDiscription": "this"
+			}
+		}
+	}
+}

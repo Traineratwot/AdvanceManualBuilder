@@ -15,11 +15,12 @@ class install {
 		var p = $(`<p style="position:absolute;bottom:4px;width:calc(100% - 8px);">`).appendTo(this.body)
 		this.saveBut = $(`<button disabled>Save</button>`).appendTo(p)
 		this.saveBut.on("click", () => {
-			var data = JSON.stringify(self.export())
+			var SEND = {}
+			SEND.data = self.export()
 			$.ajax({
 				type: "POST",
 				url: "engine/core/CreateProject.php",
-				data: `data=${data}`,
+				data: SEND,
 				dataType: "text",
 				success: function (response) {
 					console.log(response);
@@ -137,7 +138,6 @@ class install {
 		})
 	}
 	generate(event) {
-
 		var self = this;
 		var et = $(event.target)
 		var key = et.attr("data-key")

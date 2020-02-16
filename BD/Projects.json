@@ -3,27 +3,34 @@
 		"id": 0
 	},
 	"rows": {
-		"TEST": {
-			"name": "TEST",
+		"SCM": {
+			"name": "SCM",
 			"PorjectData": {
 				"Projectype": "Library",
-				"Projectname": "TEST",
-				"Projectdiscription": "Длинное описание",
+				"Projectname": "SCM",
+				"Projectdiscription": [
+					{
+						"shortDiscription": "Библиотека для формирования контекстного меню"
+					},
+					{
+						"longDiscription": ""
+					}
+				],
 				"Projectinstalation": [
 					{
 						"type": "html",
-						"text": "установка"
+						"text": "<link rel=\"stylesheet\" href=\"SCM.css\">\n<script src=\"js\/libs\/SCM.js\"><\/script>"
 					}
 				],
 				"Projectdependences": [
 					{
 						"type": "library",
-						"name": "зависимость",
-						"minversion": "01"
+						"name": "Jquery",
+						"minversion": "3"
 					}
 				],
-				"Projectlang": "php",
-				"Projectversion": "01"
+				"Projectlang": "js",
+				"Projectversion": "1.2"
 			}
 		}
 	}
