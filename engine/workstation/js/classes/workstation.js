@@ -12,7 +12,7 @@ function MassLoad() {
 			Project = data['rows'][new URLSearchParams(window.location.search).get('ProjectId')]
 			$("#tree header").html("");
 			fit_text($(`<h1 class="fit_text">${Project.name}</h1>`).appendTo("#tree header"))
-			.on('click',()=>{
+				.on('click', () => {
 					var SEND = {}
 					SEND.data = Project
 					SEND.prev = 1
@@ -28,7 +28,7 @@ function MassLoad() {
 							});
 						}
 					});
-			});
+				});
 			_Projects = true;
 		},
 		"json"
@@ -122,7 +122,6 @@ function renderTree() {
 		})
 	}
 }
-
 
 function Preview() {
 	if (ThisNewObject) {

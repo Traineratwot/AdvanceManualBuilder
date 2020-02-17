@@ -38,7 +38,7 @@ class _objects {
 	step1() {
 		self = this;
 		this.conteiner.body.html("")
-		this.conteiner.Chunk = this.Shematik.Chunks.typeField[this.constructor.name.trim('_')]
+		this.conteiner.Chunk = this.Shematik.Chunks[Project.PorjectData.Projectype][this.constructor.name.trim('_')]
 		this.conteiner.menu = $(`<menu style="display: inline-block;">`).appendTo(this.conteiner.body);
 		$.each(this.conteiner.Chunk, (indexInArray, valueOfElement) => {
 			self.menuArray[indexInArray] = $(`<div class='menu_item' data-Field="${indexInArray}">${indexInArray}</div>`).appendTo(self.conteiner.menu)
@@ -64,6 +64,7 @@ class _objects {
 					}
 				})
 		});
+		$(`<button onclick="save()" style="width: min-content !important;margin: 10px 0px 0 0;">save<i class="far-save"></i></button>`).appendTo(this.conteiner.menu);
 		this.conteiner.toolbox = $(`<div class="toolbox">`).appendTo(this.conteiner.body)
 	}
 
@@ -92,19 +93,19 @@ class _objects {
 						_field = this.create_select(e);
 						break;
 					case "text":
-						_field = `<input title="${e.placeholder || ''}" ${e.attr.join(' ')} type="text" placeholder="${e.placeholder || ''}">`;
+						_field = `<input onkeyup="Preview()" title="${e.placeholder || ''}" ${e.attr.join(' ')} type="text" placeholder="${e.placeholder || ''}">`;
 						break;
 					case "textarea":
-						_field = `<textarea title="${e.placeholder || ''}" ${e.attr.join(' ')} rows="3" placeholder="${e.placeholder || ''}"></textarea>`;
+						_field = `<textarea onkeyup="Preview()" title="${e.placeholder || ''}" ${e.attr.join(' ')} rows="3" placeholder="${e.placeholder || ''}"></textarea>`;
 						break;
 					case "button":
 						_field = `<button title="${e.title || ''}" ${e.attr.join(' ')} >${e.title}</button>`;
 						break;
 					case "checkbox":
-						_field = `<input title="${e.lable || ''}" ${e.attr.join(' ')} data-lable="${e.lable}" title="${e.lable || ''}" style="width:40px !important" type="checkbox">`;
+						_field = `<input onkeyup="Preview()" title="${e.lable || ''}" ${e.attr.join(' ')} data-lable="${e.lable}" title="${e.lable || ''}" style="width:40px !important" type="checkbox">`;
 						break;
 					default:
-						_field = `<input title="${e.placeholder || ''}" ${e.attr.join(' ')} type="${k}" placeholder="${e.placeholder || ''}">`;
+						_field = `<input onkeyup="Preview()" title="${e.placeholder || ''}" ${e.attr.join(' ')} type="${k}" placeholder="${e.placeholder || ''}">`;
 						break;
 				}
 				_field = $(_field).appendTo(this.nextLine(block));
@@ -248,9 +249,9 @@ class _objects {
 
 	create_select(e) {
 		if (e.attr) {
-			var _field = `<select title="${e.title || ''}" ${e.attr.join(' ')}>`;
+			var _field = `<select onchange="Preview()" title="${e.title || ''}" ${e.attr.join(' ')}>`;
 		} else {
-			var _field = `<select>`;
+			var _field = `<select onchange="Preview()">`;
 		}
 		if (!e.options) {
 			var values = e
@@ -382,11 +383,16 @@ class _var extends _objects {
 	__constructor() { }
 }
 
+class _method extends _objects {
+	__constructor() { }
+}
+
 var Maxies = {
 	function: class extends _function { },
 	class: class extends _class { },
 	const: class extends _const { },
 	var: class extends _var { },
+	method: class extends _method { },
 };
 
 function CreateClass(Type) {

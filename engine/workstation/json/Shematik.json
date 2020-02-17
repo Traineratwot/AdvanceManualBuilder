@@ -96,6 +96,7 @@
 					"type": "string",
 					"fields": {
 						"text": {
+							"varName": "Name",
 							"placeholder": "Name"
 						}
 					}
@@ -105,6 +106,7 @@
 					"type": "string",
 					"fields": {
 						"url": {
+							"varName": "url",
 							"placeholder": "main url"
 						}
 					}
@@ -115,6 +117,7 @@
 					"type": "string",
 					"fields": {
 						"select": {
+							"varName": "auth",
 							"options": [
 								"none",
 								"header",
@@ -128,6 +131,7 @@
 					"type": "string",
 					"fields": {
 						"textarea": {
+							"varName": "discription",
 							"placeholder": "discription"
 						}
 					}
@@ -138,6 +142,7 @@
 					"type": "string",
 					"fields": {
 						"text": {
+							"varName": "Version",
 							"placeholder": "version"
 						}
 					}
@@ -146,7 +151,7 @@
 		}
 	},
 	"Chunks": {
-		"typeField": {
+		"Library": {
 			"function": {
 				"name": {
 					"name": "Name",
@@ -224,7 +229,7 @@
 					}
 				}
 			},
-			"class":{
+			"class": {
 				"name": {
 					"name": "Name",
 					"type": "string",
@@ -251,7 +256,7 @@
 					}
 				}
 			},
-			"var":{
+			"var": {
 				"name": {
 					"name": "Name",
 					"type": "string",
@@ -278,7 +283,7 @@
 					}
 				}
 			},
-			"const":{
+			"const": {
 				"name": {
 					"name": "Name",
 					"type": "string",
@@ -301,6 +306,110 @@
 						"textarea": {
 							"varName": "longDiscription",
 							"placeholder": "Long discription"
+						}
+					}
+				}
+			}
+		},
+		"REST API": {
+			"method": {
+				"name": {
+					"name": "Name",
+					"type": "string",
+					"fields": {
+						"text": {
+							"short": true,
+							"varName": "Name",
+							"placeholder": "Name"
+						}
+					}
+				},
+				"discription": {
+					"name": "Discription",
+					"type": "string",
+					"fields": {
+						"text": {
+							"varName": "shortDiscription",
+							"placeholder": "Short discription"
+						},
+						"textarea": {
+							"varName": "longDiscription",
+							"placeholder": "Long discription"
+						}
+					}
+				},
+				"inputType": {
+					"type": "string",
+					"fields": {
+						"select": {
+							"varName": "datatype",
+							"options": [
+								"json",
+								"xml"
+							]
+						},
+						"textarea": {
+							"varName": "prevInput",
+							"placeholder": "Code prev"
+						}
+					}
+				},
+				"input": {
+					"name": "input",
+					"type": "array",
+					"fields": {
+						"text": {
+							"varName": "Name",
+							"placeholder": "Name"
+						},
+						"select": {
+							"attr": [
+								"multiple"
+							],
+							"varName": "datatype",
+							"options": "Types.dataType"
+						},
+						"text2": {
+							"varName": "defult",
+							"placeholder": "defult"
+						},
+						"checkbox": {
+							"varName": "optional",
+							"lable": "optional"
+						},
+						"text1": {
+							"varName": "shortDiscription",
+							"placeholder": "Short discription"
+						},
+						"button": {
+							"action": "add",
+							"title": "add"
+						}
+					}
+				},
+				"outputType": {
+					"type": "string",
+					"fields": {
+						"select": {
+							"varName": "datatype",
+							"options": [
+								"json",
+								"xml"
+							]
+						},
+						"textarea": {
+							"varName": "prevInput",
+							"placeholder": "Code prev"
+						}
+					}
+				},
+				"renurn": {
+					"name": "input",
+					"type": "array",
+					"fields": {
+						"textarea": {
+							"varName": "prevOutput",
+							"placeholder": "Code prev"
 						}
 					}
 				}

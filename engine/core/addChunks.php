@@ -36,10 +36,10 @@ if ($_POST['save']) {
 }
 function generate()
 {
-	global $data;
+	global $data, $pro_PorjectData;
 	extract($data);
 	ob_start();
-	include "template/$ClassType.php";
+	include "template/" . $pro_PorjectData['Projectype'] . "/$ClassType.php";
 	return ob_get_clean();
 }
 
@@ -61,6 +61,6 @@ function recursiveFindValue(&$arr, $val, $id, $set)
 			}
 		}
 	}
-	
-		return recursiveFindValue($arr, $val, $id, $set);
+
+	return recursiveFindValue($arr, $val, $id, $set);
 }

@@ -32,6 +32,25 @@
 				"Projectlang": "js",
 				"Projectversion": "1.2"
 			}
+		},
+		"1c_api": {
+			"name": "1c_api",
+			"PorjectData": {
+				"Projectype": "REST API",
+				"Projecturl": [
+					{
+						"url": "http:\/\/msk1.technolight.ru:7780"
+					}
+				],
+				"Projectdiscription": [
+					{
+						"discription": "1c api"
+					}
+				],
+				"Projectauth": "basic",
+				"Projectversion": "0.1",
+				"Projectname": "1c_api"
+			}
 		}
 	}
 }

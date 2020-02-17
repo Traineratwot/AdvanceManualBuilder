@@ -24,7 +24,7 @@ return Object //This
 		</tr>
 			
 		<tr class="md-row">
-			<td class="md-td">AnyVAlue </td>
+			<td class="md-td">AnyValue </td>
 			<td class="md-td">mixed </td>
 			<td class="md-td"></td>
 			<td class="md-td">true</td>

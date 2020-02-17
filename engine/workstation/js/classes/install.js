@@ -16,7 +16,7 @@ class install {
 		this.saveBut = $(`<button disabled>Save</button>`).appendTo(p)
 		this.saveBut.on("click", () => {
 			var SEND = {}
-			SEND.data = self.export()
+			SEND.data. = self.export()
 			$.ajax({
 				type: "POST",
 				url: "engine/core/CreateProject.php",
@@ -33,7 +33,7 @@ class install {
 				self.DeleteMenu.div.fadeIn("slow");
 			}
 			if (self.advMenu) {
-				self.advMenu.fadeOut("fast",()=>{
+				self.advMenu.fadeOut("fast", () => {
 					self.advMenu.remove();
 					start();
 				})
@@ -51,15 +51,15 @@ class install {
 			self.DeleteMenu.input.attr("maxlength", name.length)
 		})
 		this.CancelBut = $(`<button>Cancel</button>`).appendTo(p)
-		.on("click", (event) => {
-			if (self.advMenu) {
-				self.advMenu.fadeOut("fast",()=>{
-					self.advMenu.remove();
-				})
-			}
-			$(".select-project").fadeIn()
-			self.body.fadeOut()
-		})
+			.on("click", (event) => {
+				if (self.advMenu) {
+					self.advMenu.fadeOut("fast", () => {
+						self.advMenu.remove();
+					})
+				}
+				$(".select-project").fadeIn()
+				self.body.fadeOut()
+			})
 	}
 	create_delete() {
 		let self = this
@@ -67,36 +67,36 @@ class install {
 		this.DeleteMenu.div = $(`<div class="delete-menu" style="display:none;">`).appendTo("body")
 		this.DeleteMenu.text = $(`<p style="text-align: center"></p></br>`).appendTo(this.DeleteMenu.div)
 		this.DeleteMenu.input = $(`<input style="text-align: center">`).appendTo(this.DeleteMenu.div)
-		.on("input", (event) => {
-			if (self.DeleteMenu.input.val() == self.DeleteMenu.textToBe){
-				self.DeleteMenu.ok.removeAttr("disabled")
-			} else {
-				self.DeleteMenu.ok.attr("disabled", "")
-			}
-		})
+			.on("input", (event) => {
+				if (self.DeleteMenu.input.val() == self.DeleteMenu.textToBe) {
+					self.DeleteMenu.ok.removeAttr("disabled")
+				} else {
+					self.DeleteMenu.ok.attr("disabled", "")
+				}
+			})
 		$(`<p class="Eenter"></p>`).appendTo(this.DeleteMenu.div)
 		this.DeleteMenu.cancel = $(`<button class="cancel"style="text-align: center">cancel</button>`).appendTo(this.DeleteMenu.div)
-		.on("click", (event) => {
-			self.body.fadeIn("slow")
-			self.DeleteMenu.div.fadeOut("fast",() => {
-				self.DeleteMenu.input.val("")
-				self.DeleteMenu.ok.attr("disabled", "")
-			})
-		})
-		this.DeleteMenu.ok = $(`<button class="DELETE"style="text-align: center" disabled>DELETE</button>`).appendTo(this.DeleteMenu.div)
-		.on("click", (event) => {
-			if (self.DeleteMenu.input.val() == self.DeleteMenu.textToBe){
-				// var particles = new Particles('.DELETE');
-				// particles.disintegrate();
-				self.DeleteMenu.ok.attr("disabled", "")
-				self.DeleteMenu.cancel.attr("disabled", "")
-				self.DeleteMenu.div.fadeOut(2000, () => {
-					self.delete()
+			.on("click", (event) => {
+				self.body.fadeIn("slow")
+				self.DeleteMenu.div.fadeOut("fast", () => {
 					self.DeleteMenu.input.val("")
-					$(".select-project").fadeIn("slow")
+					self.DeleteMenu.ok.attr("disabled", "")
 				})
-			}
-		})
+			})
+		this.DeleteMenu.ok = $(`<button class="DELETE"style="text-align: center" disabled>DELETE</button>`).appendTo(this.DeleteMenu.div)
+			.on("click", (event) => {
+				if (self.DeleteMenu.input.val() == self.DeleteMenu.textToBe) {
+					// var particles = new Particles('.DELETE');
+					// particles.disintegrate();
+					self.DeleteMenu.ok.attr("disabled", "")
+					self.DeleteMenu.cancel.attr("disabled", "")
+					self.DeleteMenu.div.fadeOut(2000, () => {
+						self.delete()
+						self.DeleteMenu.input.val("")
+						$(".select-project").fadeIn("slow")
+					})
+				}
+			})
 	}
 	nextLine(to = this.body) {
 		this.currentP = $(`<p>`).appendTo(to)
@@ -341,13 +341,13 @@ class install {
 	create_select(e) {
 		if (e.attr) {
 			var _field = `<select ${e.attr.join(' ')}>`;
-		}else{
+		} else {
 			var _field = `<select>`;
 		}
-		if(!e.options){
-			var	values = e
-		}else{
-			var	values = e.options
+		if (!e.options) {
+			var values = e
+		} else {
+			var values = e.options
 		}
 		if (typeof values == 'object') {
 			for (const val of values) {
@@ -392,7 +392,7 @@ class install {
 									}
 									if (!exportData[key][i]) {
 										exportData[key][i] = {}
-									}									
+									}
 									if (elem.val() != "on" && elem.val() != "off") {
 										exportData[key][i][k] = elem.val()
 									} else {
@@ -433,12 +433,12 @@ class install {
 		}
 		return exportData
 	}
-	DeleteProject(){
+	DeleteProject() {
 		var self = this;
 		$.ajax({
 			type: "POST",
 			url: "engine/core/DeleteProject.php",
-			data: "name="+self.data.Projectname.val(),
+			data: "name=" + self.data.Projectname.val(),
 			dataType: "text",
 			success: function (response) {
 				loadProjects()

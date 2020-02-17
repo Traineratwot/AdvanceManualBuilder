@@ -29,7 +29,9 @@
 			"var",
 			"const"
 		],
-		"REST API": []
+		"REST API": [
+			"method"
+		]
 	},
 	"dataType": [
 		"String",
