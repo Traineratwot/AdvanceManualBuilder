@@ -16,7 +16,7 @@ class install {
 		this.saveBut = $(`<button disabled>Save</button>`).appendTo(p)
 		this.saveBut.on("click", () => {
 			var SEND = {}
-			SEND.data. = self.export()
+			SEND.data = self.export()
 			$.ajax({
 				type: "POST",
 				url: "engine/core/CreateProject.php",
