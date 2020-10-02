@@ -2,23 +2,23 @@
 
 class ManualClass {
 	constructor() {
-		this.object = {}
-		this.object.name = ''
-		this.object.version = ''
-		this.object.dateUpdate = ''
-		this.object.dateCreate = ''
-		this.object.type = ''
-		this.object.description = new DescriptionClass
+		this.name = ''
+		this.version = ''
+		this.dateUpdate = ''
+		this.dateCreate = ''
+		this.type = ''
+		this.description = new DescriptionClass
 		this.elements = []
+		this.classKey = this.constructor.name
 	}
 
 
 	addElement(value) {
 		if(value instanceof CommonClass) {
 			var key = this.elements.length
-			value.ElementId = key
+			value.setManual(this,key)
 			this.elements.push(value)
-			return true;
+			return true
 		}
 		return false
 	}
@@ -41,13 +41,29 @@ class ManualClass {
 
 	toObject() {
 		var JSON = {}
-		JSON.elements = []
-		Object.assign(JSON, this.object)
-		for(let element of this.elements) {
+		for(let key in this) {
+			let element = this[key]
 			if(element instanceof CommonClass) {
-				JSON.elements.push(element.toObject())
+				JSON[key] = element.toObject()
+				continue
 			}
+			if(element instanceof Array) {
+				JSON[key] = [];
+				for(let k in element) {
+					let e = element[k]
+					if(e instanceof CommonClass) {
+						JSON[key].push(e.toObject())
+					}
+				}
+				continue
+			}
+			JSON[key] = element
 		}
+		delete JSON.manual
 		return JSON
+	}
+
+	fromObject(){
+
 	}
 }
