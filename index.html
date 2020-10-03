@@ -25,17 +25,33 @@
 </head>
 
 <body>
-	
-	<div class="container">
+
+	<div class="container main ">
 		<div class="row menu" style="background-color:#ff33f5;">
-			<div class="col" >
-				<menu><button>hello world</button> </menu>
+			<div class="col">
 			</div>
 		</div>
-		<div class="row dashboard" >
-			<div class="col-2 column" style="background-color:#ffaa33;"></div>
-			<div class="col-5 column" style="background-color:#33aaff;"></div>
-			<div class="col-5 column" style="background-color:#aaff33;"></div>
+		<div class="row dashboard">
+			<div class="col-2 layout" id="tree" style="background-color:#ffaa33;">
+				<nav class="navbar navbar-dark bg-dark">
+					<span class="navbar-brand" href="#">Manuals</span>
+					<nav class="nav nav-pills flex-column">
+					  <a class="nav-link dropdown-toggle" href="#" >manual 1</a>
+					  <nav class="nav nav-pills flex-column" >
+						<a class="nav-link ml-3 my-1 " >class</a>
+						<a class="nav-link ml-3 my-1 " >function</a>
+					  </nav>
+					  <a class="nav-link" href="#item-2">Item2</a>
+					  <a class="nav-link" href="#item-3">Item3</a>
+					  <nav class="nav nav-pills flex-column">
+						<a class="nav-link ml-3 my-1" href="#item-3-1">Пункт 3-1</a>
+						<a class="nav-link ml-3 my-1" href="#item-3-2">Пункт 3-2</a>
+					  </nav>
+					</nav>
+				  </nav>
+			</div>
+			<div class="col-5 layout" id="editor" style="background-color:#33aaff;"></div>
+			<div class="col-5 layout" id="preview" style="background-color:#aaff33;"></div>
 		</div>
 	</div>
 	<script container>
@@ -50,6 +66,8 @@
 			integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
 			crossorigin="anonymous"></script>
 
+
+		<script src="core/js/layout.class.js"></script>
 	</footer>
 </body>
 
