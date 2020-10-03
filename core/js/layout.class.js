@@ -23,7 +23,10 @@ class LayoutTreeClass {
 	render() {
 		// this.block.html("");
 		this.create_manual = $(`<button type="button" class="btn btn-primary" id="create_manual"></button>`).text('create manual').appendTo(this.block);
-	}
+    }
+    renderTree(){
+        
+    }
 }
 var layout = {};
 layout.editor = new LayoutEditorClass();
