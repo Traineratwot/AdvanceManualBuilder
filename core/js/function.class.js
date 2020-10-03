@@ -1,4 +1,3 @@
-"use strict"
 class FunctionClass extends CommonClass {
 	constructor() {
 		super(...arguments)

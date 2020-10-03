@@ -1,5 +1,5 @@
 (function (factory) {
-	"use strict";
+	;
 	if (typeof define === 'function' && define.amd) {
 		define('jstree.checkbox', ['jquery','jstree'], factory);
 	}
@@ -10,7 +10,7 @@
 		factory(jQuery);
 	}
 }(function ($, undefined) {
-	"use strict";
+	;
 	if(window.customElements && Object && Object.create) {
 		var proto = Object.create(HTMLElement.prototype);
 		proto.createdCallback = function () {

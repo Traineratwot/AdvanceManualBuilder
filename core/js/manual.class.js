@@ -1,7 +1,7 @@
 'use strict'
 
 class ManualClass {
-	constructor() {
+	constructor(object) {
 		this.name = ''
 		this.version = ''
 		this.dateUpdate = ''
@@ -10,13 +10,14 @@ class ManualClass {
 		this.description = new DescriptionClass
 		this.elements = []
 		this.classKey = this.constructor.name
+		Object.assign(this, object)
 	}
 
 
 	addElement(value) {
 		if(value instanceof CommonClass) {
 			var key = this.elements.length
-			value.setManual(this,key)
+			value.setManual(this, key)
 			this.elements.push(value)
 			return true
 		}
@@ -24,19 +25,13 @@ class ManualClass {
 	}
 
 
-	removeElement() {
-
-	}
+	removeElement() {}
 
 
-	build() {
-
-	}
+	build() {}
 
 
-	print() {
-
-	}
+	print() {}
 
 
 	toObject() {
@@ -48,7 +43,7 @@ class ManualClass {
 				continue
 			}
 			if(element instanceof Array) {
-				JSON[key] = [];
+				JSON[key] = []
 				for(let k in element) {
 					let e = element[k]
 					if(e instanceof CommonClass) {
@@ -63,7 +58,6 @@ class ManualClass {
 		return JSON
 	}
 
-	fromObject(){
 
-	}
+	fromObject() {}
 }

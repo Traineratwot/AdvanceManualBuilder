@@ -1,6 +1,7 @@
 var dataTypes = {}
-dataTypes.toArray = function(arr = []){
-	for(let e of this) {
+dataTypes.toArray = (arr = []) => {
+	for(let element in dataTypes) {
+		let e = dataTypes[element]
 		if(e instanceof DataTypeClass) {
 			arr.push(`${e.subName} <small>(${e.preview})</small>`)
 		}

@@ -28,7 +28,7 @@ class CommonClass {
 	}
 
 
-	render() {}
+	render() { }
 
 
 	prepare() {
@@ -103,11 +103,11 @@ class CommonClass {
 class DataTypeClass extends CommonClass {
 	constructor(options = {}) {
 		super(...arguments)
-		this.name = '';
-		this.subName = '';
-		this.preview = '';
+		this.name = ''
+		this.subName = ''
+		this.preview = ''
 		Object.assign(this, options)
-		this.name    = this.name.toLowerCase()
+		this.name = this.name.toLowerCase()
 		this.subName = this.subName.toLowerCase()
 		this.preview = this.preview.toLowerCase()
 
@@ -147,7 +147,7 @@ class EditorFieldsClass {
 		this.type = 'text'
 		this.dataSet = []
 		this.callback = false
-		this.id = this.randomString(6)
+		this.id = getRandomString()
 		this.input = false
 		Object.assign(this, options)
 	}
@@ -158,9 +158,9 @@ class EditorFieldsClass {
 			switch( this.type ) {
 				default:
 					this.input = $(`<input name="${this.name}" id="${this.id}" type="${this.type}" value="${value}">`).appendTo(parent)
-					if(this.dataSet.length > 0){
+					if(this.dataSet.length > 0) {
 						this.input.autocomplete({
-							source:this.dataSet.toArray(),
+							source: this.dataSet.toArray(),
 							minLength: 0
 						})
 					}
@@ -175,20 +175,5 @@ class EditorFieldsClass {
 			this.input.val(value)
 		}
 		return this.input
-	}
-
-
-	randomString(length = 0) {
-		var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('')
-
-		if(!length) {
-			length = Math.floor(Math.random() * chars.length)
-		}
-
-		var str = ''
-		for(var i = 0; i < length; i++) {
-			str += chars[Math.floor(Math.random() * chars.length)]
-		}
-		return str
 	}
 }

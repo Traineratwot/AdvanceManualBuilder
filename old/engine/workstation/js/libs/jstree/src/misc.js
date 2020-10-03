@@ -2,7 +2,7 @@
 
 // disable all events
 (function ($, undefined) {
-	"use strict";
+	;
 	$.jstree.plugins.trigger = function (options, parent) {
 		this.init = function (el, options) {
 			// do not forget parent
@@ -21,7 +21,7 @@
 
 // mapping
 (function ($, undefined) {
-	"use strict";
+	;
 	// use this if you need any options
 	$.jstree.defaults.mapper = {
 		option_key : "option_value"
@@ -44,7 +44,7 @@
 
 // no hover
 (function ($, undefined) {
-	"use strict";
+	;
 	$.jstree.plugins.nohover = function () {
 		this.hover_node = $.noop;
 	};
@@ -52,7 +52,7 @@
 
 // force multiple select
 (function ($, undefined) {
-	"use strict";
+	;
 	$.jstree.defaults.multiselect = {};
 	$.jstree.plugins.multiselect = function (options, parent) {
 		this.activate_node = function (obj, e) {
@@ -64,7 +64,7 @@
 
 // real checkboxes
 (function ($, undefined) {
-	"use strict";
+	;
 
 	var inp = document.createElement("INPUT");
 	inp.type = "checkbox";
@@ -123,7 +123,7 @@
 
 // no state
 (function ($, undefined) {
-	"use strict";
+	;
 	$.jstree.plugins.nostate = function () {
 		this.set_state = function (state, callback) {
 			if(callback) { callback.call(this); }
@@ -134,7 +134,7 @@
 
 // no selected in state
 (function ($, undefined) {
-	"use strict";
+	;
 	$.jstree.plugins.noselectedstate = function (options, parent) {
 		this.get_state = function () {
 			var state = parent.get_state.call(this);
@@ -146,7 +146,7 @@
 
 // additional icon on node (outside of anchor)
 (function ($, undefined) {
-	"use strict";
+	;
 	var img = document.createElement('IMG');
 	//img.src = "http://www.dpcd.vic.gov.au/__data/assets/image/0004/30667/help.gif";
 	img.className = "jstree-questionmark";
@@ -180,7 +180,7 @@
 
 // auto numbering
 (function ($, undefined) {
-	"use strict";
+	;
 	var span = document.createElement('SPAN');
 	span.className = "jstree-numbering";
 
@@ -220,7 +220,7 @@
 
 // additional icon on node (inside anchor)
 (function ($, undefined) {
-	"use strict";
+	;
 	var _s = document.createElement('SPAN');
 	_s.className = 'fa-stack jstree-stackedicon';
 	var _i = document.createElement('I');
@@ -261,7 +261,7 @@
 
 // selecting a node opens it
 (function ($, undefined) {
-	"use strict";
+	;
 	$.jstree.plugins.selectopens = function (options, parent) {
 		this.bind = function () {
 			parent.bind.call(this);
@@ -272,7 +272,7 @@
 
 // object as data
 (function ($, undefined) {
-	"use strict";
+	;
 	$.jstree.defaults.datamodel = {};
 	$.jstree.plugins.datamodel = function (options, parent) {
 		this.init = function (el, options) {
@@ -349,7 +349,7 @@
 
 // untested sample plugin to keep all nodes in the DOM
 (function ($, undefined) {
-	"use strict";
+	;
 	$.jstree.plugins.dom = function (options, parent) {
 		this.redraw_node = function (node, deep, is_callback, force_render) {
 			return parent.redraw_node.call(this, node, deep, is_callback, true);
@@ -405,7 +405,7 @@
  * Allows to customize nodes when they are drawn.
  */
 (function (factory) {
-	"use strict";
+	;
 	if (typeof define === 'function' && define.amd) {
 		define('jstree.node_customize', ['jquery','jstree'], factory);
 	}
@@ -416,7 +416,7 @@
 		factory(jQuery, jQuery.jstree);
 	}
 }(function ($, jstree, undefined) {
-	"use strict";
+	;
 
 	if($.jstree.plugins.node_customize) { return; }
 
@@ -463,7 +463,7 @@
  */
 /*globals jQuery, define, exports, require, document */
 (function (factory) {
-        "use strict";
+        ;
         if (typeof define === 'function' && define.amd) {
                 define('jstree.parentsload', ['jquery','jstree'], factory);
         }
@@ -474,7 +474,7 @@
                 factory(jQuery, jQuery.jstree);
         }
 }(function ($, jstree, undefined) {
-        "use strict";
+        ;
 
         if($.jstree.plugins.parentsload) { return; }
 
@@ -601,7 +601,7 @@
 
 // conditional deselect
 (function (factory) {
-	"use strict";
+	;
 	if (typeof define === 'function' && define.amd) {
 		define('jstree.conditionaldeselect', ['jquery','jstree'], factory);
 	}
@@ -612,7 +612,7 @@
 		factory(jQuery, jQuery.jstree);
 	}
 }(function ($, jstree, undefined) {
-	"use strict";
+	;
 
 	if($.jstree.plugins.conditionaldeselect) { return; }
 	$.jstree.defaults.conditionaldeselect = function () { return true; };
@@ -629,7 +629,7 @@
 
 // conditional close
 (function (factory) {
-	"use strict";
+	;
 	if (typeof define === 'function' && define.amd) {
 		define('jstree.conditionalclose', ['jquery','jstree'], factory);
 	}
@@ -640,7 +640,7 @@
 		factory(jQuery, jQuery.jstree);
 	}
 }(function ($, jstree, undefined) {
-	"use strict";
+	;
 
 	if($.jstree.plugins.conditionalclose) { return; }
 	$.jstree.defaults.conditionalclose = function () { return true; };
@@ -662,7 +662,7 @@
 //.separator{border-bottom:1px solid;border-image-source:linear-gradient(45deg,rgba(0,0,0,0),rgba(0,0,0,.1),rgba(0,0,0,0));border-image-slice:1;width:100%;left:0;color:#aaa;font-size:10px;font-weight:400;float:right;text-align:right;padding-right:20px;position:absolute;z-index:-1}.treeaction{color:#555;margin-left:3px;padding:2px;font-weight:700;font-size:10px;border:none;background-color:#fff;transition:all .2s ease-in-out;text-decoration:none;float:right;margin-right:2px;top:4px}.treeaction:hover{color:green;text-decoration:none;transform:scale(1.5)}
 (function (factory) {
 }(function ($, jstree, undefined) {
-	"use strict";
+	;
 	$.jstree.plugins.node_customize = function (options, parent) {
 		this.redraw_node = function (obj, deep, callback, force_draw) {
 			var el = parent.redraw_node.apply(this, arguments);

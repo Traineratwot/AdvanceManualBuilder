@@ -1,6 +1,6 @@
 /*globals jQuery, define, module, exports, require, window, document, postMessage */
 (function (factory) {
-	"use strict";
+	;
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery'], factory);
 	}
@@ -11,7 +11,7 @@
 		factory(jQuery);
 	}
 }(function ($, undefined) {
-	"use strict";
+	;
 /*!
  * jsTree 3.3.9
  * http://jstree.com/

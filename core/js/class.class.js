@@ -1,4 +1,4 @@
-"use strict"
+
 class ClassClass extends CommonClass {
 	constructor() {
 		super(...arguments)

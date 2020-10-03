@@ -1,7 +1,7 @@
 /*global jQuery */
 // wrap in IIFE and pass jQuery as $
 (function ($, undefined) {
-	"use strict";
+	;
 
 	// some private plugin stuff if needed
 	var private_var = null;

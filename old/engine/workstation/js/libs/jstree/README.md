@@ -625,7 +625,7 @@ If you create your own plugin (or download a 3rd party one) you must include its
 ```js
 // conditional select
 (function ($, undefined) {
-  "use strict";
+  ;
   $.jstree.defaults.conditionalselect = function () { return true; };
   $.jstree.plugins.conditionalselect = function (options, parent) {
     this.activate_node = function (obj, e) {

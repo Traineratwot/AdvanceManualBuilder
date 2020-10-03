@@ -14,7 +14,7 @@
 /*jshint -W083 */
 /*globals jQuery, define, module, exports, require, window, document, postMessage */
 (function (factory) {
-	"use strict";
+	;
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery'], factory);
 	}
@@ -25,7 +25,7 @@
 		factory(jQuery);
 	}
 }(function ($, undefined) {
-	"use strict";
+	;
 
 	// prevent another load? maybe there is a better way?
 	if($.jstree) {

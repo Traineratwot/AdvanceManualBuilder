@@ -5,7 +5,7 @@
  */
 /*globals jQuery, define, exports, require, document */
 (function (factory) {
-	"use strict";
+	;
 	if (typeof define === 'function' && define.amd) {
 		define('jstree.changed', ['jquery','jstree'], factory);
 	}
@@ -16,7 +16,7 @@
 		factory(jQuery, jQuery.jstree);
 	}
 }(function ($, jstree, undefined) {
-	"use strict";
+	;
 
 	if($.jstree.plugins.changed) { return; }
 
