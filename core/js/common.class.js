@@ -101,11 +101,16 @@ class CommonClass {
 }
 
 class DataTypeClass extends CommonClass {
-	constructor(name = '', subname = '', preview = '') {
+	constructor(options = {}) {
 		super(...arguments)
-		this.name = name.toLowerCase()
-		this.subName = subname.toLowerCase()
-		this.preview = preview.toLowerCase()
+		this.name = '';
+		this.subName = '';
+		this.preview = '';
+		Object.assign(this, options)
+		this.name    = this.name.toLowerCase()
+		this.subName = this.subName.toLowerCase()
+		this.preview = this.preview.toLowerCase()
+
 	}
 
 
@@ -127,11 +132,12 @@ class DescriptionClass extends CommonClass {
 }
 
 class VarClass extends CommonClass {
-	constructor() {
+	constructor(options = {}) {
 		super(...arguments)
 		this.name = null
 		this.value = ''
-		this.type = new DataTypeClass()
+		this.type = dataTypes.string
+		Object.assign(this, options)
 	}
 }
 
@@ -139,7 +145,7 @@ class EditorFieldsClass {
 	constructor(options) {
 		this.name = ''
 		this.type = 'text'
-		this.dataSetKey = []
+		this.dataSet = []
 		this.callback = false
 		this.id = this.randomString(6)
 		this.input = false
@@ -152,16 +158,23 @@ class EditorFieldsClass {
 			switch( this.type ) {
 				default:
 					this.input = $(`<input name="${this.name}" id="${this.id}" type="${this.type}" value="${value}">`).appendTo(parent)
+					if(this.dataSet.length > 0){
+						this.input.autocomplete({
+							source:this.dataSet.toArray(),
+							minLength: 0
+						})
+					}
 					if(this.callback !== false) {
 						this.input.on('change', this.callback)
 					}
+
 					break
 			}
-		}else {
+		} else {
 			this.input.appendTo(parent)
 			this.input.val(value)
 		}
-		return this.input;
+		return this.input
 	}
 
 
