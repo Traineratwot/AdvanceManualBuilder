@@ -227,3 +227,7 @@ div.row.dashboard {
 .main.container .layout {
     overflow: auto;
 }
+#create_manual{
+    display: block;
+    margin: auto;
+}

@@ -26,31 +26,14 @@
 <body>
 
 	<div class="container main ">
-		<div class="row menu" style="background-color:#ff33f5;">
+		<div class="row menu bg- border-bottom">
 			<div class="col">
 			</div>
 		</div>
 		<div class="row dashboard">
-			<div class="col-2 layout" id="tree" style="background-color:#ffaa33;">
-				<nav class="navbar navbar-dark bg-dark">
-					<span class="navbar-brand" href="#">Manuals</span>
-					<nav class="nav nav-pills flex-column">
-						<a class="nav-link dropdown-toggle" href="#">manual 1</a>
-						<nav class="nav nav-pills flex-column">
-							<a class="nav-link ml-3 my-1 ">class</a>
-							<a class="nav-link ml-3 my-1 ">function</a>
-						</nav>
-						<a class="nav-link" href="#item-2">Item2</a>
-						<a class="nav-link" href="#item-3">Item3</a>
-						<nav class="nav nav-pills flex-column">
-							<a class="nav-link ml-3 my-1" href="#item-3-1">Пункт 3-1</a>
-							<a class="nav-link ml-3 my-1" href="#item-3-2">Пункт 3-2</a>
-						</nav>
-					</nav>
-				</nav>
-			</div>
-			<div class="col-5 layout" id="editor" style="background-color:#33aaff;"></div>
-			<div class="col-5 layout" id="preview" style="background-color:#aaff33;"></div>
+			<div class="col-2 border-right layout bg-dark" id="tree"></div>
+			<div class="col-5 border-right layout bg-dark" id="editor"></div>
+			<div class="col-5 border-right layout bg-dark" id="preview"></div>
 		</div>
 	</div>
 	<script container>
@@ -58,7 +41,9 @@
 		manuals.push(new ManualClass({
 			name:'test',
 		}));
-		manuals[0].addElement(new FunctionClass());
+		manuals[0].addElement(new FunctionClass({
+			name:'toArray'
+		}));
 	</script>
 	<footer style="display:none;">
 		<script src="core/libs/bootstrap/js/bootstrap.min.js"></script>

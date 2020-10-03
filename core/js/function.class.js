@@ -1,11 +1,12 @@
 class FunctionClass extends CommonClass {
-	constructor() {
+	constructor(options = {}) {
 		super(...arguments)
 		this.name = ''
 		this.inputs = [new FunctionInputClass]
 		this.output = new FunctionOutputClass()
 		this.description = new DescriptionClass
 		this.code = null
+		Object.assign(this,options)
 	}
 }
 
