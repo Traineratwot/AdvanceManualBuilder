@@ -1,0 +1,21 @@
+[
+  "ClassClass",
+  "ClassConstantsClass",
+  "ClassVarsClass",
+  "CodePreviewClass",
+  "CommonClass",
+  "DataTypeClass",
+  "DescriptionClass",
+  "EditorFieldsClass",
+  "FunctionClass",
+  "FunctionInputClass",
+  "FunctionOutputClass",
+  "GlobalObjectAccess",
+  "LayoutEditorClass",
+  "LayoutTreeClass",
+  "ManualClass",
+  "ObjectClass",
+  "Template",
+  "VarClass",
+  "methodsClass"
+]

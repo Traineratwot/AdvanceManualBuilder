@@ -1,5 +1,10 @@
 class FunctionClass extends CommonClass {
 	treeIcon = 'symbol-method'
+	availableChildrenClass=[
+		'FunctionInputClass',
+		'FunctionOutputClass',
+		'DescriptionClass',
+	]
 	constructor(options = {}) {
 		super(...arguments)
 		this.name = ''

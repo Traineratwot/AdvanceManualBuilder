@@ -6,6 +6,9 @@ class CommonClass {
 		name: new EditorFieldsClass(this, {name: 'name'}),
 	}
 	treeIcon = 'circle-outline'
+	treeAddIcon = 'diff-added'
+	availableChildrenClass = []
+
 
 	constructor(objects = {}) {
 		if(arguments.length == 0) {
@@ -33,10 +36,18 @@ class CommonClass {
 	}
 
 
-	render() {}
+	render() {console.info('TODO render(){}')}
 
 
-	editorRender() {}
+	editorRender(parent) {
+		console.info('TODO editorRender(){}', arguments)
+		layout.editor.modal.find('div.modal-body').html('')
+		for(const editorFieldsKey in this.editorFields) {
+			this.editorFields[editorFieldsKey].render(layout.editor.modal.find('div.modal-body'), this[editorFieldsKey])
+		}
+		layout.editor.modal.modal('show')
+
+	}
 
 
 	prepare() {
@@ -121,7 +132,23 @@ class CommonClass {
 
 
 	renderTree(parent) {
-		$(treeTemplate.get('content', {text: this.name, GlobalKey: this._GlobalKey,treeIcon:this.treeIcon})).appendTo(parent)
+		var content = $(treeTemplate.get('content', {
+			text: this.name,
+			GlobalKey: this._GlobalKey,
+			treeIcon: this.treeIcon
+		})).appendTo(parent)
+		this.treeEvent()
+	}
+
+
+	treeEvent() {
+		$('span.startEditor').on('dblclick', function() {
+			layout.editor.render(GOA[$(this).data('object')])
+		})
+		$('span.addElem').on('dblclick', function() {
+			layout.editor.addModal.GlobalKey = $(this).data('object')
+			layout.editor.addModal.modal('show')
+		})
 	}
 }
 
@@ -157,12 +184,31 @@ class DescriptionClass extends CommonClass {
 
 class VarClass extends CommonClass {
 	treeIcon = 'symbol-variable'
+
+
 	constructor(options = {}) {
 		super(...arguments)
 		this.name = null
 		this.value = ''
 		this.type = dataTypes.string
 		Object.assign(this, options)
+	}
+}
+
+class CodePreviewClass extends CommonClass {
+	editorFields = {
+		language: new EditorFieldsClass(this, {name: 'lanuage', type: 'select'}),
+		body: new EditorFieldsClass(this, {name: 'body', type: 'textarea'}),
+	}
+
+
+	constructor(options = {}) {
+		super(...arguments)
+		this.language = ''
+		this.body = ''
+		Object.assign(this, options)
+		this.lanuage = this.subName.toLowerCase()
+		this.preview = this.preview.toLowerCase()
 	}
 }
 

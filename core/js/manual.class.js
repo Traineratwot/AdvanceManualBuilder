@@ -88,9 +88,6 @@ class ManualClass extends CommonClass{
 
 	renderTree(parent) {
 		var item = $(treeTemplate.get('item', {text: this.name,GlobalKey:this._GlobalKey,treeIcon:this.treeIcon})).appendTo(parent)
-		item.on('dblclick',function() {
-			layout.editor.render(GOA[$(this).find('span').data('object')])
-		})
 		if(this.elements.length > 0) {
 			var subItem = $(treeTemplate.get('subItem')).appendTo(item)
 			for(const k in this.elements) {
@@ -100,7 +97,8 @@ class ManualClass extends CommonClass{
 				}
 			}
 		}
-
+		$(treeTemplate.get('add',{text: 'add new',GlobalKey:this._GlobalKey,treeIcon:this.treeAddIcon})).appendTo(subItem)
+		super.treeEvent()
 	}
 }
 

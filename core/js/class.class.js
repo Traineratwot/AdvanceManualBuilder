@@ -11,9 +11,6 @@ class ClassClass extends CommonClass {
 	}
 	renderTree(parent) {
 		var item = $(treeTemplate.get('item', {text: this.name,GlobalKey:this._GlobalKey,treeIcon:this.treeIcon})).appendTo(parent)
-		item.on('dblclick',function() {
-			layout.editor.render(GOA[$(this).find('span').data('object')])
-		})
 		if(this.vars.length > 0) {
 			var subItem = $(treeTemplate.get('subItem')).appendTo(item)
 			for(const k in this.vars) {
@@ -39,7 +36,7 @@ class ClassClass extends CommonClass {
 				}
 			}
 		}
-
+		super.treeEvent()
 	}
 }
 
