@@ -6,12 +6,12 @@
 	<title>AdvanceManualBuilder</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script src="core/data/classes.data.js"></script>
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="core/libs/bootstrap/css/bootstrap.min.css">
 
 	<link rel="stylesheet" href="core/css/main.css" />
-
 	<script src="core/libs/jquery.min.js"></script>
 	<script src="core/libs/jquery-ui.js"></script>
 	<script src="core/libs/lib.js"></script>
@@ -21,12 +21,13 @@
 	<script src="core/js/manual.class.js"></script>
 
 	<script src="core/data/dataType.data.js"></script>
+	<script src="core/data/tree.data.js"></script>
 </head>
 
 <body>
 
 	<div class="container main ">
-		<div class="row menu bg- border-bottom">
+		<div class="row menu bg- border-bottom bg-dark" >
 			<div class="col">
 			</div>
 		</div>
@@ -43,6 +44,18 @@
 		}));
 		manuals[0].addElement(new FunctionClass({
 			name:'toArray'
+		}));
+		manuals[0].addElement(new ClassClass({
+			name:'toArray2'
+		}));
+		manuals.push(new ManualClass({
+			name:'test2',
+		}));
+		manuals[1].addElement(new FunctionClass({
+			name:'toArray3'
+		}));
+		manuals[1].addElement(new ClassClass({
+			name:'toArray4'
 		}));
 	</script>
 	<footer style="display:none;">

@@ -30,3 +30,4 @@ class FunctionOutputClass extends CommonClass {
 		this.possible_values = [new VarClass]
 	}
 }
+

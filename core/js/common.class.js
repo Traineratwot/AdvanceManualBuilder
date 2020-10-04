@@ -1,167 +1,256 @@
-
-
 class CommonClass {
-	#_empty = true;
-	#_ElementId = null;
+	#_empty = true
+	#_ElementId = null
+	#_GlobalKey = null
 	editorFields = {
-		name: new EditorFieldsClass({ name: "name" }),
-	};
-
-	constructor() {
-		if (arguments.length == 0) {
-			this.#_empty = true;
-		} else {
-			this.#_empty = false;
-		}
-		this.sortKey = 0;
-		this.classKey = this.constructor.name;
+		name: new EditorFieldsClass({name: 'name'}),
 	}
+
+
+	constructor(objects = {}) {
+		if(arguments.length == 0) {
+			this.#_empty = true
+		} else {
+			this.#_empty = false
+		}
+		this.sortKey = 0
+		this.classKey = this.constructor.name
+		Object.assign(this, objects)
+		GOA.add(this)
+	}
+
 
 	/**
 	 * @param  {Object} manual
 	 * @param  {number} key
 	 */
 	setManual(manual, key) {
-		if (manual instanceof ManualClass) {
-			this.manual = manual;
-			this.sortKey = key;
-			this.ElementId = key;
+		if(manual instanceof ManualClass) {
+			this.manual = manual
+			this.sortKey = key
+			this.ElementId = key
 		}
 	}
+
 
 	render() {}
-	editorRender(){}
+
+
+	editorRender() {}
+
+
 	prepare() {
-		return true;
+		return true
 	}
 
-	success(msg = "", data = {}) {
-		return { success: true, msg: msg, data: data };
+
+	success(msg = '', data = {}) {
+		return {success: true, msg: msg, data: data}
 	}
 
-	failure(msg = "", data = {}) {
-		return { success: false, msg: msg, data: data };
+
+	failure(msg = '', data = {}) {
+		return {success: false, msg: msg, data: data}
 	}
+
 
 	get empty() {
-		return this.#_empty;
+		return this.#_empty
 	}
+
 
 	set empty(value) {
-		return false;
+		return false
 	}
+
 
 	get ElementId() {
-		return this.#_ElementId;
+		return this.#_ElementId
 	}
+
 
 	set ElementId(value) {
-		if (this.#_ElementId == null) {
-			this.#_ElementId = value;
+		if(this.#_ElementId == null) {
+			this.#_ElementId = value
 		}
 	}
+
+
+	get GlobalKey() {
+		return this.#_GlobalKey
+	}
+
+
+	set GlobalKey(value) {
+		if(this.#_GlobalKey == null) {
+			this.#_GlobalKey = value
+		}
+	}
+
 
 	toObject() {
-		var JSON = {};
-		for (let key in this) {
-			let element = this[key];
-			if (element instanceof CommonClass) {
-				JSON[key] = element.toObject();
-				continue;
+		var JSON = {}
+		for(let key in this) {
+			let element = this[key]
+			if(element instanceof CommonClass) {
+				JSON[key] = element.toObject()
+				continue
 			}
-			if (element instanceof Array) {
-				JSON[key] = [];
-				for (let k in element) {
-					let e = element[k];
-					if (e instanceof CommonClass) {
-						JSON[key].push(e.toObject());
+			if(element instanceof Array) {
+				JSON[key] = []
+				for(let k in element) {
+					let e = element[k]
+					if(e instanceof CommonClass) {
+						JSON[key].push(e.toObject())
 					}
 				}
-				continue;
+				continue
 			}
-			JSON[key] = element;
+			JSON[key] = element
 		}
-		delete JSON.manual;
-		delete JSON.editorFields;
-		return JSON;
+		delete JSON.manual
+		delete JSON.editorFields
+		return JSON
 	}
 
+
 	fromObject(value) {
-		Object.assign(this, value);
-		return toObject();
+		Object.assign(this, value)
+		return toObject()
+	}
+
+
+	renderTree(parent) {
+		$(treeTemplate.get('content', {text: this.name, GlobalKey: this.#_GlobalKey})).appendTo(parent)
 	}
 }
 
 class DataTypeClass extends CommonClass {
 	constructor(options = {}) {
-		super(...arguments);
-		this.name = "";
-		this.subName = "";
-		this.preview = "";
-		Object.assign(this, options);
-		this.name = this.name.toLowerCase();
-		this.subName = this.subName.toLowerCase();
-		this.preview = this.preview.toLowerCase();
+		super(...arguments)
+		this.name = ''
+		this.subName = ''
+		this.preview = ''
+		Object.assign(this, options)
+		this.name = this.name.toLowerCase()
+		this.subName = this.subName.toLowerCase()
+		this.preview = this.preview.toLowerCase()
 	}
 
+
 	preRender() {
-		super.render();
+		super.render()
 	}
 }
 
 class DescriptionClass extends CommonClass {
 	constructor() {
-		super(...arguments);
-		this.body = "";
+		super(...arguments)
+		this.body = ''
 	}
+	render(){
 
-	preRender() {
-		super.render();
 	}
 }
 
 class VarClass extends CommonClass {
 	constructor(options = {}) {
-		super(...arguments);
-		this.name = null;
-		this.value = "";
-		this.type = dataTypes.string;
-		Object.assign(this, options);
+		super(...arguments)
+		this.name = null
+		this.value = ''
+		this.type = dataTypes.string
+		Object.assign(this, options)
 	}
 }
 
 class EditorFieldsClass {
 	constructor(options) {
-		this.name = "";
-		this.type = "text";
-		this.dataSet = [];
-		this.callback = false;
-		this.id = getRandomString();
-		this.input = false;
-		Object.assign(this, options);
+		this.name = ''
+		this.type = 'text'
+		this.dataSet = []
+		this.callback = false
+		this.id = getRandomString()
+		this.input = false
+		Object.assign(this, options)
 	}
 
-	render(parent, value = "") {
-		if (this.input === false) {
-			switch (this.type) {
+
+	render(parent, value = '') {
+		if(this.input === false) {
+			switch( this.type ) {
 				default:
-					this.input = $(`<input name="${this.name}" id="${this.id}" type="${this.type}" value="${value}">`).appendTo(parent);
-					if (this.dataSet.length > 0) {
+					this.input = $(`<input name="${this.name}" id="${this.id}" type="${this.type}" value="${value}">`).appendTo(parent)
+					if(this.dataSet.length > 0) {
 						this.input.autocomplete({
 							source: this.dataSet.toArray(),
 							minLength: 0,
-						});
+						})
 					}
-					if (this.callback !== false) {
-						this.input.on("change", this.callback);
+					if(this.callback !== false) {
+						this.input.on('change', this.callback)
 					}
 
-					break;
+					break
 			}
 		} else {
-			this.input.appendTo(parent);
-			this.input.val(value);
+			this.input.appendTo(parent)
+			this.input.val(value)
 		}
-		return this.input;
+		return this.input
 	}
 }
+
+class Template {
+	get(s, v = null) {
+		if(v != null && typeof (v) == 'object') {
+			var t = '' + this[s]
+			for(var k in v) {
+				t = t.replace('${' + k + '}', v[k])
+			}
+			return t
+		} else return this[s]
+	}
+}
+
+class GlobalObjectAccess {
+	constructor() {
+
+	}
+
+
+	getAllKeys() {
+		var a = []
+		for(const thisKey in this) {
+			a.push(this)
+		}
+		return a
+	}
+
+
+	add(value) {
+		var key = this.getUniqueKey()
+		if(value.GlobalKey === null) {
+			value.GlobalKey = key
+			this[key] = value
+		}
+	}
+
+
+	getUniqueKey() {
+		var key = getRandomString()
+		var keys = this.getAllKeys()
+
+		function eq(element) {
+			return element == this
+		}
+
+		if(keys.length > 0) {
+			while(keys.find(eq, key)) {
+				key = getRandomString()
+			}
+		}
+		return key
+	}
+}
+
+var GOA = new GlobalObjectAccess
