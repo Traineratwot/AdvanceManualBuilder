@@ -1,5 +1,6 @@
 
 class ClassClass extends CommonClass {
+	treeIcon = 'symbol-class'
 	constructor() {
 		super(...arguments)
 		this.description = new DescriptionClass
@@ -7,6 +8,38 @@ class ClassClass extends CommonClass {
 		this.constants = [new ClassConstantsClass]
 		this.methods = [new methodsClass]
 		this.code = null
+	}
+	renderTree(parent) {
+		var item = $(treeTemplate.get('item', {text: this.name,GlobalKey:this._GlobalKey,treeIcon:this.treeIcon})).appendTo(parent)
+		item.on('dblclick',function() {
+			layout.editor.render(GOA[$(this).find('span').data('object')])
+		})
+		if(this.vars.length > 0) {
+			var subItem = $(treeTemplate.get('subItem')).appendTo(item)
+			for(const k in this.vars) {
+				if(this.vars[k] instanceof CommonClass) {
+					const element = this.vars[k]
+					element.renderTree(subItem)
+				}
+			}
+		}
+		if(this.constants.length > 0) {
+			for(const k in this.constants) {
+				if(this.constants[k] instanceof CommonClass) {
+					const element = this.constants[k]
+					element.renderTree(subItem)
+				}
+			}
+		}
+		if(this.methods.length > 0) {
+			for(const k in this.methods) {
+				if(this.methods[k] instanceof CommonClass) {
+					const element = this.methods[k]
+					element.renderTree(subItem)
+				}
+			}
+		}
+
 	}
 }
 
@@ -33,6 +66,7 @@ class ClassVarsClass extends VarClass {
 }
 
 class ClassConstantsClass extends VarClass {
+	treeIcon = 'symbol-constant'
 	constructor() {
 		super(...arguments)
 		this.Visibility = 'public'

@@ -231,3 +231,54 @@ div.row.dashboard {
     display: block;
     margin: auto;
 }
+
+input.changing + div.input-group-append  span{
+    background: orange;
+}
+input.changed + div.input-group-append  span{
+    background: green;
+}
+input.invalid + div.input-group-append  span {
+    background: red;
+}
+
+/* Remove default bullets */
+ul.tree{
+    list-style-type: none;
+    color: #fff;
+}
+
+/* Remove margins and padding from the parent ul */
+.tree {
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the caret/arrow */
+.tree .caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+}
+
+/* Create the caret/arrow with a unicode, and style it */
+.tree .caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.tree .caret-down::before {
+    transform: rotate(90deg);
+}
+
+/* Hide the nested list */
+.tree .nested {
+    display: none;
+}
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+.tree .active {
+    display: block;
+}

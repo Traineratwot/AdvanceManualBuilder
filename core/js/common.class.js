@@ -1,17 +1,17 @@
 class CommonClass {
-	#_empty = true
-	#_ElementId = null
-	#_GlobalKey = null
+	_empty = true
+	_ElementId = null
+	_GlobalKey = null
 	editorFields = {
-		name: new EditorFieldsClass({name: 'name'}),
+		name: new EditorFieldsClass(this, {name: 'name'}),
 	}
-
+	treeIcon = 'circle-outline'
 
 	constructor(objects = {}) {
 		if(arguments.length == 0) {
-			this.#_empty = true
+			this._empty = true
 		} else {
-			this.#_empty = false
+			this._empty = false
 		}
 		this.sortKey = 0
 		this.classKey = this.constructor.name
@@ -55,7 +55,7 @@ class CommonClass {
 
 
 	get empty() {
-		return this.#_empty
+		return this._empty
 	}
 
 
@@ -65,25 +65,25 @@ class CommonClass {
 
 
 	get ElementId() {
-		return this.#_ElementId
+		return this._ElementId
 	}
 
 
 	set ElementId(value) {
-		if(this.#_ElementId == null) {
-			this.#_ElementId = value
+		if(this._ElementId == null) {
+			this._ElementId = value
 		}
 	}
 
 
 	get GlobalKey() {
-		return this.#_GlobalKey
+		return this._GlobalKey
 	}
 
 
 	set GlobalKey(value) {
-		if(this.#_GlobalKey == null) {
-			this.#_GlobalKey = value
+		if(this._GlobalKey == null) {
+			this._GlobalKey = value
 		}
 	}
 
@@ -121,7 +121,7 @@ class CommonClass {
 
 
 	renderTree(parent) {
-		$(treeTemplate.get('content', {text: this.name, GlobalKey: this.#_GlobalKey})).appendTo(parent)
+		$(treeTemplate.get('content', {text: this.name, GlobalKey: this._GlobalKey,treeIcon:this.treeIcon})).appendTo(parent)
 	}
 }
 
@@ -148,12 +148,15 @@ class DescriptionClass extends CommonClass {
 		super(...arguments)
 		this.body = ''
 	}
-	render(){
+
+
+	render() {
 
 	}
 }
 
 class VarClass extends CommonClass {
+	treeIcon = 'symbol-variable'
 	constructor(options = {}) {
 		super(...arguments)
 		this.name = null
@@ -164,11 +167,13 @@ class VarClass extends CommonClass {
 }
 
 class EditorFieldsClass {
-	constructor(options) {
+	constructor(object, options) {
+		this.object = object
 		this.name = ''
 		this.type = 'text'
 		this.dataSet = []
 		this.callback = false
+		this.placeholder = ''
 		this.id = getRandomString()
 		this.input = false
 		Object.assign(this, options)
@@ -179,15 +184,35 @@ class EditorFieldsClass {
 		if(this.input === false) {
 			switch( this.type ) {
 				default:
-					this.input = $(`<input name="${this.name}" id="${this.id}" type="${this.type}" value="${value}">`).appendTo(parent)
+					this.input = $(editorTemplate.get('input', {
+						name: this.name,
+						type: this.type,
+						value: value,
+						id: this.id,
+						placeholder: this.placeholder,
+					})).appendTo(parent)
 					if(this.dataSet.length > 0) {
-						this.input.autocomplete({
+						this.input.find('input').autocomplete({
 							source: this.dataSet.toArray(),
 							minLength: 0,
 						})
 					}
+					this.input.find('input').on('input', function() {
+						$(this).removeClass('changed')
+						$(this).addClass('changing')
+					})
 					if(this.callback !== false) {
-						this.input.on('change', this.callback)
+						this.input.find('input').on('change', () => {
+							this.callback()
+							this.input.find('input').removeClass('changing')
+							this.input.find('input').addClass('changed')
+						})
+					} else {
+						this.input.find('input').on('change', () => {
+							this.object[this.name] = this.input.find('input').val()
+							this.input.find('input').removeClass('changing')
+							this.input.find('input').addClass('changed')
+						})
 					}
 
 					break
@@ -205,8 +230,11 @@ class Template {
 		if(v != null && typeof (v) == 'object') {
 			var t = '' + this[s]
 			for(var k in v) {
-				t = t.replace('${' + k + '}', v[k])
+				if(typeof v[k] != 'undefined') {
+					t = t.replaceAll('${' + k + '}', v[k])
+				}
 			}
+			t = t.replaceAll(/\$\{.+?\}/g, '')
 			return t
 		} else return this[s]
 	}

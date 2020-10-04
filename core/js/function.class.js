@@ -1,4 +1,5 @@
 class FunctionClass extends CommonClass {
+	treeIcon = 'symbol-method'
 	constructor(options = {}) {
 		super(...arguments)
 		this.name = ''

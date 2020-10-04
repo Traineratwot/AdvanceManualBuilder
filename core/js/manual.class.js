@@ -1,14 +1,15 @@
 'use strict'
 
-class ManualClass{
-	#_GlobalKey = null
+class ManualClass extends CommonClass{
+	_GlobalKey = null
 	editorFields = {
-		name       : new EditorFieldsClass({name: 'name'}),
-		version    : new EditorFieldsClass({name: 'version'}),
-		description: new EditorFieldsClass({name: 'description',type:'class',class:'DescriptionClass'}),
-		type       : new EditorFieldsClass({name: 'type'}),
+		name       : new EditorFieldsClass(this,{name: 'name'}),
+		version    : new EditorFieldsClass(this,{name: 'version'}),
+		description: new EditorFieldsClass(this,{name: 'description',type:'class',class:'DescriptionClass'}),
+		type       : new EditorFieldsClass(this,{name: 'type'}),
 	}
 	constructor(object) {
+		super()
 		this.name = ''
 		this.version = ''
 		this.dateUpdate = ''
@@ -75,26 +76,23 @@ class ManualClass{
 	fromObject() {}
 
 	get GlobalKey() {
-		return this.#_GlobalKey
+		return this._GlobalKey
 	}
 
 
 	set GlobalKey(value) {
-		if(this.#_GlobalKey == null) {
-			this.#_GlobalKey = value
+		if(this._GlobalKey == null) {
+			this._GlobalKey = value
 		}
 	}
 
 	renderTree(parent) {
-		var item = $(treeTemplate.get('item', {text: this.name,GlobalKey:this.#_GlobalKey})).appendTo(parent)
+		var item = $(treeTemplate.get('item', {text: this.name,GlobalKey:this._GlobalKey,treeIcon:this.treeIcon})).appendTo(parent)
 		item.on('dblclick',function() {
-			layout.editor.render(GOA[$(this).find('a').data('object')])
+			layout.editor.render(GOA[$(this).find('span').data('object')])
 		})
 		if(this.elements.length > 0) {
 			var subItem = $(treeTemplate.get('subItem')).appendTo(item)
-			item.on('click',(e)=>{
-				subItem.slideToggle()
-			})
 			for(const k in this.elements) {
 				if(this.elements[k] instanceof CommonClass) {
 					const element = this.elements[k]
