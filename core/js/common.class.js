@@ -137,19 +137,11 @@ class CommonClass {
 			GlobalKey: this._GlobalKey,
 			treeIcon: this.treeIcon
 		})).appendTo(parent)
-		this.treeEvent()
+
 	}
 
 
-	treeEvent() {
-		$('span.startEditor').on('dblclick', function() {
-			layout.editor.render(GOA[$(this).data('object')])
-		})
-		$('span.addElem').on('dblclick', function() {
-			layout.editor.addModal.GlobalKey = $(this).data('object')
-			layout.editor.addModal.modal('show')
-		})
-	}
+
 }
 
 class DataTypeClass extends CommonClass {
@@ -207,8 +199,7 @@ class CodePreviewClass extends CommonClass {
 		this.language = ''
 		this.body = ''
 		Object.assign(this, options)
-		this.lanuage = this.subName.toLowerCase()
-		this.preview = this.preview.toLowerCase()
+		this.lanuage = this.language.toLowerCase()
 	}
 }
 

@@ -36,7 +36,7 @@ class ClassClass extends CommonClass {
 				}
 			}
 		}
-		super.treeEvent()
+
 	}
 }
 

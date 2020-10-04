@@ -98,7 +98,7 @@ class ManualClass extends CommonClass{
 			}
 		}
 		$(treeTemplate.get('add',{text: 'add new',GlobalKey:this._GlobalKey,treeIcon:this.treeAddIcon})).appendTo(subItem)
-		super.treeEvent()
+
 	}
 }
 

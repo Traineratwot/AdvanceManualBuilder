@@ -4,6 +4,7 @@ class FunctionClass extends CommonClass {
 		'FunctionInputClass',
 		'FunctionOutputClass',
 		'DescriptionClass',
+		'CodePreviewClass',
 	]
 	constructor(options = {}) {
 		super(...arguments)
@@ -11,7 +12,7 @@ class FunctionClass extends CommonClass {
 		this.inputs = [new FunctionInputClass]
 		this.output = new FunctionOutputClass()
 		this.description = new DescriptionClass
-		this.code = null
+		this.code = new CodePreviewClass
 		Object.assign(this,options)
 	}
 }
