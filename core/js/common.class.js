@@ -2,6 +2,7 @@ CLASSES.CommonClass = class CommonClass {
 	_empty = true
 	_ElementId = null
 	_GlobalKey = null
+	name = ''
 	editorFields = {
 		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
 	}
@@ -59,14 +60,19 @@ CLASSES.CommonClass = class CommonClass {
 	render() { console.info('TODO render(){}') }
 
 
-	editorRender(parent, name = false, object = false,options) {
+	editorRender(parent, name = false, object = false, options) {
 		name = name ?? this.constructor.name
+		this.name = this.name??''
+		options = Object.assign({
+			prefix: '',
+			btnClass: 'btn-primary'
+		}, options)
 		console.info('TODO editorRender(){}', arguments)
 		if(typeof layout?.editor?.modals[this.GlobalKey] == 'undefined') {
 			layout.editor.modals[this.GlobalKey] = $(editorTemplate.get('modal', {
 				id: this.GlobalKey,
 				parent: this?.parent?.GlobalKey,
-				name: options.prefix + name,
+				name: options.prefix + name + ' ' + this.name,
 				classKey: this.constructor.name,
 			})).appendTo('body')
 		}
@@ -76,8 +82,9 @@ CLASSES.CommonClass = class CommonClass {
 		}
 		var button = $(editorTemplate.get('button', {
 			id: this.GlobalKey,
-			text: options.prefix + name,
+			text: options.prefix + name + ' ' + this.name,
 			classKey: this.constructor.name,
+			btnClass: options.btnClass,
 		})).appendTo(parent)
 		var self = this
 		button.find('button').on('click', function() {
@@ -86,9 +93,11 @@ CLASSES.CommonClass = class CommonClass {
 		layout.editor.modals[this.GlobalKey].find('button.action-save').on('click', () => {
 			if(object !== false) {
 				object.addChildren(this, name)
+				layout.editor.render(GOA[current.editor])
+				layout.tree.render()
 			}
 		})
-		layout.editor.modals[this.GlobalKey].find('button.action-cancel').on('click', () =>  {
+		layout.editor.modals[this.GlobalKey].find('button.action-cancel').on('click', () => {
 			tmp.remove(this)
 		})
 
@@ -174,24 +183,26 @@ CLASSES.CommonClass = class CommonClass {
 	toObject() {
 		var JSON = {}
 		for(let key in this) {
-			let element = this[key]
-			if(element instanceof CLASSES.CommonClass) {
-				JSON[key] = element.toObject()
-				continue
-			}
-			if(element instanceof Array) {
-				JSON[key] = []
-				for(let k in element) {
-					let e = element[k]
-					if(e instanceof CLASSES.CommonClass) {
-						JSON[key].push(e.toObject())
-					}
+			if(key != 'parent') {
+				let element = this[key]
+				if(element instanceof CLASSES.CommonClass) {
+					JSON[key] = element.toObject()
+					continue
 				}
-				continue
+				if(element instanceof Array) {
+					JSON[key] = []
+					for(let k in element) {
+						let e = element[k]
+						if(e instanceof CLASSES.CommonClass) {
+							JSON[key].push(e.toObject())
+						}
+					}
+					continue
+				}
+				JSON[key] = element
 			}
-			JSON[key] = element
 		}
-		delete JSON.manual
+		delete JSON.parent
 		delete JSON.editorFields
 		return JSON
 	}
@@ -258,7 +269,10 @@ CLASSES.DescriptionClass = class DescriptionClass extends CLASSES.CommonClass {
 
 CLASSES.VarClass = class VarClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-variable'
-
+	editorFields = {
+		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
+		dataType: new CLASSES.EditorFieldsClass(this, {name: 'dataType', type: 'select', dataSet: dataTypes.toArray()}),
+	}
 
 	constructor(options = {}) {
 		super(...arguments)
@@ -310,102 +324,19 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 		if(this.input === false) {
 			switch( this.type ) {
 				case 'class':
-					if(this.object[this.name] instanceof CLASSES[this.class]) {
-						var result = this.object[this.name]
-					} else {
-						var result = new CLASSES[this.class]
-					}
-					var key = tmp.add(result)
-
-					tmp[key].editorRender(parent, this.name, this.object,{
-						prefix:'set '
-					})
+					this.renderClass(parent, value, label)
 					break
 				case 'class[]':
-					var result = new CLASSES[this.class]
-					var key = tmp.add(result)
-					for(const fieldKey in this.object[this.name]) {
-						this.object[this.name][fieldKey].editorRender(parent, this.name,this.object,{
-							prefix:'edit '
-						})
-					}
-					tmp[key].editorRender(parent, this.name,this.object,{
-						prefix:'add '
-					})
+					this.renderClassArray(parent, value, label)
 					break
 				case 'select':
-					this.input = $(editorTemplate.get('select', {
-						label: label,
-						name: this.name,
-						id: this.id,
-					})).appendTo(parent)
-					if(this.dataSet instanceof Array || this.dataSet instanceof Object) {
-						for(const dataSetKey in this.dataSet) {
-							if(dataSetKey == value) {
-								$(editorTemplate.get('option', {
-									label: this.dataSet[dataSetKey],
-									value: dataSetKey,
-									attr: 'selected',
-								})).appendTo(this.input.find('select'))
-							} else {
-								$(editorTemplate.get('option', {
-									label: this.dataSet[dataSetKey],
-									value: dataSetKey,
-								})).appendTo(this.input.find('select'))
-							}
-						}
-					}
-					if(this.callback !== false) {
-						this.input.find('select').on('change', () => {
-							this.callback()
-							this.input.find('select').removeClass('changing')
-							this.input.find('select').addClass('changed')
-						})
-					} else {
-						this.input.find('select').on('change', () => {
-							this.object[this.name] = this.input.find('select').val()
-							this.input.find('select').removeClass('changing')
-							this.input.find('select').addClass('changed')
-						})
-					}
-
+					this.renderSelect(parent, value, label)
+					break
+				case 'textarea':
+					this.renderTextarea(parent, value, label)
 					break
 				default:
-					this.input = $(editorTemplate.get('input', {
-						label: label,
-						name: this.name,
-						type: this.type,
-						value: value,
-						id: this.id,
-						placeholder: this.placeholder,
-					})).appendTo(parent)
-					if(this.dataSet instanceof Array || this.dataSet instanceof Object) {
-						this.input.find('input').autocomplete({
-							source: this.dataSet,
-							minLength: 0,
-						})
-					}
-					this.input.find('input').on('input', function() {
-						$(this).removeClass('changed')
-						$(this).addClass('changing')
-					})
-					if(this.callback !== false) {
-						this.input.find('input').on('change', () => {
-							this.callback()
-							this.input.find('input').removeClass('changing')
-							this.input.find('input').addClass('changed')
-						})
-					} else {
-						this.input.find('input').on('change', () => {
-							this.object[this.name] = this.input.find('input').val()
-							this.input.find('input').removeClass('changing')
-							this.input.find('input').addClass('changed')
-						})
-					}
-					this.input.find('input').on('blur', () => {
-						this.input.find('input').removeClass('changing')
-					})
-
+					this.renderDefault(parent, value, label)
 					break
 			}
 		} else {
@@ -414,6 +345,150 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 		}
 		return this.object
 	}
+
+
+	renderClass(parent, value = '', label = false) {
+		if(this.object[this.name] instanceof CLASSES[this.class]) {
+			var result = this.object[this.name]
+		} else {
+			var result = new CLASSES[this.class]
+		}
+		var key = tmp.add(result)
+		tmp[key].editorRender(parent, this.name, this.object, {
+			prefix: 'set ',
+			btnClass: 'btn-info'
+		})
+	}
+
+
+	renderClassArray(parent, value = '', label = false) {
+		var result = new CLASSES[this.class]
+		var key = tmp.add(result)
+		for(const fieldKey in this.object[this.name]) {
+			this.object[this.name][fieldKey].editorRender(parent, this.name, this.object, {
+				prefix: 'edit ',
+				btnClass: 'btn-secondary'
+			})
+		}
+		tmp[key].editorRender(parent, this.name, this.object, {
+			prefix: 'add ',
+		})
+	}
+
+
+	renderSelect(parent, value = '', label = false) {
+		this.input = $(editorTemplate.get('select', {
+			label: label,
+			name: this.name,
+			id: this.id,
+		})).appendTo(parent)
+		if(this.dataSet instanceof Array || this.dataSet instanceof Object) {
+			for(const dataSetKey in this.dataSet) {
+				if(dataSetKey == value) {
+					$(editorTemplate.get('option', {
+						label: this.dataSet[dataSetKey],
+						value: dataSetKey,
+						attr: 'selected',
+					})).appendTo(this.input.find('select'))
+				} else {
+					$(editorTemplate.get('option', {
+						label: this.dataSet[dataSetKey],
+						value: dataSetKey,
+					})).appendTo(this.input.find('select'))
+				}
+			}
+		}
+		if(this.callback !== false) {
+			this.input.find('select').on('change', () => {
+				this.callback()
+				this.input.find('select').removeClass('changing')
+				this.input.find('select').addClass('changed')
+			})
+		} else {
+			this.input.find('select').on('change', () => {
+				this.object[this.name] = this.input.find('select').val()
+				this.input.find('select').removeClass('changing')
+				this.input.find('select').addClass('changed')
+			})
+		}
+	}
+
+
+	renderDefault(parent, value = '', label = false) {
+		this.input = $(editorTemplate.get('input', {
+			label: label,
+			name: this.name,
+			type: this.type,
+			value: value,
+			id: this.id,
+			placeholder: this.placeholder,
+		})).appendTo(parent)
+		if(this.dataSet instanceof Array || this.dataSet instanceof Object) {
+			this.input.find('input').autocomplete({
+				source: this.dataSet,
+				minLength: 0,
+			})
+		}
+		this.input.find('input').on('input', function() {
+			$(this).removeClass('changed')
+			$(this).addClass('changing')
+		})
+		if(this.callback !== false) {
+			this.input.find('input').on('change', () => {
+				this.callback()
+				this.input.find('input').removeClass('changing')
+				this.input.find('input').addClass('changed')
+			})
+		} else {
+			this.input.find('input').on('change', () => {
+				this.object[this.name] = this.input.find('input').val()
+				this.input.find('input').removeClass('changing')
+				this.input.find('input').addClass('changed')
+			})
+		}
+		this.input.find('input').on('blur', () => {
+			this.input.find('input').removeClass('changing')
+		})
+	}
+
+
+	renderTextarea(parent, value = '', label = false) {
+		this.input = $(editorTemplate.get('textarea', {
+			label: label,
+			name: this.name,
+			type: this.type,
+			value: value,
+			id: this.id,
+			placeholder: this.placeholder,
+		})).appendTo(parent)
+		if(this.dataSet instanceof Array || this.dataSet instanceof Object) {
+			this.input.find('input').autocomplete({
+				source: this.dataSet,
+				minLength: 0,
+			})
+		}
+		this.input.find('textarea').on('input', function() {
+			$(this).removeClass('changed')
+			$(this).addClass('changing')
+		})
+		if(this.callback !== false) {
+			this.input.find('textarea').on('change', () => {
+				this.callback()
+				this.input.find('textarea').removeClass('changing')
+				this.input.find('textarea').addClass('changed')
+			})
+		} else {
+			this.input.find('textarea').on('change', () => {
+				this.object[this.name] = this.input.find('textarea').val()
+				this.input.find('textarea').removeClass('changing')
+				this.input.find('textarea').addClass('changed')
+			})
+		}
+		this.input.find('textarea').on('blur', () => {
+			this.input.find('input').removeClass('changing')
+		})
+	}
+
 }
 
 CLASSES.Template = class Template {

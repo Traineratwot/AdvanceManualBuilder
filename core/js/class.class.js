@@ -1,14 +1,41 @@
 CLASSES.ClassClass = class ClassClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-class'
+	editorFields = {
+		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
+		description: new CLASSES.EditorFieldsClass(this, {
+			name: 'description',
+			type: 'class',
+			class: 'DescriptionClass'
+		}),
+		constants: new CLASSES.EditorFieldsClass(this, {
+			name: 'constants',
+			type: 'class[]',
+			class: 'ClassConstantsClass'
+		}),
+		vars: new CLASSES.EditorFieldsClass(this, {name: 'vars', type: 'class[]', class: 'ClassVarsClass'}),
+		methods: new CLASSES.EditorFieldsClass(this, {name: 'methods', type: 'class[]', class: 'methodsClass'}),
+		code: new CLASSES.EditorFieldsClass(this, {
+			name: 'code',
+			type: 'class',
+			class: 'CodePreviewClass'
+		}),
+	}
 
 
 	constructor() {
 		super(...arguments)
-		this.addChildren(new CLASSES.DescriptionClass,'description')
+		this.addChildren(new CLASSES.DescriptionClass, 'description')
 		this.vars = []
 		this.constants = []
 		this.methods = []
 		this.code = null
+	}
+
+
+	editorRender(parent) {
+		for(const editorFieldsKey in this.editorFields) {
+			this.editorFields[editorFieldsKey].render(parent, this[editorFieldsKey])
+		}
 	}
 
 
@@ -52,7 +79,6 @@ CLASSES.ObjectClass = class ObjectClass extends CLASSES.ClassClass {
 		super(...arguments)
 		this.class = null
 	}
-
 }
 
 CLASSES.methodsClass = class methodsClass extends CLASSES.FunctionClass {
@@ -60,12 +86,22 @@ CLASSES.methodsClass = class methodsClass extends CLASSES.FunctionClass {
 		super(...arguments)
 		this.Visibility = 'public'
 	}
+
+
+	editorRender(parent, name = false, object = false, options = {}) {
+		this.__proto__.__proto__.__proto__.editorRender.call(this,parent, name, object, options)
+	}
 }
 
 CLASSES.ClassVarsClass = class ClassVarsClass extends CLASSES.VarClass {
 	constructor() {
 		super(...arguments)
 		this.Visibility = 'public'
+	}
+
+
+	editorRender(parent, name = false, object = false, options = {}) {
+		this.__proto__.__proto__.editorRender.call(this,parent, name, object, options)
 	}
 }
 
@@ -76,5 +112,10 @@ CLASSES.ClassConstantsClass = class ClassConstantsClass extends CLASSES.VarClass
 	constructor() {
 		super(...arguments)
 		this.Visibility = 'public'
+	}
+
+
+	editorRender(parent, name = false, object = false, options = {}) {
+		this.__proto__.__proto__.editorRender.call(this,parent, name, object, options)
 	}
 }

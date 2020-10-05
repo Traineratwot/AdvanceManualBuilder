@@ -3,7 +3,7 @@ class LayoutEditorClass {
 		this.block = $('#editor')
 		this.modal = $('#editorModal')
 		this.addModal = $('#addModal')
-		this.modals ={}
+		this.modals = {}
 	}
 
 
@@ -13,7 +13,7 @@ class LayoutEditorClass {
 	render(elem = {}) {
 		this.block.html('')
 		this.elem = elem
-		if(elem instanceof CLASSES.CommonClass ){
+		if(elem instanceof CLASSES.CommonClass) {
 			elem.editorRender(this.block)
 		}
 	}
@@ -56,15 +56,16 @@ class LayoutTreeClass {
 			$(this).toggleClass('caret-down').find('+ .nested').slideToggle()
 		})
 		$('span.startEditor').on('dblclick', function() {
-			layout.editor.render(GOA[$(this).data('object')])
+			current.editor = $(this).data('object')
+			layout.editor.render(GOA[current.editor])
 		})
 		$('span.addElem').on('dblclick', function() {
 			layout.editor.addModal.GlobalKey = $(this).data('object')
 			layout.editor.addModal.modal('show')
 		})
+		tmp.trash()
 	}
 }
-
 
 layout.editor = new LayoutEditorClass()
 layout.tree = new LayoutTreeClass()

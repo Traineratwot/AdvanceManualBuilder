@@ -20,7 +20,7 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 		this.name = ''
 		this.version = ''
 		this.type = ''
-		this.addChildren(new CLASSES.DescriptionClass,'description')
+		this.addChildren(new CLASSES.DescriptionClass, 'description')
 		this.elements = []
 		this.classKey = this.constructor.name
 		Object.assign(this, object)
@@ -51,24 +51,27 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 	toObject() {
 		var JSON = {}
 		for(let key in this) {
-			let element = this[key]
-			if(element instanceof CLASSES.CommonClass) {
-				JSON[key] = element.toObject()
-				continue
-			}
-			if(element instanceof Array) {
-				JSON[key] = []
-				for(let k in element) {
-					let e = element[k]
-					if(e instanceof CLASSES.CommonClass) {
-						JSON[key].push(e.toObject())
-					}
+			if(key != 'parent') {
+				let element = this[key]
+				if(element instanceof CLASSES.CommonClass) {
+					JSON[key] = element.toObject()
+					continue
 				}
-				continue
+				if(element instanceof Array) {
+					JSON[key] = []
+					for(let k in element) {
+						let e = element[k]
+						if(e instanceof CLASSES.CommonClass) {
+							JSON[key].push(e.toObject())
+						}
+					}
+					continue
+				}
+				JSON[key] = element
 			}
-			JSON[key] = element
 		}
-		delete JSON.manual
+		delete JSON.parent
+		delete JSON.editorFields
 		return JSON
 	}
 
