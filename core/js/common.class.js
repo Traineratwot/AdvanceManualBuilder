@@ -1,4 +1,3 @@
-var CLASSES = {}
 CLASSES.CommonClass = class CommonClass {
 	_empty = true
 	_ElementId = null
@@ -9,6 +8,7 @@ CLASSES.CommonClass = class CommonClass {
 	treeIcon = 'circle-outline'
 	treeAddIcon = 'diff-added'
 	availableChildrenClass = []
+	parent=null
 
 
 	constructor(objects = {}) {
@@ -67,29 +67,78 @@ CLASSES.CommonClass = class CommonClass {
 	render() { console.info('TODO render(){}') }
 
 
-	editorRender(parent) {
+	editorRender(parent, name = false, united = false) {
+		var name = name ?? this.constructor.name
 		console.info('TODO editorRender(){}', arguments)
-		if(typeof layout?.editor?.modals[this._GlobalKey] == 'undefined') {
-			layout.editor.modals[this._GlobalKey] = $(editorTemplate.get('modal',{
-				id:this._GlobalKey,
-				name:'add '+this.constructor.name,
-			})).appendTo('body')
-			layout.editor.modals[this._GlobalKey].find('div.modal-body').html('')
+		if(united !== false) {
+			layout.editor.modals[united.GlobalKey]
+			for(const editorFieldsKey in this.editorFields) {
+				this.editorFields[editorFieldsKey].render(layout.editor.modals[united.GlobalKey].find('div.modal-body'), this[editorFieldsKey])
+			}
+		} else {
+			if(typeof layout?.editor?.modals[this._GlobalKey] == 'undefined') {
+				layout.editor.modals[this._GlobalKey] = $(editorTemplate.get('modal', {
+					id: this._GlobalKey,
+					parent: this.parent.GlobalKey,
+					name: 'add ' + name,
+					classKey: this.constructor.name,
+				})).appendTo('body')
+				layout.editor.modals[this._GlobalKey].find('div.modal-body').html('')
+			}
+			for(const editorFieldsKey in this.editorFields) {
+				this.editorFields[editorFieldsKey].render(layout.editor.modals[this._GlobalKey].find('div.modal-body'), this[editorFieldsKey])
+			}
+			var button = $(editorTemplate.get('button', {
+				id: this._GlobalKey,
+				text: 'add ' + name,
+				classKey: this.constructor.name,
+			})).appendTo(parent)
+			var self = this
+			button.find('button').on('click', function() {
+				var result = new CLASSES[$(this).data('class')]
+				self.parent.addChildren(result, this.name)
+				result.editorRender(parent, this.name,self)
+				layout.editor.modals[$(this).data('object')].find('button.action-cancel').attr('data-cancel',result.GlobalKey)
+				layout.editor.modals[$(this).data('object')].modal('show')
+			})
+			$('button.action-save').on('click',function(){
+				$(`#`+$(this).data('id')+`_editorModal`).modal('hide')
+				setTimeout(()=>{
+					layout.editor.render(GOA[$(this).data('parent')])
+				},100)
+			})
+			$('button.action-cancel').on('click',function(){
+				GOA[$(this).data('parent')].removeChildren($(this).data('cancel'))
+			})
 		}
-		for(const editorFieldsKey in this.editorFields) {
-			this.editorFields[editorFieldsKey].render(layout.editor.modals[this._GlobalKey].find('div.modal-body'), this[editorFieldsKey])
-		}
-		var button = $(editorTemplate.get('button',{
-			id:this._GlobalKey,
-			text:'add '+this.constructor.name,
-		})).appendTo(parent)
-		button.on('click',function(){
-			layout.editor.modals[$(this).data('object')].modal('show')
-		})
-
 
 	}
 
+	removeChildren(GlobalKey,obj = false){
+		if(obj == false){
+			obj = this;
+		}
+		for(const objKey in obj) {
+			const val = obj[objKey];
+			if(val instanceof CommonClass){
+				if(val.GlobalKey == GlobalKey){
+					delete obj[objKey];
+					return true
+				}
+			}
+			if(val instanceof Array || val instanceof Object){
+				for(const objKey in obj) {
+					const val = obj[objKey];
+					if(val instanceof CommonClass){
+						if(val.GlobalKey == GlobalKey){
+							delete obj[objKey];
+							return true
+						}
+					}
+				}
+			}
+		}
+	}
 
 	prepare() {
 		return true
@@ -240,7 +289,11 @@ CLASSES.VarClass = class VarClass extends CLASSES.CommonClass {
 
 CLASSES.CodePreviewClass = class CodePreviewClass extends CLASSES.CommonClass {
 	editorFields = {
-		language: new CLASSES.EditorFieldsClass(this, {name: 'language', type: 'select',dataSet:{'php':'php','js':'JavaScript'}}),
+		language: new CLASSES.EditorFieldsClass(this, {
+			name: 'language',
+			type: 'select',
+			dataSet: {'php': 'php', 'js': 'JavaScript'}
+		}),
 		body: new CLASSES.EditorFieldsClass(this, {name: 'body', type: 'textarea'}),
 	}
 
@@ -275,17 +328,28 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 		if(this.input === false) {
 			switch(this.type) {
 				case 'class':
-				case 'class[]':
 					if(this.object[this.name] instanceof CLASSES[this.class]) {
 						var result = this.object[this.name]
 					} else {
 						var result = new CLASSES[this.class]
 					}
+					this.object.addChildren(result, this.name)
 					result.editorRender(parent, this.name)
-					if(this.type == 'class') {
-						this.object[this.name] = result
-					} else {
+					break
+				case 'class[]':
+					if(this.object[this.name].length > 0) {
+						for(const objectElementKey in this.object[this.name]) {
+							if(objectElementKey == 0) {
+								this.object[this.name][objectElementKey].editorRender(parent, this.name)
+							} else {
+								this.object[this.name][objectElementKey].editorRender(parent, this.name, this.object[this.name][0])
+
+							}
+						}
+					}else{
+						var result = new CLASSES[this.class]
 						this.object.addChildren(result, this.name)
+						result.editorRender(parent, this.name)
 					}
 					break
 				case 'select':

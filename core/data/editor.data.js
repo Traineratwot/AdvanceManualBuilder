@@ -1,5 +1,5 @@
-editorTemplate = new CLASSES.Template()
-editorTemplate.input   = '<div class="input-group mb-3">\n' +
+var editorTemplate = new CLASSES.Template()
+editorTemplate.input   = '<div class="form-group"><div class="input-group mb-3">\n' +
 						 '<div class="input-group-prepend">\n' +
 						 '    <span class="input-group-text">${label}</span>\n' +
 						 '  </div>' +
@@ -7,9 +7,9 @@ editorTemplate.input   = '<div class="input-group mb-3">\n' +
 						 '  <div class="input-group-append">\n' +
 						 '    <span class="input-group-text" id="${id}_aria"></span>\n' +
 						 '  </div>\n' +
-						 '</div>'
+						 '</div></div>'
 
-editorTemplate.select  = '<div class="input-group mb-3">\n' +
+editorTemplate.select  = '<div class="form-group"><div class="input-group mb-3">\n' +
 						 '  <div class="input-group-prepend">\n' +
 						 '    <label class="input-group-text" for="inputGroupSelect01">${label}</label>\n' +
 						 '  </div>\n' +
@@ -19,12 +19,12 @@ editorTemplate.select  = '<div class="input-group mb-3">\n' +
 						 '  <div class="input-group-append">\n' +
 						 '    <span class="input-group-text" id="${id}_aria"></span>\n' +
 						 '  </div>\n' +
-						 '</div>';
+						 '</div></div>';
 editorTemplate.option  = '<option value="${value}" ${attr}>${label}</option>'
 
-editorTemplate.button  = '<button type="button" id="${id}_button" data-object="${id}" class="btn btn-primary">${text}</button>'
+editorTemplate.button  = '<div class="form-group"><button type="button" id="${id}_button" data-class="${classKey}" data-object="${id}" class="btn btn-primary">${text}</button></div>'
 
-editorTemplate.modal   = '<div class="modal fade" id="${id}_editorModal" data-object="${id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"\n' +
+editorTemplate.modal   = '<div class="modal fade" id="${id}_editorModal" data-object="${id}" data-parent="${parent}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"\n' +
 						 '        aria-hidden="true">\n' +
 						 '        <div class="modal-dialog modal-dialog-centered" role="document">\n' +
 						 '            <div class="modal-content">\n' +
@@ -37,8 +37,8 @@ editorTemplate.modal   = '<div class="modal fade" id="${id}_editorModal" data-ob
 						 '                <div class="modal-body">\n' +
 						 '                </div>\n' +
 						 '                <div class="modal-footer">\n' +
-						 '                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>\n' +
-						 '                    <button type="button" class="btn btn-primary">Save changes</button>\n' +
+						 '                    <button type="button"  data-parent="${parent}" class="action-cancel btn btn-danger" data-dismiss="modal">Close</button>\n' +
+						 '                    <button type="button"  data-parent="${parent}" data-id="${id }"  class="btn btn-primary action-save">Save changes</button>\n' +
 						 '                </div>\n' +
 						 '            </div>\n' +
 						 '        </div>\n' +

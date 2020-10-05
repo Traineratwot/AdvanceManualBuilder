@@ -2,13 +2,14 @@ CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-method'
 	editorFields = {
 		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
-		inputs: new CLASSES.EditorFieldsClass(this, {name: 'inputs',type:'class[]',class:'FunctionInputClass'}),
-		output: new CLASSES.EditorFieldsClass(this, {name: 'output',type:'class',class:'FunctionOutputClass'}),
 		description: new CLASSES.EditorFieldsClass(this, {
 			name: 'description',
 			type: 'class',
 			class: 'DescriptionClass'
 		}),
+		inputs: new CLASSES.EditorFieldsClass(this, {name: 'inputs',type:'class[]',class:'FunctionInputClass'}),
+		output: new CLASSES.EditorFieldsClass(this, {name: 'output',type:'class',class:'FunctionOutputClass'}),
+
 		code: new CLASSES.EditorFieldsClass(this, {
 			name: 'code',
 			type: 'class',
