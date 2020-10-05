@@ -1,36 +1,43 @@
-
 CLASSES.ClassClass = class ClassClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-class'
+
+
 	constructor() {
 		super(...arguments)
-		this.description = new CLASSES.DescriptionClass
-		this.vars = [new CLASSES.ClassVarsClass]
-		this.constants = [new CLASSES.ClassConstantsClass]
-		this.methods = [new CLASSES.methodsClass]
+		this.addChildren(new CLASSES.DescriptionClass,'description')
+		this.vars = []
+		this.constants = []
+		this.methods = []
 		this.code = null
 	}
+
+
 	renderTree(parent) {
-		var item = $(treeTemplate.get('item', { text: this.name, GlobalKey: this._GlobalKey, treeIcon: this.treeIcon })).appendTo(parent)
-		if (this.vars.length > 0) {
+		var item = $(treeTemplate.get('item', {
+			text: this.name,
+			GlobalKey: this._GlobalKey,
+			treeIcon: this.treeIcon
+		})).appendTo(parent)
+		if(this.vars.length > 0) {
 			var subItem = $(treeTemplate.get('subItem')).appendTo(item)
-			for (const k in this.vars) {
-				if (this.vars[k] instanceof CLASSES.CommonClass) {
+			for(const k in this.vars) {
+				if(this.vars[k] instanceof CLASSES.CommonClass) {
 					const element = this.vars[k]
 					element.renderTree(subItem)
 				}
 			}
 		}
-		if (this.constants.length > 0) {
-			for (const k in this.constants) {
-				if (this.constants[k] instanceof CLASSES.CommonClass) {
+		if(this.constants.length > 0) {
+			for(const k in this.constants) {
+				if(this.constants[k] instanceof CLASSES.CommonClass) {
 					const element = this.constants[k]
 					element.renderTree(subItem)
 				}
 			}
 		}
-		if (this.methods.length > 0) {
-			for (const k in this.methods) {
-				if (this.methods[k] instanceof CLASSES.CommonClass) {
+		if(this.methods.length > 0) {
+			for(const k in this.methods) {
+				if(this.methods[k] instanceof CLASSES.CommonClass) {
 					const element = this.methods[k]
 					element.renderTree(subItem)
 				}
@@ -64,6 +71,8 @@ CLASSES.ClassVarsClass = class ClassVarsClass extends CLASSES.VarClass {
 
 CLASSES.ClassConstantsClass = class ClassConstantsClass extends CLASSES.VarClass {
 	treeIcon = 'symbol-constant'
+
+
 	constructor() {
 		super(...arguments)
 		this.Visibility = 'public'

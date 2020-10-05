@@ -12,7 +12,6 @@ $(document).on('click', function(e) {
 		nondblclick.dblclick = false
 	}, 300, e)
 
-
 })
 $(document).on('dblclick onselectstart"', function() {
 	nondblclick.dblclick = true

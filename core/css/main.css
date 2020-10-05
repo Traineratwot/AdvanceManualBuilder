@@ -232,13 +232,13 @@ div.row.dashboard {
     margin: auto;
 }
 
-input.changing + div.input-group-append  span{
+.changing + div.input-group-append  span{
     background: orange;
 }
-input.changed + div.input-group-append  span{
+.changed + div.input-group-append  span{
     background: green;
 }
-input.invalid + div.input-group-append  span {
+.invalid + div.input-group-append  span {
     background: red;
 }
 
@@ -250,8 +250,13 @@ ul.tree{
 
 /* Remove margins and padding from the parent ul */
 .tree {
-    margin: 0;
+    list-style-type:none;
+    margin: 0 0 0 20px;
     padding: 0;
+}
+.tree li[style="list-style-image:url('assets/icons/dark/circle-outline.svg');"]{
+    list-style-type:none !important;
+    list-style-image:none !important;
 }
 
 /* Style the caret/arrow */
@@ -281,4 +286,9 @@ ul.tree{
 /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
 .tree .active {
     display: block;
+}
+
+small.dataSet{
+    color: grey;
+    font-size: 0.8em;
 }

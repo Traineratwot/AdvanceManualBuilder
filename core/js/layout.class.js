@@ -3,6 +3,7 @@ class LayoutEditorClass {
 		this.block = $('#editor')
 		this.modal = $('#editorModal')
 		this.addModal = $('#addModal')
+		this.modals ={}
 	}
 
 
@@ -26,7 +27,6 @@ class LayoutTreeClass {
 
 	render() {
 		this.block.html('')
-		this.create_manual = $(`<button type="button" class="btn btn-primary" id="create_manual"></button>`).text('create manual').appendTo(this.block)
 		this.renderTree()
 	}
 
@@ -41,8 +41,16 @@ class LayoutTreeClass {
 				}
 			}
 		}
+		$(treeTemplate.get('add', {
+			text: 'add manual',
+			class: CLASSES.ManualClass.constructor.name,
+			treeIcon: 'diff-added'
+		})).appendTo(this.tree)
+
 		this.treeEvent()
 	}
+
+
 	treeEvent() {
 		$('.caret').on('nondblclick', function() {
 			$(this).toggleClass('caret-down').find('+ .nested').slideToggle()
@@ -57,7 +65,7 @@ class LayoutTreeClass {
 	}
 }
 
-var layout = {}
+
 layout.editor = new LayoutEditorClass()
 layout.tree = new LayoutTreeClass()
 layout.tree.render()
