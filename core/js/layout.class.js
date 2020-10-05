@@ -13,7 +13,7 @@ class LayoutEditorClass {
 	render(elem = {}) {
 		this.block.html('')
 		this.elem = elem
-		if(elem instanceof CLASSES.CommonClass || elem instanceof ManualClass) {
+		if(elem instanceof CLASSES.CommonClass ){
 			elem.editorRender(this.block)
 		}
 	}

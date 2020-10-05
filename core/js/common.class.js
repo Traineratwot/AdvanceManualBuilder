@@ -8,7 +8,8 @@ CLASSES.CommonClass = class CommonClass {
 	treeIcon = 'circle-outline'
 	treeAddIcon = 'diff-added'
 	availableChildrenClass = []
-	parent=null
+	parent = null
+	temp = null
 
 
 	constructor(objects = {}) {
@@ -28,15 +29,6 @@ CLASSES.CommonClass = class CommonClass {
 	 * @param  {Object} manual
 	 * @param  {number} key
 	 */
-	setManual(manual, key) {
-		if(manual instanceof CLASSES.ManualClass) {
-			this.manual = manual
-			this.sortKey = key
-			this.ElementId = key
-		}
-	}
-
-
 	setParent(parent, key) {
 		if(parent instanceof CLASSES.CommonClass) {
 			this.parent = parent
@@ -47,7 +39,7 @@ CLASSES.CommonClass = class CommonClass {
 
 
 	addChildren(obj, key) {
-		if(obj instanceof CLASSES.CommonClass) {
+		if(obj instanceof CLASSES.CommonClass && obj.parent === null) {
 			if(key.indexOf('[]') > 0 || this[key] instanceof Array) {
 				if(!this[key] instanceof Array) {
 					this[key] = []
@@ -59,7 +51,7 @@ CLASSES.CommonClass = class CommonClass {
 				obj.setParent(this, -1)
 				this[key] = obj
 			}
-
+			console.info(this.GlobalKey + ' added ' + obj.GlobalKey)
 		}
 	}
 
@@ -67,71 +59,60 @@ CLASSES.CommonClass = class CommonClass {
 	render() { console.info('TODO render(){}') }
 
 
-	editorRender(parent, name = false, united = false) {
-		var name = name ?? this.constructor.name
+	editorRender(parent, name = false, object = false,options) {
+		name = name ?? this.constructor.name
 		console.info('TODO editorRender(){}', arguments)
-		if(united !== false) {
-			layout.editor.modals[united.GlobalKey]
-			for(const editorFieldsKey in this.editorFields) {
-				this.editorFields[editorFieldsKey].render(layout.editor.modals[united.GlobalKey].find('div.modal-body'), this[editorFieldsKey])
-			}
-		} else {
-			if(typeof layout?.editor?.modals[this._GlobalKey] == 'undefined') {
-				layout.editor.modals[this._GlobalKey] = $(editorTemplate.get('modal', {
-					id: this._GlobalKey,
-					parent: this.parent.GlobalKey,
-					name: 'add ' + name,
-					classKey: this.constructor.name,
-				})).appendTo('body')
-				layout.editor.modals[this._GlobalKey].find('div.modal-body').html('')
-			}
-			for(const editorFieldsKey in this.editorFields) {
-				this.editorFields[editorFieldsKey].render(layout.editor.modals[this._GlobalKey].find('div.modal-body'), this[editorFieldsKey])
-			}
-			var button = $(editorTemplate.get('button', {
-				id: this._GlobalKey,
-				text: 'add ' + name,
+		if(typeof layout?.editor?.modals[this.GlobalKey] == 'undefined') {
+			layout.editor.modals[this.GlobalKey] = $(editorTemplate.get('modal', {
+				id: this.GlobalKey,
+				parent: this?.parent?.GlobalKey,
+				name: options.prefix + name,
 				classKey: this.constructor.name,
-			})).appendTo(parent)
-			var self = this
-			button.find('button').on('click', function() {
-				var result = new CLASSES[$(this).data('class')]
-				self.parent.addChildren(result, this.name)
-				result.editorRender(parent, this.name,self)
-				layout.editor.modals[$(this).data('object')].find('button.action-cancel').attr('data-cancel',result.GlobalKey)
-				layout.editor.modals[$(this).data('object')].modal('show')
-			})
-			$('button.action-save').on('click',function(){
-				$(`#`+$(this).data('id')+`_editorModal`).modal('hide')
-				setTimeout(()=>{
-					layout.editor.render(GOA[$(this).data('parent')])
-				},100)
-			})
-			$('button.action-cancel').on('click',function(){
-				GOA[$(this).data('parent')].removeChildren($(this).data('cancel'))
-			})
+			})).appendTo('body')
 		}
+		layout.editor.modals[this.GlobalKey].find('div.modal-body').html('')
+		for(const editorFieldsKey in this.editorFields) {
+			this.editorFields[editorFieldsKey].render(layout.editor.modals[this.GlobalKey].find('div.modal-body'), this[editorFieldsKey])
+		}
+		var button = $(editorTemplate.get('button', {
+			id: this.GlobalKey,
+			text: options.prefix + name,
+			classKey: this.constructor.name,
+		})).appendTo(parent)
+		var self = this
+		button.find('button').on('click', function() {
+			layout.editor.modals[$(this).data('object')].modal('show')
+		})
+		layout.editor.modals[this.GlobalKey].find('button.action-save').on('click', () => {
+			if(object !== false) {
+				object.addChildren(this, name)
+			}
+		})
+		layout.editor.modals[this.GlobalKey].find('button.action-cancel').on('click', () =>  {
+			tmp.remove(this)
+		})
 
 	}
 
-	removeChildren(GlobalKey,obj = false){
-		if(obj == false){
-			obj = this;
+
+	removeChildren(GlobalKey, obj = false) {
+		if(obj == false) {
+			obj = this
 		}
 		for(const objKey in obj) {
-			const val = obj[objKey];
-			if(val instanceof CommonClass){
-				if(val.GlobalKey == GlobalKey){
-					delete obj[objKey];
+			const val = obj[objKey]
+			if(val instanceof CommonClass) {
+				if(val.GlobalKey == GlobalKey) {
+					delete obj[objKey]
 					return true
 				}
 			}
-			if(val instanceof Array || val instanceof Object){
+			if(val instanceof Array || val instanceof Object) {
 				for(const objKey in obj) {
-					const val = obj[objKey];
-					if(val instanceof CommonClass){
-						if(val.GlobalKey == GlobalKey){
-							delete obj[objKey];
+					const val = obj[objKey]
+					if(val instanceof CommonClass) {
+						if(val.GlobalKey == GlobalKey) {
+							delete obj[objKey]
 							return true
 						}
 					}
@@ -139,6 +120,7 @@ CLASSES.CommonClass = class CommonClass {
 			}
 		}
 	}
+
 
 	prepare() {
 		return true
@@ -326,31 +308,30 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			label = this.name
 		}
 		if(this.input === false) {
-			switch(this.type) {
+			switch( this.type ) {
 				case 'class':
 					if(this.object[this.name] instanceof CLASSES[this.class]) {
 						var result = this.object[this.name]
 					} else {
 						var result = new CLASSES[this.class]
 					}
-					this.object.addChildren(result, this.name)
-					result.editorRender(parent, this.name)
+					var key = tmp.add(result)
+
+					tmp[key].editorRender(parent, this.name, this.object,{
+						prefix:'set '
+					})
 					break
 				case 'class[]':
-					if(this.object[this.name].length > 0) {
-						for(const objectElementKey in this.object[this.name]) {
-							if(objectElementKey == 0) {
-								this.object[this.name][objectElementKey].editorRender(parent, this.name)
-							} else {
-								this.object[this.name][objectElementKey].editorRender(parent, this.name, this.object[this.name][0])
-
-							}
-						}
-					}else{
-						var result = new CLASSES[this.class]
-						this.object.addChildren(result, this.name)
-						result.editorRender(parent, this.name)
+					var result = new CLASSES[this.class]
+					var key = tmp.add(result)
+					for(const fieldKey in this.object[this.name]) {
+						this.object[this.name][fieldKey].editorRender(parent, this.name,this.object,{
+							prefix:'edit '
+						})
 					}
+					tmp[key].editorRender(parent, this.name,this.object,{
+						prefix:'add '
+					})
 					break
 				case 'select':
 					this.input = $(editorTemplate.get('select', {
@@ -428,13 +409,8 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 					break
 			}
 		} else {
-			this
-				.input
-				.appendTo(parent)
-
-			this
-				.input
-				.val(value)
+			this.input.appendTo(parent)
+			this.input.val(value)
 		}
 		return this.object
 	}

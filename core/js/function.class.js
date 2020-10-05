@@ -1,3 +1,29 @@
+CLASSES.FunctionInputClass = class FunctionInputClass extends CLASSES.CommonClass {
+	editorFields = {
+		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
+		dataType: new CLASSES.EditorFieldsClass(this, {name: 'dataType',type:'select',dataSet:dataTypes.toArray()}),
+
+	}
+	constructor() {
+		super(...arguments)
+		this.name = ''
+		this.addChildren(new CLASSES.DataTypeClass,'dataType')
+		this.addChildren(new CLASSES.VarClass,'defult')
+		this.addChildren(new CLASSES.DescriptionClass,'description')
+		this.possible_values = []
+	}
+}
+
+CLASSES.FunctionOutputClass = class FunctionOutputClass extends CLASSES.CommonClass {
+	constructor() {
+		super(...arguments)
+		this.name = ''
+		this.addChildren(new CLASSES.DataTypeClass,'dataType')
+		this.addChildren(new CLASSES.VarClass,'default')
+		this.possible_values = []
+	}
+}
+
 CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-method'
 	editorFields = {
@@ -42,30 +68,3 @@ CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 		}
 	}
 }
-
-CLASSES.FunctionInputClass = class FunctionInputClass extends CLASSES.CommonClass {
-	editorFields = {
-		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
-		dataType: new CLASSES.EditorFieldsClass(this, {name: 'dataType',type:'select',dataSet:dataTypes.toArray()}),
-
-	}
-	constructor() {
-		super(...arguments)
-		this.name = ''
-		this.addChildren(new CLASSES.DataTypeClass,'dataType')
-		this.addChildren(new CLASSES.VarClass,'defult')
-		this.addChildren(new CLASSES.DescriptionClass,'description')
-		this.possible_values = []
-	}
-}
-
-CLASSES.FunctionOutputClass = class FunctionOutputClass extends CLASSES.CommonClass {
-	constructor() {
-		super(...arguments)
-		this.name = ''
-		this.addChildren(new CLASSES.DataTypeClass,'dataType')
-		this.addChildren(new CLASSES.VarClass,'defult')
-		this.possible_values = []
-	}
-}
-

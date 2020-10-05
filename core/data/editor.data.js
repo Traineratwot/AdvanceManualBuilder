@@ -37,8 +37,8 @@ editorTemplate.modal   = '<div class="modal fade" id="${id}_editorModal" data-ob
 						 '                <div class="modal-body">\n' +
 						 '                </div>\n' +
 						 '                <div class="modal-footer">\n' +
-						 '                    <button type="button"  data-parent="${parent}" class="action-cancel btn btn-danger" data-dismiss="modal">Close</button>\n' +
-						 '                    <button type="button"  data-parent="${parent}" data-id="${id }"  class="btn btn-primary action-save">Save changes</button>\n' +
+						 '                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-secondary action-cancel" data-dismiss="modal">Close</button>\n' +
+						 '                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-primary   action-save"   data-dismiss="modal">Save changes</button>\n' +
 						 '                </div>\n' +
 						 '            </div>\n' +
 						 '        </div>\n' +

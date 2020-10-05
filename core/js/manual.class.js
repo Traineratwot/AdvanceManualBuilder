@@ -16,6 +16,7 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 
 	constructor(object) {
 		super()
+		GOA.add(this)
 		this.name = ''
 		this.version = ''
 		this.type = ''
@@ -23,14 +24,14 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 		this.elements = []
 		this.classKey = this.constructor.name
 		Object.assign(this, object)
-		GOA.add(this)
+
 	}
 
 
 	addElement(value) {
 		if(value instanceof CLASSES.CommonClass) {
 			var key = this.elements.length
-			value.setManual(this, key)
+			value.setParent(this, key)
 			this.elements.push(value)
 			return true
 		}
