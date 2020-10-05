@@ -1,9 +1,10 @@
-class CommonClass {
+var CLASSES = {}
+CLASSES.CommonClass = class CommonClass {
 	_empty = true
 	_ElementId = null
 	_GlobalKey = null
 	editorFields = {
-		name: new EditorFieldsClass(this, {name: 'name'}),
+		name: new CLASSES.EditorFieldsClass(this, { name: 'name' }),
 	}
 	treeIcon = 'circle-outline'
 	treeAddIcon = 'diff-added'
@@ -11,7 +12,7 @@ class CommonClass {
 
 
 	constructor(objects = {}) {
-		if(arguments.length == 0) {
+		if (arguments.length == 0) {
 			this._empty = true
 		} else {
 			this._empty = false
@@ -28,7 +29,7 @@ class CommonClass {
 	 * @param  {number} key
 	 */
 	setManual(manual, key) {
-		if(manual instanceof ManualClass) {
+		if (manual instanceof CLASSES.ManualClass) {
 			this.manual = manual
 			this.sortKey = key
 			this.ElementId = key
@@ -36,13 +37,13 @@ class CommonClass {
 	}
 
 
-	render() {console.info('TODO render(){}')}
+	render() { console.info('TODO render(){}') }
 
 
 	editorRender(parent) {
 		console.info('TODO editorRender(){}', arguments)
 		layout.editor.modal.find('div.modal-body').html('')
-		for(const editorFieldsKey in this.editorFields) {
+		for (const editorFieldsKey in this.editorFields) {
 			this.editorFields[editorFieldsKey].render(layout.editor.modal.find('div.modal-body'), this[editorFieldsKey])
 		}
 		layout.editor.modal.modal('show')
@@ -56,12 +57,12 @@ class CommonClass {
 
 
 	success(msg = '', data = {}) {
-		return {success: true, msg: msg, data: data}
+		return { success: true, msg: msg, data: data }
 	}
 
 
 	failure(msg = '', data = {}) {
-		return {success: false, msg: msg, data: data}
+		return { success: false, msg: msg, data: data }
 	}
 
 
@@ -81,7 +82,7 @@ class CommonClass {
 
 
 	set ElementId(value) {
-		if(this._ElementId == null) {
+		if (this._ElementId == null) {
 			this._ElementId = value
 		}
 	}
@@ -93,7 +94,7 @@ class CommonClass {
 
 
 	set GlobalKey(value) {
-		if(this._GlobalKey == null) {
+		if (this._GlobalKey == null) {
 			this._GlobalKey = value
 		}
 	}
@@ -101,17 +102,17 @@ class CommonClass {
 
 	toObject() {
 		var JSON = {}
-		for(let key in this) {
+		for (let key in this) {
 			let element = this[key]
-			if(element instanceof CommonClass) {
+			if (element instanceof CLASSES.CommonClass) {
 				JSON[key] = element.toObject()
 				continue
 			}
-			if(element instanceof Array) {
+			if (element instanceof Array) {
 				JSON[key] = []
-				for(let k in element) {
+				for (let k in element) {
 					let e = element[k]
-					if(e instanceof CommonClass) {
+					if (e instanceof CLASSES.CommonClass) {
 						JSON[key].push(e.toObject())
 					}
 				}
@@ -140,11 +141,9 @@ class CommonClass {
 
 	}
 
-
-
 }
 
-class DataTypeClass extends CommonClass {
+CLASSES.DataTypeClass = class DataTypeClass extends CLASSES.CommonClass {
 	constructor(options = {}) {
 		super(...arguments)
 		this.name = ''
@@ -162,7 +161,7 @@ class DataTypeClass extends CommonClass {
 	}
 }
 
-class DescriptionClass extends CommonClass {
+CLASSES.DescriptionClass = class DescriptionClass extends CLASSES.CommonClass {
 	constructor() {
 		super(...arguments)
 		this.body = ''
@@ -174,7 +173,7 @@ class DescriptionClass extends CommonClass {
 	}
 }
 
-class VarClass extends CommonClass {
+CLASSES.VarClass = class VarClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-variable'
 
 
@@ -187,10 +186,10 @@ class VarClass extends CommonClass {
 	}
 }
 
-class CodePreviewClass extends CommonClass {
+CLASSES.CodePreviewClass = class CodePreviewClass extends CLASSES.CommonClass {
 	editorFields = {
-		language: new EditorFieldsClass(this, {name: 'lanuage', type: 'select'}),
-		body: new EditorFieldsClass(this, {name: 'body', type: 'textarea'}),
+		language: new CLASSES.EditorFieldsClass(this, { name: 'lanuage', type: 'select' }),
+		body: new CLASSES.EditorFieldsClass(this, { name: 'body', type: 'textarea' }),
 	}
 
 
@@ -203,7 +202,7 @@ class CodePreviewClass extends CommonClass {
 	}
 }
 
-class EditorFieldsClass {
+CLASSES.EditorFieldsClass = class EditorFieldsClass {
 	constructor(object, options) {
 		this.object = object
 		this.name = ''
@@ -218,8 +217,17 @@ class EditorFieldsClass {
 
 
 	render(parent, value = '') {
-		if(this.input === false) {
-			switch( this.type ) {
+		if (this.input === false) {
+			switch (this.type) {
+				case 'class':
+				case 'class[]':
+					var result = new CLASSES.this.class;
+					result.editorRender()
+					if (this.type == 'class') {
+						this.object[this.name] = result;
+					} else {
+						this.object.push(result);
+					}
 				default:
 					this.input = $(editorTemplate.get('input', {
 						name: this.name,
@@ -228,17 +236,17 @@ class EditorFieldsClass {
 						id: this.id,
 						placeholder: this.placeholder,
 					})).appendTo(parent)
-					if(this.dataSet.length > 0) {
+					if (this.dataSet.length > 0) {
 						this.input.find('input').autocomplete({
 							source: this.dataSet.toArray(),
 							minLength: 0,
 						})
 					}
-					this.input.find('input').on('input', function() {
+					this.input.find('input').on('input', function () {
 						$(this).removeClass('changed')
 						$(this).addClass('changing')
 					})
-					if(this.callback !== false) {
+					if (this.callback !== false) {
 						this.input.find('input').on('change', () => {
 							this.callback()
 							this.input.find('input').removeClass('changing')
@@ -258,16 +266,16 @@ class EditorFieldsClass {
 			this.input.appendTo(parent)
 			this.input.val(value)
 		}
-		return this.input
+		return this.object
 	}
 }
 
-class Template {
+CLASSES.Template = class Template {
 	get(s, v = null) {
-		if(v != null && typeof (v) == 'object') {
+		if (v != null && typeof (v) == 'object') {
 			var t = '' + this[s]
-			for(var k in v) {
-				if(typeof v[k] != 'undefined') {
+			for (var k in v) {
+				if (typeof v[k] != 'undefined') {
 					t = t.replaceAll('${' + k + '}', v[k])
 				}
 			}
@@ -277,7 +285,7 @@ class Template {
 	}
 }
 
-class GlobalObjectAccess {
+CLASSES.GlobalObjectAccess = class GlobalObjectAccess {
 	constructor() {
 
 	}
@@ -285,7 +293,7 @@ class GlobalObjectAccess {
 
 	getAllKeys() {
 		var a = []
-		for(const thisKey in this) {
+		for (const thisKey in this) {
 			a.push(this)
 		}
 		return a
@@ -294,7 +302,7 @@ class GlobalObjectAccess {
 
 	add(value) {
 		var key = this.getUniqueKey()
-		if(value.GlobalKey === null) {
+		if (value.GlobalKey === null) {
 			value.GlobalKey = key
 			this[key] = value
 		}
@@ -309,8 +317,8 @@ class GlobalObjectAccess {
 			return element == this
 		}
 
-		if(keys.length > 0) {
-			while(keys.find(eq, key)) {
+		if (keys.length > 0) {
+			while (keys.find(eq, key)) {
 				key = getRandomString()
 			}
 		}
@@ -318,4 +326,4 @@ class GlobalObjectAccess {
 	}
 }
 
-var GOA = new GlobalObjectAccess
+var GOA = new CLASSES.GlobalObjectAccess

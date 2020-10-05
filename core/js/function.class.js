@@ -1,6 +1,7 @@
-class FunctionClass extends CommonClass {
+
+CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-method'
-	availableChildrenClass=[
+	availableChildrenClass = [
 		'FunctionInputClass',
 		'FunctionOutputClass',
 		'DescriptionClass',
@@ -9,32 +10,34 @@ class FunctionClass extends CommonClass {
 	constructor(options = {}) {
 		super(...arguments)
 		this.name = ''
-		this.inputs = [new FunctionInputClass]
-		this.output = new FunctionOutputClass()
-		this.description = new DescriptionClass
-		this.code = new CodePreviewClass
-		Object.assign(this,options)
+		this.inputs = [new CLASSES.FunctionInputClass]
+		this.output = new CLASSES.FunctionOutputClass()
+		this.description = new CLASSES.DescriptionClass
+		this.code = new CLASSES.CodePreviewClass
+		Object.assign(this, options)
 	}
 }
 
-class FunctionInputClass extends CommonClass {
+
+CLASSES.FunctionInputClass = class FunctionInputClass extends CLASSES.CommonClass {
 	constructor() {
 		super(...arguments)
 		this.name = ''
-		this.dataType = new DataTypeClass
-		this.defult = new VarClass
-		this.description = new DescriptionClass
-		this.possible_values = [new VarClass]
+		this.dataType = new CLASSES.DataTypeClass
+		this.defult = new CLASSES.VarClass
+		this.description = new CLASSES.DescriptionClass
+		this.possible_values = [new CLASSES.VarClass]
 	}
 }
 
-class FunctionOutputClass extends CommonClass {
+
+CLASSES.FunctionOutputClass = class FunctionOutputClass extends CLASSES.CommonClass {
 	constructor() {
 		super(...arguments)
 		this.name = ''
-		this.dataType = new DataTypeClass
-		this.description = new DescriptionClass
-		this.possible_values = [new VarClass]
+		this.dataType = new CLASSES.DataTypeClass
+		this.description = new CLASSES.DescriptionClass
+		this.possible_values = [new CLASSES.VarClass]
 	}
 }
 

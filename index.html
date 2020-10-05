@@ -2,121 +2,121 @@
 <html lang="ru">
 
 <head>
-    <meta charset="UTF-8"/>
-    <title>AdvanceManualBuilder</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="core/data/classes.data.js"></script>
+	<meta charset="UTF-8" />
+	<title>AdvanceManualBuilder</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script src="core/data/classes.data.js"></script>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="core/libs/bootstrap/css/bootstrap.min.css">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="core/libs/bootstrap/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="core/css/main.css"/>
-    <script src="core/libs/jquery.min.js"></script>
-    <script src="core/libs/jquery-ui.js"></script>
-    <script src="core/libs/lib.js"></script>
-    <script src="core/js/common.class.js"></script>
-    <script src="core/js/function.class.js"></script>
-    <script src="core/js/class.class.js"></script>
-    <script src="core/js/manual.class.js"></script>
+	<link rel="stylesheet" href="core/css/main.css" />
+	<script src="core/libs/jquery.min.js"></script>
+	<script src="core/libs/jquery-ui.js"></script>
+	<script src="core/libs/lib.js"></script>
+	<script src="core/js/common.class.js"></script>
+	<script src="core/js/function.class.js"></script>
+	<script src="core/js/class.class.js"></script>
+	<script src="core/js/manual.class.js"></script>
 
-    <script src="core/data/dataType.data.js"></script>
-    <script src="core/data/tree.data.js"></script>
-    <script src="core/data/editor.data.js"></script>
+	<script src="core/data/dataType.data.js"></script>
+	<script src="core/data/tree.data.js"></script>
+	<script src="core/data/editor.data.js"></script>
 </head>
 
 <body>
 
-<div class="container main ">
-    <div class="row menu bg- border-bottom bg-dark">
-        <div class="col">
-        </div>
-    </div>
-    <div class="row dashboard">
-        <div class="col-2 border-right layout bg-dark" id="tree"></div>
-        <div class="col-5 border-right layout bg-dark" id="editor"></div>
-        <div class="col-5 border-right layout bg-dark" id="preview"></div>
-    </div>
-</div>
+	<div class="container main ">
+		<div class="row menu bg- border-bottom bg-dark">
+			<div class="col">
+			</div>
+		</div>
+		<div class="row dashboard">
+			<div class="col-2 border-right layout bg-dark" id="tree"></div>
+			<div class="col-5 border-right layout bg-dark" id="editor"></div>
+			<div class="col-5 border-right layout bg-dark" id="preview"></div>
+		</div>
+	</div>
 
 
-<div class="modal fade" id="editorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<label class="input-group-text" for="inputGroupSelect01">Options</label>
-					</div>
-					<select class="custom-select" id="inputGroupSelect01">
-						<option selected>Выберите...</option>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
-					</select>
+	<div class="modal fade" id="editorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 				</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script container>
-	var manuals = []
-	manuals.push(new ManualClass({
-		name: 'Тестовый мануал',
-	}))
-	manuals[0].addElement(new FunctionClass({
-		name: 'Тестовая функция'
-	}))
-	manuals[0].addElement(new ClassClass({
-		name: 'Тестовый класс'
-	}))
-	manuals.push(new ManualClass({
-		name: 'Тестовый мануал №2',
-	}))
-	manuals[1].addElement(new FunctionClass({
-		name: 'Тестовая функция 2'
-	}))
-	manuals[1].addElement(new ObjectClass({
-		name: 'Тестовый объект'
-	}))
-</script>
-<footer style="display:none;">
-    <script src="core/libs/bootstrap/js/bootstrap.min.js"></script>
-    <script src="core/js/layout.class.js"></script>
-    <script src="core/js/bottom.js"></script>
-</footer>
+				<div class="modal-body">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="inputGroupSelect01">Options</label>
+						</div>
+						<select class="custom-select" id="inputGroupSelect01">
+							<option selected>Выберите...</option>
+							<option value="1">One</option>
+							<option value="2">Two</option>
+							<option value="3">Three</option>
+						</select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script container>
+		var manuals = []
+		manuals.push(new CLASSES.ManualClass({
+			name: 'Тестовый мануал',
+		}))
+		manuals[0].addElement(new CLASSES.FunctionClass({
+			name: 'Тестовая функция'
+		}))
+		manuals[0].addElement(new CLASSES.ClassClass({
+			name: 'Тестовый класс'
+		}))
+		manuals.push(new CLASSES.ManualClass({
+			name: 'Тестовый мануал №2',
+		}))
+		manuals[1].addElement(new CLASSES.FunctionClass({
+			name: 'Тестовая функция 2'
+		}))
+		manuals[1].addElement(new CLASSES.ObjectClass({
+			name: 'Тестовый объект'
+		}))
+	</script>
+	<footer style="display:none;">
+		<script src="core/libs/bootstrap/js/bootstrap.min.js"></script>
+		<script src="core/js/layout.class.js"></script>
+		<script src="core/js/bottom.js"></script>
+	</footer>
 </body>
 
 </html>
