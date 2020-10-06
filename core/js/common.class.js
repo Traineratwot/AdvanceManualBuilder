@@ -3,7 +3,7 @@ CLASSES.CommonClass = class CommonClass {
 	_ElementId = null
 	_GlobalKey = null
 	name = ''
-	uqField= 'name'
+	uqField = 'name'
 	editorFields = {
 		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
 	}
@@ -23,6 +23,7 @@ CLASSES.CommonClass = class CommonClass {
 		this.sortKey = 0
 		this.classKey = this.constructor.name
 		Object.assign(this, objects)
+		this[this.uqField] = this[this.uqField] ?? ''
 		GOA.add(this)
 	}
 
@@ -53,8 +54,31 @@ CLASSES.CommonClass = class CommonClass {
 				obj.setParent(this, -1)
 				this[key] = obj
 			}
+			$(document).trigger(this.classKey + '_childAdd', {
+				obj: this,
+				child: obj
+			})
+			$(document).trigger('CommonClass_childAdd', {
+				obj: this,
+				child: obj
+			})
 			console.info(this.GlobalKey + ' <== ' + obj.GlobalKey)
 		}
+	}
+
+
+	set(key, value) {
+		this[key] = value
+		$(document).trigger(this.classKey + '_set', {
+			obj: this,
+			key: key,
+			value: value,
+		})
+		$(document).trigger('CommonClass_set', {
+			obj: this,
+			key: key,
+			value: value,
+		})
 	}
 
 
@@ -62,6 +86,7 @@ CLASSES.CommonClass = class CommonClass {
 
 
 	editorRender(options) {
+		this[this.uqField] = this[this.uqField] ?? ''
 		options = Object.assign({
 			parent: layout.editor.block,
 			name: this.name ?? '',
@@ -107,7 +132,16 @@ CLASSES.CommonClass = class CommonClass {
 				tmp.remove(this)
 			})
 		}
-
+		$(document).trigger(this.GlobalKey+'_rendered', {
+			obj: this,
+			key: this.GlobalKey,
+			options: options,
+		})
+		$(document).trigger('editor_rendered', {
+			obj: this,
+			key: this.GlobalKey,
+			options: options,
+		})
 	}
 
 
@@ -230,7 +264,7 @@ CLASSES.CommonClass = class CommonClass {
 
 
 	renderTree(parent) {
-
+		GOA.add(this)
 		var name
 		if(this.name) {
 			name = this.name
@@ -288,6 +322,30 @@ CLASSES.CommonClass = class CommonClass {
 	}
 
 
+	regeneration(obj) {
+		for(const thisKey in this) {
+			if(this[thisKey] instanceof Object && (this[thisKey] instanceof CommonClass) == false) {
+				if(this[thisKey]?.classKey) {
+					var tmpKey = tmp.add(new CLASSES[this[thisKey].classKey](this[thisKey]))
+					this.addChildren(tmp[tmpKey].regeneration(this[thisKey]), thisKey)
+				}
+			}
+			if(this[thisKey] instanceof Array) {
+				for(const k in this[thisKey]) {
+					if(this[thisKey][k] instanceof Object && (this[thisKey][k] instanceof CommonClass) == false) {
+						if(this[thisKey][k]?.classKey) {
+							var tmpKey = tmp.add(new CLASSES[this[thisKey][k].classKey](this[thisKey][k]))
+							this.addChildren(tmp[tmpKey].regeneration(this[thisKey][k]), thisKey)
+						}
+					}
+				}
+			}
+		}
+		Object.assign(this, obj)
+		return this
+	}
+
+
 	addElement(tmpElement) {
 
 	}
@@ -319,7 +377,7 @@ CLASSES.DescriptionClass = class DescriptionClass extends CLASSES.CommonClass {
 
 
 	editorFields = {
-		body: new CLASSES.EditorFieldsClass(this, {name: 'body', type: 'textarea'}),
+		body: new CLASSES.EditorFieldsClass(this, {name: 'body', type: 'textarea', label: 'Description'}),
 	}
 
 
@@ -390,6 +448,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 		this.type = 'text'
 		this.dataSet = []
 		this.callback = false
+		this.label = false
 		this.placeholder = ''
 		this.id = getRandomString()
 		this.input = false
@@ -399,7 +458,11 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 
 	render(parent, value = '', label = false) {
 		if(!label) {
-			label = this.name
+			if(this.label) {
+				label = this.label
+			} else {
+				label = this.name
+			}
 		}
 		if(this.input === false) {
 			switch(this.type) {
@@ -423,6 +486,18 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			this.input.appendTo(parent)
 			this.input.val(value)
 		}
+		$(document).trigger(this.classKey + '_rendered', {
+			obj: this,
+			parent: parent,
+			label: label,
+			value: value,
+		})
+		$(document).trigger('CommonClass_rendered', {
+			obj: this,
+			parent: parent,
+			label: label,
+			value: value,
+		})
 		return this.object
 	}
 
@@ -619,10 +694,20 @@ CLASSES.GlobalObjectAccess = class GlobalObjectAccess {
 
 	add(value) {
 		var key = this.getUniqueKey()
-		if(value.GlobalKey === null) {
+		if(value.GlobalKey === null || typeof value.GlobalKey == 'undefined') {
 			value.GlobalKey = key
 			this[key] = value
+		} else {
+			if(typeof this[value.GlobalKey] == 'undefined') {
+				key = value.GlobalKey
+				this[key] = value
+			}
 		}
+		console.info('initialized ' + key + ' ' + value.constructor.name)
+		$(document).trigger(value.constructor.name+'_initialized', {
+			obj: value,
+			key: key,
+		})
 	}
 
 

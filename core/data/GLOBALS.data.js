@@ -1,3 +1,4 @@
+const manuals = []
 const CLASSES = {}
 const dataTypes = {}
 const layout = {}

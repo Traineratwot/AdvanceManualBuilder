@@ -83,10 +83,29 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 	}
 
 
-	editorRender(parent) {
+	editorRender(options) {
+		options = Object.assign({
+			parent: layout.editor.block,
+			name: this.name ?? '',
+			label: '',
+			object: false,
+			prefix: 'edit ',
+			btnClass: 'btn-primary',
+			caller: 'tree'
+		}, options)
 		for(const editorFieldsKey in this.editorFields) {
-			this.editorFields[editorFieldsKey].render(parent, this[editorFieldsKey])
+			this.editorFields[editorFieldsKey].render(options.parent, this[editorFieldsKey], options.label)
 		}
+		$(document).trigger(this.GlobalKey+'_rendered', {
+			obj: this,
+			key: this.GlobalKey,
+			options: options,
+		})
+		$(document).trigger('editor_rendered', {
+			obj: this,
+			key: this.GlobalKey,
+			options: options,
+		})
 	}
 
 
@@ -106,9 +125,10 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 
 
 	renderTree(parent) {
+		GOA.add(this)
 		var item = $(treeTemplate.get('item', {
 			text: this.name,
-			GlobalKey: this._GlobalKey,
+			GlobalKey: this.GlobalKey,
 			treeIcon: this.treeIcon
 		})).appendTo(parent)
 		if(this.elements.length > 0) {

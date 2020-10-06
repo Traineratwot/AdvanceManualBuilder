@@ -94,7 +94,6 @@
     </div>
 </div>
 <script>
-	var manuals = []
 	manuals.push(new CLASSES.ManualClass({
 		name: 'Тестовый мануал',
 	}))
@@ -113,11 +112,16 @@
 	manuals[1].addElement(new CLASSES.ObjectClass({
 		name: 'Тестовый объект'
 	}))
+    $(document).on('editor_rendered',function(e,data){
+    	console.error(data)
+    })
 </script>
 <footer style="display:none;">
     <script src="core/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="core/js/layout.class.js"></script>
     <script src="core/js/bottom.js"></script>
+    <script src="core/js/saveAndGen.js"></script>
+    <script src="core/js/session.class.js"></script>
 </footer>
 </body>
 

@@ -35,9 +35,18 @@ CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 	}
 
 
-	editorRender(parent) {
+	editorRender(options) {
+		options = Object.assign({
+			parent: layout.editor.block,
+			name: this.name ?? '',
+			label: '',
+			object: false,
+			prefix: 'edit ',
+			btnClass: 'btn-primary',
+			caller: 'tree'
+		}, options)
 		for(const editorFieldsKey in this.editorFields) {
-			this.editorFields[editorFieldsKey].render(parent, this[editorFieldsKey])
+			this.editorFields[editorFieldsKey].render(options.parent, this[editorFieldsKey], options.label)
 		}
 	}
 	renderTree(parent) {
