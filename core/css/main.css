@@ -57,7 +57,6 @@ pre {
 
 pre code.hljs {
     display: inline;
-    max-width: auto;
     padding: 0;
     margin: 0;
     overflow: visible;
@@ -227,36 +226,40 @@ div.row.dashboard {
 .main.container .layout {
     overflow: auto;
 }
-#create_manual{
+
+#create_manual {
     display: block;
     margin: auto;
 }
 
-.changing + div.input-group-append  span{
+.changing + div.input-group-append span {
     background: orange;
 }
-.changed + div.input-group-append  span{
+
+.changed + div.input-group-append span {
     background: green;
 }
-.invalid + div.input-group-append  span {
+
+.invalid + div.input-group-append span {
     background: red;
 }
 
 /* Remove default bullets */
-ul.tree{
+ul.tree {
     list-style-type: none;
     color: #fff;
 }
 
 /* Remove margins and padding from the parent ul */
 .tree {
-    list-style-type:none;
+    list-style-type: none;
     margin: 0 0 0 20px;
     padding: 0;
 }
-.tree li[style="list-style-image:url('assets/icons/dark/circle-outline.svg');"]{
-    list-style-type:none !important;
-    list-style-image:none !important;
+
+.tree li[style="list-style-image:url('assets/icons/dark/circle-outline.svg');"] {
+    list-style-type: none !important;
+    list-style-image: none !important;
 }
 
 /* Style the caret/arrow */
@@ -267,6 +270,7 @@ ul.tree{
 
 /* Create the caret/arrow with a unicode, and style it */
 .tree .caret::before {
+
     content: "\25B6";
     color: black;
     display: inline-block;
@@ -276,6 +280,11 @@ ul.tree{
 /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
 .tree .caret-down::before {
     transform: rotate(90deg);
+
+}
+.tree .caret-down.empty::before {
+    transform: unset;
+
 }
 
 /* Hide the nested list */
@@ -287,8 +296,10 @@ ul.tree{
 .tree .active {
     display: block;
 }
-
-small.dataSet{
+span.caret.empty::before{
+    filter: grayscale(100%);
+}
+small.dataSet {
     color: grey;
     font-size: 0.8em;
 }

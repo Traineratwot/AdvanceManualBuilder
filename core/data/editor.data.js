@@ -31,25 +31,25 @@ editorTemplate.select = '<div class="form-group"><div class="input-group mb-3">\
 	'</div></div>'
 editorTemplate.option = '<option value="${value}" ${attr}>${label}</option>'
 
-editorTemplate.button = '<div class="form-group"><button type="button" id="${id}_button" data-class="${classKey}" data-object="${id}" class="btn ${btnClass}">${text}</button></div>'
+editorTemplate.button = '<div class="form-group"><button ${attr} type="button" id="${id}_button" data-class="${classKey}" data-object="${id}" class="btn ${btnClass}">${text}</button></div>'
 
-editorTemplate.modal = '<div class="modal fade" id="${id}_editorModal" data-object="${id}" data-parent="${parent}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"\n' +
-	'        aria-hidden="true">\n' +
-	'        <div class="modal-dialog modal-dialog-centered" role="document">\n' +
-	'            <div class="modal-content">\n' +
-	'                <div class="modal-header">\n' +
-	'                    <h3 class="modal-title">${name}</h3>\n' +
-	'                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
-	'                        <span aria-hidden="true">&times;</span>\n' +
-	'                    </button>\n' +
-	'                </div>\n' +
-	'                <div class="modal-body">\n' +
-	'                </div>\n' +
-	'                <div class="modal-footer">\n' +
-	'                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-secondary action-cancel" data-dismiss="modal">Close</button>\n' +
-	'                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-primary   action-save"   data-dismiss="modal">Save changes</button>\n' +
-	'                </div>\n' +
-	'            </div>\n' +
-	'        </div>\n' +
-	'    </div>\n'
+editorTemplate.modal = 	'<div class="modal fade" id="${id}_editorModal" data-object="${id}" data-parent="${parent}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"\n' +
+						'        aria-hidden="true">\n' +
+						'        <div class="modal-dialog modal-dialog-centered" role="document">\n' +
+						'            <div class="modal-content">\n' +
+						'                <div class="modal-header">\n' +
+						'                    <h3 class="modal-title">${name}</h3>\n' +
+						'                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
+						'                        <span aria-hidden="true">&times;</span>\n' +
+						'                    </button>\n' +
+						'                </div>\n' +
+						'                <div class="modal-body">\n' +
+						'                </div>\n' +
+						'                <div class="modal-footer">\n' +
+						'                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-secondary action-cancel" data-dismiss="modal">Close</button>\n' +
+						'                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-primary   action-save"   data-dismiss="modal">Save changes</button>\n' +
+						'                </div>\n' +
+						'            </div>\n' +
+						'        </div>\n' +
+						'    </div>\n'
 

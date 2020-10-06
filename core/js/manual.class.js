@@ -12,6 +12,12 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 		}),
 		type: new CLASSES.EditorFieldsClass(this, {name: 'type'}),
 	}
+	availableChildrenClass = {
+		ClassClass: {label: 'Класс', childKey: 'elements'},
+		FunctionClass: {label: 'Функция', childKey: 'elements'},
+		ObjectClass: {label: 'Объект', childKey: 'elements'},
+		CodePreviewClass: {label: 'Пример кода', childKey: 'elements'},
+	}
 
 
 	constructor(object) {
@@ -29,10 +35,11 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 
 
 	addElement(value) {
-		if(value instanceof CLASSES.CommonClass) {
+		if(value instanceof CLASSES.CommonClass && value.parent === null) {
 			var key = this.elements.length
 			value.setParent(this, key)
 			this.elements.push(value)
+			console.info(this.GlobalKey + ' <== ' + value.GlobalKey)
 			return true
 		}
 		return false
@@ -113,12 +120,8 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 				}
 			}
 		}
-		$(treeTemplate.get('add', {
-			text: 'add new',
-			GlobalKey: this._GlobalKey,
-			treeIcon: this.treeAddIcon
-		})).appendTo(subItem)
-
+		this.renderAddItem(subItem)
 	}
+
 }
 
