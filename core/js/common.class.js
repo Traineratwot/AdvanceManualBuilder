@@ -124,15 +124,17 @@ CLASSES.CommonClass = class CommonClass {
 			layout.editor.modals[this.GlobalKey].find('button.action-save').on('click', () => {
 				if(options.object !== false) {
 					options.object.addChildren(this, options.name)
-					layout.editor.render(GOA[current.editor])
-					layout.tree.render()
+					if(options.caller != 'create') {
+						layout.editor.render(GOA[current.editor])
+						layout.tree.render()
+					}
 				}
 			})
 			layout.editor.modals[this.GlobalKey].find('button.action-cancel').on('click', () => {
 				tmp.remove(this)
 			})
 		}
-		$(document).trigger(this.GlobalKey+'_rendered', {
+		$(document).trigger(this.GlobalKey + '_rendered', {
 			obj: this,
 			key: this.GlobalKey,
 			options: options,
@@ -145,10 +147,10 @@ CLASSES.CommonClass = class CommonClass {
 	}
 
 
-	editorRenderFields(parent) {
+	editorRenderFields(parent, caller = false) {
 		parent.html('')
 		for(const editorFieldsKey in this.editorFields) {
-			this.editorFields[editorFieldsKey].render(parent, this[editorFieldsKey])
+			this.editorFields[editorFieldsKey].render(parent, this[editorFieldsKey], false, caller)
 		}
 	}
 
@@ -304,7 +306,7 @@ CLASSES.CommonClass = class CommonClass {
 	createNewElement(classKey, parentGlobalKey, childKey, parent = null) {
 		parent = parent ?? layout.editor.block
 		var tempKey = tmp.add(new CLASSES[classKey])
-		tmp[tempKey].editorRenderFields(parent)
+		tmp[tempKey].editorRenderFields(parent, 'create')
 		$(editorTemplate.get('button', {
 			id: parentGlobalKey,
 			classKey: classKey,
@@ -445,6 +447,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 	constructor(object, options) {
 		this.object = object
 		this.name = ''
+		this.caller = this.constructor.name
 		this.type = 'text'
 		this.dataSet = []
 		this.callback = false
@@ -456,13 +459,16 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 	}
 
 
-	render(parent, value = '', label = false) {
+	render(parent, value = '', label = false, caller = false) {
 		if(!label) {
 			if(this.label) {
 				label = this.label
 			} else {
 				label = this.name
 			}
+		}
+		if(caller) {
+			this.caller = caller
 		}
 		if(this.input === false) {
 			switch(this.type) {
@@ -516,7 +522,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			object: this.object,
 			prefix: 'set ',
 			btnClass: 'btn-info',
-			caller: this.constructor.name
+			caller: this.caller
 		})
 	}
 
@@ -532,7 +538,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 				object: this.object,
 				prefix: 'edit ',
 				btnClass: 'btn-secondary',
-				caller: this.constructor.name
+				caller: this.caller
 			})
 		}
 		tmp[key].editorRender({
@@ -542,7 +548,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			object: this.object,
 			prefix: 'add ',
 			btnClass: 'btn-info',
-			caller: this.constructor.name
+			caller: this.caller
 		})
 	}
 
@@ -704,7 +710,7 @@ CLASSES.GlobalObjectAccess = class GlobalObjectAccess {
 			}
 		}
 		console.info('initialized ' + key + ' ' + value.constructor.name)
-		$(document).trigger(value.constructor.name+'_initialized', {
+		$(document).trigger(value.constructor.name + '_initialized', {
 			obj: value,
 			key: key,
 		})

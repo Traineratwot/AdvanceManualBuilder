@@ -24,7 +24,8 @@ class LayoutEditorClass {
 		this.elem = elem
 		if(elem instanceof CLASSES.CommonClass) {
 			elem.editorRender({
-				parent: this.block
+				parent: this.block,
+				caller:'create'
 			})
 		}
 	}
