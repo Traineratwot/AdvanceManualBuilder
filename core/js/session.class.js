@@ -4,6 +4,8 @@ CLASSES.SessionClass = class SessionClass{
 		Object.assign(this, objects)
 		GOA.add(this)
 	}
-
+	set(k,v){
+		this[k] = v
+	}
 }
 const session = new CLASSES.SessionClass

@@ -64,8 +64,14 @@ class LayoutTreeClass {
 
 
 	treeEvent() {
+		$('.caret:not("caret-down")').each(function() {
+			if(GOA[$(this).data('object')].treeOpened){
+				$(this).toggleClass('caret-down').find('+ .nested').slideToggle()
+			}
+		})
 		$('.caret').on('nondblclick', function() {
 			$(this).toggleClass('caret-down').find('+ .nested').slideToggle()
+			GOA[$(this).data('object')].treeOpenedToggle()
 		})
 		$('span.startEditor').on('dblclick', function() {
 			current.editor = $(this).data('object')
