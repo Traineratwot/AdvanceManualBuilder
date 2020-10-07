@@ -98,22 +98,22 @@
     </div>
 </div>
 <script>
-	manuals.push(new CLASSES.ManualClass({
+	manuals.add(new CLASSES.ManualClass({
 		name: 'Тестовый мануал',
 	}))
-	manuals[0].addElement(new CLASSES.FunctionClass({
+	manuals.index[0].addElement(new CLASSES.FunctionClass({
 		name: 'Тестовая функция'
 	}))
-	manuals[0].addElement(new CLASSES.ClassClass({
+	manuals.index[0].addElement(new CLASSES.ClassClass({
 		name: 'Тестовый класс'
 	}))
-	manuals.push(new CLASSES.ManualClass({
+	manuals.add(new CLASSES.ManualClass({
 		name: 'Тестовый мануал №2',
 	}))
-	manuals[1].addElement(new CLASSES.FunctionClass({
+	manuals.index[1].addElement(new CLASSES.FunctionClass({
 		name: 'Тестовая функция 2'
 	}))
-	manuals[1].addElement(new CLASSES.ObjectClass({
+	manuals.index[1].addElement(new CLASSES.ObjectClass({
 		name: 'Тестовый объект'
 	}))
     $(document).on('editor_rendered',function(e,data){
