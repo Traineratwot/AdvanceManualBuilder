@@ -1,21 +1,50 @@
-var locale = {}
-locale._ = function(s, v = null) {
-	if(v != null && typeof (v) == 'object') {
-		var t = '' + this[s]
-		for(var k in v) {
-			if(typeof v[k] != 'undefined') {
-<<<<<<< HEAD
-				t = t.replaceAll('[+' + k + '+]', v[k])
-			}
+class Locale {
+	en = {}
+
+
+	constructor(lang) {
+		this.lang = lang ? lang : $('html').attr('lang')
+	}
+
+
+	_(s='', v = null) {
+		if(!s || typeof s != 'string'){
+			return s
 		}
-		t = t.replaceAll(/\[\+.+?\+\]/g, '')
-=======
-				t = t.replaceAll('${' + k + '}', v[k])
-			}
+		console.debug(s)
+		var LangKey = s.toLowerCase()
+		if(typeof this[this.lang][LangKey] != 'undefined') {
+			var t = this[this.lang][LangKey]
+		} else if(typeof this.en[LangKey] != 'undefined') {
+			var t = this.en[LangKey]
+		} else {
+			var t = s
 		}
-		t = t.replaceAll(/\$\{.+?\}/g, '')
->>>>>>> 9c6dd913cb7f06fc8c738da6d1ff072b2940fb60
-		return t
-	} else return this[s]
+		if(v != null && typeof (v) == 'object') {
+			for(var k in v) {
+				if(typeof v[k] != 'undefined') {
+					t = t.replaceAll('${' + k + '}', v[k])
+				}
+			}
+			t = t.replaceAll(/\$\{.+?\}/g, '')
+			return t
+		} else {
+			return t
+		}
+
+	}
+
+
+	add(key, obj) {
+		for(const objKey in obj) {
+			obj[objKey.toLowerCase()] =obj[objKey]
+		}
+		this[key] = obj
+	}
+
 }
+
+var locale = new Locale()
+
+
 

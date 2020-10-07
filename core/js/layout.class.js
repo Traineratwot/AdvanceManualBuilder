@@ -112,7 +112,7 @@ layout.editor.template.addModal = '<div class="modal fade" id="${GlobalKey}_addM
 	'    <div class="modal-dialog modal-dialog-centered" role="document">\n' +
 	'        <div class="modal-content">\n' +
 	'            <div class="modal-header">\n' +
-	'                <h5 class="modal-title">Modal title</h5>\n' +
+	'                <h5 class="modal-title">${header}</h5>\n' +
 	'                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
 	'                    <span aria-hidden="true">&times;</span>\n' +
 	'                </button>\n' +
@@ -120,16 +120,16 @@ layout.editor.template.addModal = '<div class="modal fade" id="${GlobalKey}_addM
 	'            <div class="modal-body">\n' +
 	'                <div class="input-group mb-3">\n' +
 	'                    <div class="input-group-prepend">\n' +
-	'                        <label class="input-group-text" for="inputGroupSelect01">Options</label>\n' +
+	'                        <label class="input-group-text" for="inputGroupSelect01">'+locale._('object')+'</label>\n' +
 	'                    </div>\n' +
 	'                    <select data-object="${GlobalKey}" class="custom-select" id="inputGroupSelect01">\n' +
-	'                        <option selected>Выберите...</option>\n' +
+	'                        <option selected>'+locale._('chose')+'</option>\n' +
 	'                    </select>\n' +
 	'                </div>\n' +
 	'            </div>\n' +
 	'            <div class="modal-footer">\n' +
-	'                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>\n' +
-	'                <button type="button" class="btn btn-primary createElem"  data-dismiss="modal">Create <i></i></button>\n' +
+	'                <button type="button" class="btn btn-secondary" data-dismiss="modal">'+locale._('close')+'</button>\n' +
+	'                <button type="button" class="btn btn-primary createElem"  data-dismiss="modal">'+locale._('create')+' <i></i></button>\n' +
 	'            </div>\n' +
 	'        </div>\n' +
 	'    </div>\n' +

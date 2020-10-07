@@ -108,3 +108,18 @@ class Temp {
 }
 
 const tmp = new Temp
+
+CLASSES.Template = class Template {
+	get(s, v = null) {
+		if(v != null && typeof (v) == 'object') {
+			var t = '' + this[s]
+			for(var k in v) {
+				if(typeof v[k] != 'undefined') {
+					t = t.replaceAll('${' + k + '}', locale._(v[k]))
+				}
+			}
+			t = t.replaceAll(/\$\{.+?\}/g, '')
+			return t
+		} else return this[s]
+	}
+}

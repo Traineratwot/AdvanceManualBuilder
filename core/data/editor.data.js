@@ -38,7 +38,7 @@ editorTemplate.modal = 	'<div class="modal fade" id="${id}_editorModal" data-obj
 						'        <div class="modal-dialog modal-dialog-centered" role="document">\n' +
 						'            <div class="modal-content">\n' +
 						'                <div class="modal-header">\n' +
-						'                    <h3 class="modal-title">${name}</h3>\n' +
+						'                    <h3 class="modal-title">${header}</h3>\n' +
 						'                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
 						'                        <span aria-hidden="true">&times;</span>\n' +
 						'                    </button>\n' +
@@ -46,10 +46,9 @@ editorTemplate.modal = 	'<div class="modal fade" id="${id}_editorModal" data-obj
 						'                <div class="modal-body">\n' +
 						'                </div>\n' +
 						'                <div class="modal-footer">\n' +
-						'                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-secondary action-cancel" data-dismiss="modal">Close</button>\n' +
-						'                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-primary   action-save"   data-dismiss="modal">Save changes</button>\n' +
+						'                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-secondary action-cancel" data-dismiss="modal">'+locale._('close')+'</button>\n' +
+						'                    <button type="button"data-object="${id}" data-parent="${parent}" class="btn btn-primary   action-save"   data-dismiss="modal">'+locale._('save')+'</button>\n' +
 						'                </div>\n' +
 						'            </div>\n' +
 						'        </div>\n' +
 						'    </div>\n'
-

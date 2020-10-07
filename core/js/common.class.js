@@ -101,7 +101,7 @@ CLASSES.CommonClass = class CommonClass {
 		console.info('TODO editorRender(){}', arguments)
 
 		let label = options.label ? '"'+options.label+'"' : ''
-		var buttonLabel = options.prefix + ' ' + options.fieldKey + ' ' + label;
+		var buttonLabel = locale._(options.prefix) + ' ' + locale._(options.fieldKey) + ' ' + locale._(label);
 
 
 		if(typeof layout?.editor?.modals[this.GlobalKey] == 'undefined') {
@@ -677,19 +677,4 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 		})
 	}
 
-}
-
-CLASSES.Template = class Template {
-	get(s, v = null) {
-		if(v != null && typeof (v) == 'object') {
-			var t = '' + this[s]
-			for(var k in v) {
-				if(typeof v[k] != 'undefined') {
-					t = t.replaceAll('${' + k + '}', v[k])
-				}
-			}
-			t = t.replaceAll(/\$\{.+?\}/g, '')
-			return t
-		} else return this[s]
-	}
 }
