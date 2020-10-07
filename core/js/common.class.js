@@ -10,6 +10,7 @@ CLASSES.CommonClass = class CommonClass {
 	treeIcon = 'circle-outline'
 	treeAddIcon = 'diff-added'
 	availableChildrenClass = {}
+	treeOpened = false
 	parent = null
 	temp = null
 
@@ -97,11 +98,12 @@ CLASSES.CommonClass = class CommonClass {
 			caller: 'tree'
 		}, options)
 		console.info('TODO editorRender(){}', arguments)
+		var buttonLabel = options.prefix + options.name + ' ' + options.label + ' ' + this[this.uqField]
 		if(typeof layout?.editor?.modals[this.GlobalKey] == 'undefined') {
 			layout.editor.modals[this.GlobalKey] = $(editorTemplate.get('modal', {
 				id: this.GlobalKey,
 				parent: this?.parent?.GlobalKey,
-				name: options.prefix + options.name + ' ' + options.label + ' ' + this[this.uqField],
+				name: buttonLabel,
 				classKey: this.constructor.name,
 			})).appendTo('body')
 		}
@@ -113,7 +115,7 @@ CLASSES.CommonClass = class CommonClass {
 			this.editorRenderFields(layout.editor.modals[this.GlobalKey].find('div.modal-body'))
 			var button = $(editorTemplate.get('button', {
 				id: this.GlobalKey,
-				text: options.prefix + options.name + ' ' + options.label + ' ' + this[this.uqField],
+				text: buttonLabel,
 				classKey: this.constructor.name,
 				btnClass: options.btnClass,
 			})).appendTo(options.parent)
@@ -350,6 +352,14 @@ CLASSES.CommonClass = class CommonClass {
 
 	addElement(tmpElement) {
 
+	}
+
+	treeOpenedToggle(){
+		if(this.treeOpened){
+			this.treeOpened = false
+		}else{
+			this.treeOpened = true
+		}
 	}
 }
 
@@ -703,17 +713,23 @@ CLASSES.GlobalObjectAccess = class GlobalObjectAccess {
 		if(value.GlobalKey === null || typeof value.GlobalKey == 'undefined') {
 			value.GlobalKey = key
 			this[key] = value
+			console.info('initialized ' + key + ' ' + value.constructor.name)
+			$(document).trigger(value.constructor.name + '_initialized', {
+				obj: value,
+				key: key,
+			})
 		} else {
-			if(typeof this[value.GlobalKey] == 'undefined') {
-				key = value.GlobalKey
+			key = value.GlobalKey
+			if(typeof this[key] == 'undefined') {
 				this[key] = value
+				console.info('initialized ' + key + ' ' + value.constructor.name)
+				$(document).trigger(value.constructor.name + '_initialized', {
+					obj: value,
+					key: key,
+				})
 			}
 		}
-		console.info('initialized ' + key + ' ' + value.constructor.name)
-		$(document).trigger(value.constructor.name + '_initialized', {
-			obj: value,
-			key: key,
-		})
+
 	}
 
 
