@@ -10,8 +10,10 @@ CLASSES.CommonClass = class CommonClass {
 	treeIcon = 'circle-outline'
 	treeAddIcon = 'diff-added'
 	availableChildrenClass = {}
+	treeOpened = false
 	parent = null
 	temp = null
+	fieldKey = ''
 
 
 	constructor(objects = {}) {
@@ -89,19 +91,24 @@ CLASSES.CommonClass = class CommonClass {
 		this[this.uqField] = this[this.uqField] ?? ''
 		options = Object.assign({
 			parent: layout.editor.block,
-			name: this.name ?? '',
-			label: '',
+			fieldKey: this.fieldKey??'',
+			label: this[this.uqField],
 			object: false,
 			prefix: 'edit ',
 			btnClass: 'btn-primary',
 			caller: 'tree'
 		}, options)
 		console.info('TODO editorRender(){}', arguments)
+
+		let label = options.label ? '"'+options.label+'"' : ''
+		var buttonLabel = options.prefix + ' ' + options.fieldKey + ' ' + label;
+
+
 		if(typeof layout?.editor?.modals[this.GlobalKey] == 'undefined') {
 			layout.editor.modals[this.GlobalKey] = $(editorTemplate.get('modal', {
 				id: this.GlobalKey,
 				parent: this?.parent?.GlobalKey,
-				name: options.prefix + options.name + ' ' + options.label + ' ' + this[this.uqField],
+				name: buttonLabel,
 				classKey: this.constructor.name,
 			})).appendTo('body')
 		}
@@ -113,7 +120,7 @@ CLASSES.CommonClass = class CommonClass {
 			this.editorRenderFields(layout.editor.modals[this.GlobalKey].find('div.modal-body'))
 			var button = $(editorTemplate.get('button', {
 				id: this.GlobalKey,
-				text: options.prefix + options.name + ' ' + options.label + ' ' + this[this.uqField],
+				text: buttonLabel,
 				classKey: this.constructor.name,
 				btnClass: options.btnClass,
 			})).appendTo(options.parent)
@@ -123,7 +130,7 @@ CLASSES.CommonClass = class CommonClass {
 			})
 			layout.editor.modals[this.GlobalKey].find('button.action-save').on('click', () => {
 				if(options.object !== false) {
-					options.object.addChildren(this, options.name)
+					options.object.addChildren(this, options.fieldKey)
 					if(options.caller != 'create') {
 						layout.editor.render(GOA[current.editor])
 						layout.tree.render()
@@ -351,6 +358,14 @@ CLASSES.CommonClass = class CommonClass {
 	addElement(tmpElement) {
 
 	}
+
+	treeOpenedToggle(){
+		if(this.treeOpened){
+			this.treeOpened = false
+		}else{
+			this.treeOpened = true
+		}
+	}
 }
 
 CLASSES.DataTypeClass = class DataTypeClass extends CLASSES.CommonClass {
@@ -386,10 +401,8 @@ CLASSES.DescriptionClass = class DescriptionClass extends CLASSES.CommonClass {
 	editorRender(options) {
 		options = Object.assign({
 			parent: layout.editor.block,
-			name: this.name ?? '',
-			label: '',
-			object: false,
-			prefix: 'edit ',
+			fieldKey: this.fieldKey ?? '',
+			prefix: 'edit',
 			btnClass: 'btn-primary',
 			caller: 'tree'
 		}, options)
@@ -517,10 +530,9 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 		var key = tmp.add(result)
 		tmp[key].editorRender({
 			parent: parent,
-			name: this.name ?? '',
-			label: '',
+			fieldKey: this.name ?? '',
 			object: this.object,
-			prefix: 'set ',
+			prefix: 'set',
 			btnClass: 'btn-info',
 			caller: this.caller
 		})
@@ -533,20 +545,19 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 		for(const fieldKey in this.object[this.name]) {
 			this.object[this.name][fieldKey].editorRender({
 				parent: parent,
-				name: this.name ?? '',
-				label: '',
+				fieldKey: this.name ?? '',
 				object: this.object,
-				prefix: 'edit ',
+				prefix: 'edit',
 				btnClass: 'btn-secondary',
 				caller: this.caller
 			})
 		}
 		tmp[key].editorRender({
 			parent: parent,
-			name: this.name ?? '',
+			fieldKey: this.name ?? '',
 			label: '',
 			object: this.object,
-			prefix: 'add ',
+			prefix: 'add',
 			btnClass: 'btn-info',
 			caller: this.caller
 		})
@@ -682,56 +693,3 @@ CLASSES.Template = class Template {
 		} else return this[s]
 	}
 }
-
-CLASSES.GlobalObjectAccess = class GlobalObjectAccess {
-	constructor() {
-
-	}
-
-
-	getAllKeys() {
-		var a = []
-		for(const thisKey in this) {
-			a.push(this)
-		}
-		return a
-	}
-
-
-	add(value) {
-		var key = this.getUniqueKey()
-		if(value.GlobalKey === null || typeof value.GlobalKey == 'undefined') {
-			value.GlobalKey = key
-			this[key] = value
-		} else {
-			if(typeof this[value.GlobalKey] == 'undefined') {
-				key = value.GlobalKey
-				this[key] = value
-			}
-		}
-		console.info('initialized ' + key + ' ' + value.constructor.name)
-		$(document).trigger(value.constructor.name + '_initialized', {
-			obj: value,
-			key: key,
-		})
-	}
-
-
-	getUniqueKey() {
-		var key = getRandomString()
-		var keys = this.getAllKeys()
-
-		function eq(element) {
-			return element == this
-		}
-
-		if(keys.length > 0) {
-			while(keys.find(eq, key)) {
-				key = getRandomString()
-			}
-		}
-		return key
-	}
-}
-
-var GOA = new CLASSES.GlobalObjectAccess

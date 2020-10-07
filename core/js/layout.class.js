@@ -45,10 +45,10 @@ class LayoutTreeClass {
 
 	renderTree() {
 		this.tree = $(treeTemplate.get('main', {text: 'Manuals'})).appendTo(this.block)
-		if(typeof manuals != 'undefined' && manuals instanceof Array) {
-			for(const key in manuals) {
-				if(manuals.hasOwnProperty(key)) {
-					const manual = manuals[key]
+		if(typeof manuals != 'undefined' && manuals instanceof Object) {
+			for(const key in manuals.index) {
+				if(manuals.index.hasOwnProperty(key)) {
+					const manual = manuals.index[key]
 					manual.renderTree(this.tree)
 				}
 			}
