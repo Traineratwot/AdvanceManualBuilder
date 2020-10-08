@@ -25,7 +25,7 @@ class LayoutEditorClass {
 		if(elem instanceof CLASSES.CommonClass) {
 			elem.editorRender({
 				parent: this.block,
-				caller:'create'
+				caller: 'create'
 			})
 		}
 	}
@@ -55,7 +55,7 @@ class LayoutTreeClass {
 		}
 		$(treeTemplate.get('add', {
 			text: 'add manual',
-			class: CLASSES.ManualClass.constructor.name,
+			classkey: 'ManualClass',
 			treeIcon: 'diff-added'
 		})).appendTo(this.tree)
 
@@ -65,7 +65,7 @@ class LayoutTreeClass {
 
 	treeEvent() {
 		$('.caret:not("caret-down")').each(function() {
-			if(GOA[$(this).data('object')].treeOpened){
+			if(GOA[$(this).data('object')].treeOpened) {
 				$(this).toggleClass('caret-down').find('+ .nested').slideToggle()
 			}
 		})
@@ -73,11 +73,28 @@ class LayoutTreeClass {
 			$(this).toggleClass('caret-down').find('+ .nested').slideToggle()
 			GOA[$(this).data('object')].treeOpenedToggle()
 		})
-		$('span.startEditor').on('dblclick', function() {
+		$('button.startEditor').on('dblclick', function() {
 			current.editor = $(this).data('object')
 			layout.editor.render(GOA[current.editor])
 		})
-		$('span.addElem').on('dblclick', function() {
+		$('button.addElem').on('dblclick', function() {
+			if($(this).data('classkey') == 'ManualClass') {
+				layout.editor.block.html('')
+				var key = tmp.add(new CLASSES.ManualClass)
+				tmp[key].editorRender({
+					parent: layout.editor.block
+				})
+				$(editorTemplate.get('button', {
+					id: key,
+					classKey: 'ManualClass',
+					btnClass: 'btn-success',
+					text: 'save',
+				})).appendTo(layout.editor.block).on('click', () => {
+					manuals.add(tmp[key])
+					layout.tree.render()
+				})
+				return false
+			}
 			var GlobalKey = $(this).data('object')
 			var childKey = $(this).data('childKey')
 			var modal = layout.editor.addModals[GlobalKey]
@@ -91,8 +108,9 @@ class LayoutTreeClass {
 					var classKey = modal.find('select').val()
 					GOA[GlobalKey].createNewElement(classKey, GlobalKey, childKey, layout.editor.block)
 				})
+
 		})
-		$('span.caret').each(function() {
+		$('button.caret').each(function() {
 			var v = $(this).siblings('ul').length
 			if(v > 0) {
 				$(this).removeClass('empty')
@@ -105,7 +123,33 @@ class LayoutTreeClass {
 	}
 }
 
+class layoutPreviewClass {
+	constructor() {
+		this.block = $(window.frames[0].document.body).find('div#wrap')
+		this.terminal = window.frames[0]
+		this.markdown = []
+		this.text = ''
+	}
+	add(text){
+		this.markdown.push(`\n\r${text}\n\r`)
+		this.text = this.markdown.join("\n\r***\n\r")
+	}
+	clear(){
+		this.markdown = []
+		this.text = ''
+	}
+	render(){
+		if(this.block.length == 0){
+			this.block = $(window.frames[0].document.body).find('div#wrap')
+		}
+		this.block.html(this.text)
+		this.terminal.convert()
+		return this.markdown
+	}
+}
+
 layout.editor = new LayoutEditorClass()
+layout.preview = new layoutPreviewClass()
 layout.tree = new LayoutTreeClass()
 layout.editor.template.addModal = `<div class="modal fade" id="$[GlobalKey]_addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
 	     aria-hidden="true">

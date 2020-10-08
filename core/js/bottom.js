@@ -24,4 +24,4 @@ setInterval(() => {
 	var t = converterUnits.convert(window.performance.memory.usedJSHeapSize,'byte','b')
 	$('#memory_usage').html(t[0]+' '+t[1])
 	$('#object_count').html(GOA.count())
-}, 500)
+}, 1000)

@@ -17,7 +17,6 @@ editorTemplate.textarea = `<div class="form-group"><div class="input-group mb-3"
 	    <span class="input-group-text" id="$[id]_aria"></span>
 	  </div>
 	</div></div>`
-
 editorTemplate.select = `<div class="form-group"><div class="input-group mb-3">
 	  <div class="input-group-prepend">
 	    <label class="input-group-text" for="inputGroupSelect01">$[label]</label>
@@ -30,9 +29,7 @@ editorTemplate.select = `<div class="form-group"><div class="input-group mb-3">
 	  </div>
 	</div></div>`
 editorTemplate.option = `<option value="$[value]" $[attr]>$[label]</option>`
-
 editorTemplate.button = `<div class="form-group"><button $[attr] type="button" id="$[id]_button" data-class="$[classKey]" data-object="$[id]" class="btn $[btnClass]">$[text]</button></div>`
-
 editorTemplate.modal = 	`<div class="modal fade" id="$[id]_editorModal" data-object="$[id]" data-parent="$[parent]" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
 						        aria-hidden="true">
 						        <div class="modal-dialog modal-dialog-centered" role="document">

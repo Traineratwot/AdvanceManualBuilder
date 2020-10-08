@@ -1,3 +1,7 @@
+body, html {
+    overflow: hidden;
+}
+
 footer {
     border-top: 1px solid #efefef;
     margin-top: 100px;
@@ -332,7 +336,24 @@ input, textarea, select, option div[contenteditable], .ui-menu.ui-widget.ui-widg
 }
 
 .ui-menu.ui-widget.ui-widget-content.ui-autocomplete *:hover {
-    border:1px solid var(--light);
+    border: 1px solid var(--light);
     border-collapse: collapse;
     color: var(--white);
+}
+
+.tree button {
+    vertical-align: text-bottom;
+    height: auto;
+    width: auto;
+    border: 0;
+    padding: 0;
+    margin: 0;
+
+}
+#system_info * {
+    font-size: 0.9em;
+}
+
+#system_info li span[id] {
+    color: var(--info);
 }

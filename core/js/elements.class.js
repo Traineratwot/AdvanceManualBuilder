@@ -10,10 +10,6 @@ CLASSES.DataTypeClass = class DataTypeClass extends CLASSES.CommonClass {
 		this.preview = this.preview.toLowerCase()
 	}
 
-
-	preRender() {
-		super.render()
-	}
 }
 
 CLASSES.DescriptionClass = class DescriptionClass extends CLASSES.CommonClass {
@@ -45,13 +41,17 @@ CLASSES.DescriptionClass = class DescriptionClass extends CLASSES.CommonClass {
 	render() {
 
 	}
+
+	getMd() {
+		return "\n"+this.body+"\n"
+	}
 }
 
 CLASSES.VarClass = class VarClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-variable'
 	editorFields = {
-		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
-		dataType: new CLASSES.EditorFieldsClass(this, {name: 'dataType', type: 'select', dataSet: dataTypes.toArray()}),
+		value: new CLASSES.EditorFieldsClass(this, {name: 'value'}),
+		dataType: new CLASSES.EditorFieldsClass(this, {name: 'dataType', type: 'select', dataSet: dataTypes.toArray(),dataSetOriginal:dataTypes}),
 	}
 
 

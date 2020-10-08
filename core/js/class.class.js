@@ -51,7 +51,8 @@ CLASSES.ClassClass = class ClassClass extends CLASSES.CommonClass {
 	renderTree(parent) {
 		var item = $(treeTemplate.get('item', {
 			text: this.name,
-			GlobalKey: this._GlobalKey,
+			GlobalKey: this.GlobalKey,
+			childkey: this?.parent?.GlobalKey,
 			treeIcon: this.treeIcon
 		})).appendTo(parent)
 		if(this.vars.length > 0) {
@@ -97,8 +98,8 @@ CLASSES.methodsClass = class methodsClass extends CLASSES.FunctionClass {
 	}
 
 
-	editorRender(parent, name = false, object = false, options = {}) {
-		this.__proto__.__proto__.__proto__.editorRender.call(this,parent, name, object, options)
+	editorRender() {
+		this.parentClass('CommonClass').editorRender.call(this,...arguments)
 	}
 }
 
@@ -109,8 +110,8 @@ CLASSES.ClassVarsClass = class ClassVarsClass extends CLASSES.VarClass {
 	}
 
 
-	editorRender(parent, name = false, object = false, options = {}) {
-		this.__proto__.__proto__.editorRender.call(this,parent, name, object, options)
+	editorRender() {
+		this.parentClass('CommonClass').editorRender.call(this,...arguments)
 	}
 }
 
@@ -125,6 +126,6 @@ CLASSES.ClassConstantsClass = class ClassConstantsClass extends CLASSES.VarClass
 
 
 	editorRender(parent, name = false, object = false, options = {}) {
-		this.__proto__.__proto__.editorRender.call(this,parent, name, object, options)
+		this.parentClass('CommonClass').editorRender.call(this,...arguments)
 	}
 }

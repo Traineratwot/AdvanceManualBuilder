@@ -19,3 +19,6 @@ div#wrap{
 div#wrap:focus{
     outline: none;
 }
+hr{
+    box-shadow: 0 1px 1px var(--light);
+}

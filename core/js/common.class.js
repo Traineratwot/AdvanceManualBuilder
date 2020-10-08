@@ -16,6 +16,7 @@ CLASSES.CommonClass = class CommonClass {
 	fieldKey = ''
 	mdTemplate = new CLASSES.Template
 
+
 	constructor(objects = {}) {
 		if(arguments.length == 0) {
 			this._empty = true
@@ -30,9 +31,11 @@ CLASSES.CommonClass = class CommonClass {
 		GOA.add(this)
 	}
 
-	getMd(){
-		return this.mdTemplate.get('main',this)
+
+	getMd() {
+		return this.mdTemplate.get('main', this)
 	}
+
 
 	/**
 	 * @param  {Object} manual
@@ -95,7 +98,7 @@ CLASSES.CommonClass = class CommonClass {
 		this[this.uqField] = this[this.uqField] ?? ''
 		options = Object.assign({
 			parent: layout.editor.block,
-			fieldKey: this.fieldKey??'',
+			fieldKey: this.fieldKey ?? '',
 			label: this[this.uqField],
 			object: false,
 			prefix: 'edit ',
@@ -104,9 +107,8 @@ CLASSES.CommonClass = class CommonClass {
 		}, options)
 		console.info('TODO editorRender(){}', arguments)
 
-		let label = options.label ? '"'+options.label+'"' : ''
-		var buttonLabel = locale._(options.prefix) + ' ' + locale._(options.fieldKey) + ' ' + locale._(label);
-
+		let label = options.label ? '"' + options.label + '"' : ''
+		var buttonLabel = locale._(options.prefix) + ' ' + locale._(options.fieldKey) + ' ' + locale._(label)
 
 		if(typeof layout?.editor?.modals[this.GlobalKey] == 'undefined') {
 			layout.editor.modals[this.GlobalKey] = $(editorTemplate.get('modal', {
@@ -281,14 +283,15 @@ CLASSES.CommonClass = class CommonClass {
 		var name
 		if(this.name) {
 			name = this.name
-		} else if(this?.defultName) {
-			name = this.defultName
+		} else if(this?.defaultName) {
+			name = this.defaultName
 		} else {
 			name = this.constructor.name
 		}
 		var content = $(treeTemplate.get('content', {
 			text: name,
-			GlobalKey: this._GlobalKey,
+			GlobalKey: this.GlobalKey,
+			childkey: this?.parent?.GlobalKey,
 			treeIcon: this.treeIcon
 		})).appendTo(parent)
 
@@ -302,13 +305,13 @@ CLASSES.CommonClass = class CommonClass {
 		for(const availableChildrenClassKey in this.availableChildrenClass) {
 			var select = layout.editor.addModals[this.GlobalKey].find('select')
 			select.append($(editorTemplate.get('option', {
-				label: this.availableChildrenClass[availableChildrenClassKey].label,
+				label: locale._(this.availableChildrenClass[availableChildrenClassKey].label),
 				value: availableChildrenClassKey,
 			})))
 		}
 		$(treeTemplate.get('add', {
 			text: 'add new',
-			GlobalKey: this._GlobalKey,
+			GlobalKey: this.GlobalKey,
 			treeIcon: this.treeAddIcon
 		})).appendTo(subItem)
 	}
@@ -363,12 +366,25 @@ CLASSES.CommonClass = class CommonClass {
 
 	}
 
-	treeOpenedToggle(){
-		if(this.treeOpened){
+
+	treeOpenedToggle() {
+		if(this.treeOpened) {
 			this.treeOpened = false
-		}else{
+		} else {
 			this.treeOpened = true
 		}
+	}
+
+
+	parentClass(className, maxIteration = 10) {
+		var i = maxIteration
+
+		var proto = this.__proto__
+		while(proto.constructor.name != className && i > 0) {
+			i--
+			proto = proto.__proto__
+		}
+		return proto
 	}
 }
 
@@ -379,6 +395,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 		this.caller = this.constructor.name
 		this.type = 'text'
 		this.dataSet = []
+		this.dataSetOriginal = {}
 		this.callback = false
 		this.label = false
 		this.placeholder = ''
@@ -400,7 +417,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			this.caller = caller
 		}
 		if(this.input === false) {
-			switch(this.type) {
+			switch( this.type ) {
 				case 'class':
 					this.renderClass(parent, value, label)
 					break
@@ -481,12 +498,12 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 
 
 	renderSelect(parent, value = '', label = false) {
-		this.input = $(editorTemplate.get('select', {
-			label: label,
-			name: this.name,
-			id: this.id,
-		})).appendTo(parent)
-		if(this.dataSet instanceof Array || this.dataSet instanceof Object) {
+		if(this.dataSet instanceof Array || this.dataSet instanceof Object ) {
+			this.input = $(editorTemplate.get('select', {
+				label: label,
+				name: this.name,
+				id: this.id,
+			})).appendTo(parent)
 			for(const dataSetKey in this.dataSet) {
 				if(dataSetKey == value) {
 					$(editorTemplate.get('option', {
@@ -501,19 +518,19 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 					})).appendTo(this.input.find('select'))
 				}
 			}
-		}
-		if(this.callback !== false) {
-			this.input.find('select').on('change', () => {
-				this.callback()
-				this.input.find('select').removeClass('changing')
-				this.input.find('select').addClass('changed')
-			})
-		} else {
-			this.input.find('select').on('change', () => {
-				this.object[this.name] = this.input.find('select').val()
-				this.input.find('select').removeClass('changing')
-				this.input.find('select').addClass('changed')
-			})
+			if(this.callback !== false) {
+				this.input.find('select').on('change', () => {
+					this.callback()
+					this.input.find('select').removeClass('changing')
+					this.input.find('select').addClass('changed')
+				})
+			} else {
+				this.input.find('select').on('change', () => {
+					this.object[this.name] = this.dataSetOriginal ? this.dataSetOriginal[this.input.find('select').val()] : this.dataSet[this.input.find('select').val()]
+					this.input.find('select').removeClass('changing')
+					this.input.find('select').addClass('changed')
+				})
+			}
 		}
 	}
 
