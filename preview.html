@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="core/libs/jquery.min.js"></script>
+    <script src="core/libs/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="core/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="core/css/preview.css"/>
+    <script src="core/libs/showdown/dist/showdown.js"></script>
+</head>
+<body class="bg-dark">
+<div id="wrap">
+
+</div>
+<footer style="display:none;">
+    <script src="core/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="core/js/saveAndGen.js"></script>
+    <script>
+		var converter = new showdown.Converter()
+        function convert(){
+			$('div#wrap').html(converter.makeHtml($('div#wrap').html()))
+        }
+
+    </script>
+</footer>
+</body>
+</html>

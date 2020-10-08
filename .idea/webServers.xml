@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="0a1c5a92-f0fb-40a2-97dc-aacf61e73e5b" name="manualBuilder" url="https://traineratwot.aytour.ru">
-        <fileTransfer rootFolder="/home/www/assets/projects/AdvanceManualBuilder" accessType="SFTP" host="192.168.1.68" port="22" sshConfigId="3f7691fc-4350-4681-8d06-1ad4dab4cfdc" sshConfig="pi@192.168.1.68:22 password">
+        <fileTransfer rootFolder="/home/www/assets/projects/AdvanceManualBuilder" accessType="SFTP" host="traineratwot.aytour.ru" port="22" sshConfigId="3f7691fc-4350-4681-8d06-1ad4dab4cfdc" sshConfig="pi@traineratwot.aytour.ru:22 password">
           <advancedOptions>
             <advancedOptions controlEncoding="utf-8" dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
