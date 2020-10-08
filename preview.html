@@ -8,21 +8,65 @@
 
     <link rel="stylesheet" href="core/libs/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="core/css/preview.css"/>
+    <link rel="stylesheet" href="core/libs/highlight/styles/github.css">
     <script src="core/libs/showdown/dist/showdown.js"></script>
+    <script src="core/libs/highlight/highlight.pack.js"></script>
 </head>
-<body class="bg-dark">
-<div id="wrap">
+<body class="">
+<div id="wrap" contenteditable="true">
+    ## test
+    - test
+    - test2
+    ```php
+        class test extends Test2{
+        public function __constructor(modX $modx){
+        $this->modx = &$modx
+    }
+    }
 
+    ```
 </div>
 <footer style="display:none;">
     <script src="core/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="core/js/saveAndGen.js"></script>
     <script>
-		var converter = new showdown.Converter()
-        function convert(){
-			$('div#wrap').html(converter.makeHtml($('div#wrap').html()))
-        }
+		function htmlUnEncode(text) {
+			var t =text.replaceAll(/&amp;/g, '&').replaceAll(/&lt;/g, '<').replaceAll(/&gt;/g, '>')
+			return t
+		}
 
+		showdown.setFlavor('github')
+
+		var converter = new showdown.Converter({
+			tables: true,
+			tasklists: true,
+			smartIndentationFix: true,
+			openLinksInNewWindow: true,
+			emoji: true,
+			smoothPreview: '#wrap'
+		})
+
+		function convert() {
+			$('div#wrap').html(converter.makeHtml(htmlUnEncode($('div#wrap').html())))
+			document.querySelectorAll('pre code').forEach((block) => {
+				hljs.highlightBlock(block)
+			})
+			return
+		}
+
+		var fps = setTimeout(convert, 1000)
+
+        $('div#wrap').on('keydown',function(e){
+        	console.warn(e.key)
+        	switch(e.key){
+        		case 'Tab':
+
+        			e.preventdefault()
+                    return false
+        		default:
+        			return true
+            }
+        })
     </script>
 </footer>
 </body>

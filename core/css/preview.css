@@ -16,3 +16,6 @@ div#wrap{
     padding: 0;
     border: 0;
 }
+div#wrap:focus{
+    outline: none;
+}
