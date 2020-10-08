@@ -107,31 +107,31 @@ class LayoutTreeClass {
 
 layout.editor = new LayoutEditorClass()
 layout.tree = new LayoutTreeClass()
-layout.editor.template.addModal = '<div class="modal fade" id="${GlobalKey}_addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"\n' +
-	'     aria-hidden="true">\n' +
-	'    <div class="modal-dialog modal-dialog-centered" role="document">\n' +
-	'        <div class="modal-content">\n' +
-	'            <div class="modal-header">\n' +
-	'                <h5 class="modal-title">${header}</h5>\n' +
-	'                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
-	'                    <span aria-hidden="true">&times;</span>\n' +
-	'                </button>\n' +
-	'            </div>\n' +
-	'            <div class="modal-body">\n' +
-	'                <div class="input-group mb-3">\n' +
-	'                    <div class="input-group-prepend">\n' +
-	'                        <label class="input-group-text" for="inputGroupSelect01">'+locale._('object')+'</label>\n' +
-	'                    </div>\n' +
-	'                    <select data-object="${GlobalKey}" class="custom-select" id="inputGroupSelect01">\n' +
-	'                        <option selected>'+locale._('chose')+'</option>\n' +
-	'                    </select>\n' +
-	'                </div>\n' +
-	'            </div>\n' +
-	'            <div class="modal-footer">\n' +
-	'                <button type="button" class="btn btn-secondary" data-dismiss="modal">'+locale._('close')+'</button>\n' +
-	'                <button type="button" class="btn btn-primary createElem"  data-dismiss="modal">'+locale._('create')+' <i></i></button>\n' +
-	'            </div>\n' +
-	'        </div>\n' +
-	'    </div>\n' +
-	'</div>'
+layout.editor.template.addModal = `<div class="modal fade" id="$[GlobalKey]_addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	     aria-hidden="true">
+	    <div class="modal-dialog modal-dialog-centered" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title">$[header]</h5>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+	            <div class="modal-body">
+	                <div class="input-group mb-3">
+	                    <div class="input-group-prepend">
+	                        <label class="input-group-text" for="inputGroupSelect01">${locale._('object')}</label>
+	                    </div>
+	                    <select data-object="$[GlobalKey]" class="custom-select" id="inputGroupSelect01">
+	                        <option selected>${locale._('chose')}</option>
+	                    </select>
+	                </div>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-secondary" 			data-dismiss="modal">${locale._('close')}</button>
+	                <button type="button" class="btn btn-primary createElem"  	data-dismiss="modal">${locale._('create')}<i></i></button>
+	            </div>
+	        </div>
+	    </div>
+	</div>`
 layout.tree.render()

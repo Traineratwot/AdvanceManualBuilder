@@ -1,10 +1,5 @@
-
 const CLASSES = {}
 CLASSES.GlobalObjectAccess = class GlobalObjectAccess {
-	constructor() {
-
-	}
-
 
 	getAllKeys() {
 		var a = []
@@ -39,6 +34,13 @@ CLASSES.GlobalObjectAccess = class GlobalObjectAccess {
 
 	}
 
+	count(){
+		var i = 0
+		for(const globalObjectAccessKey in this) {
+			i++
+		}
+		return i
+	}
 
 	getUniqueKey() {
 		var key = getRandomString()
@@ -57,13 +59,17 @@ CLASSES.GlobalObjectAccess = class GlobalObjectAccess {
 	}
 }
 var GOA = new CLASSES.GlobalObjectAccess
-CLASSES.Manuals = class Manuals{
+CLASSES.Manuals = class Manuals {
 	i = 0
 	index = {}
+
+
 	constructor() {
 		GOA.add(this)
 	}
-	add(manual){
+
+
+	add(manual) {
 		if(typeof this[manual.GlobalKey] == 'undefined') {
 			this.index[this.i] = this[manual.GlobalKey] = manual
 			manual.ElementId = this.i
@@ -95,7 +101,7 @@ class Temp {
 			if(this[thisKey] instanceof CLASSES.CommonClass) {
 				this[thisKey].temp = null
 				this[thisKey] = null
-				delete this[thisKey];
+				delete this[thisKey]
 			}
 		}
 	}
@@ -115,10 +121,10 @@ CLASSES.Template = class Template {
 			var t = '' + this[s]
 			for(var k in v) {
 				if(typeof v[k] != 'undefined') {
-					t = t.replaceAll('${' + k + '}', locale._(v[k]))
+					t = t.replaceAll('$[' + k + ']', locale._(v[k]))
 				}
 			}
-			t = t.replaceAll(/\$\{.+?\}/g, '')
+			t = t.replaceAll(/\$\[.+?\]/g, '')
 			return t
 		} else return this[s]
 	}
