@@ -5,33 +5,44 @@
     <title>Title</title>
     <script src="core/libs/jquery.min.js"></script>
     <script src="core/libs/jquery-ui.js"></script>
+    <script src="core/libs/jquery.hotkeys.js"></script>
+
 
     <link rel="stylesheet" href="core/libs/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="core/css/preview.css"/>
-    <link rel="stylesheet" href="core/libs/highlight/styles/github.css">
+    <link rel="stylesheet" href="core/libs/highlight/styles/darcula.css">
     <script src="core/libs/showdown/dist/showdown.js"></script>
     <script src="core/libs/highlight/highlight.pack.js"></script>
 </head>
-<body class="">
+<body class="text-light bg-dark">
 <div id="wrap" contenteditable="true">
     ## test
     - test
     - test2
     ```php
-        class test extends Test2{
+    class test extends Test2{
         public function __constructor(modX $modx){
-        $this->modx = &$modx
-    }
+            $this->modx = &$modx
+        }
     }
 
     ```
+
+    | Tables        | Are           | Cool  |
+    | ------------- |:-------------:| -----:|
+    | **col 3 is**  | right-aligned | $1600 |
+    | col 2 is      | *centered*    |   $12 |
+    | zebra stripes | ~~are neat~~  |   `$1`|
+
+    - [x] checked list item
+    - [ ] unchecked list item
 </div>
 <footer style="display:none;">
     <script src="core/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="core/js/saveAndGen.js"></script>
     <script>
 		function htmlUnEncode(text) {
-			var t =text.replaceAll(/&amp;/g, '&').replaceAll(/&lt;/g, '<').replaceAll(/&gt;/g, '>')
+			var t = text.replaceAll(/&amp;/g, '&').replaceAll(/&lt;/g, '<').replaceAll(/&gt;/g, '>')
 			return t
 		}
 
@@ -56,17 +67,21 @@
 
 		var fps = setTimeout(convert, 1000)
 
-        $('div#wrap').on('keydown',function(e){
-        	console.warn(e.key)
-        	switch(e.key){
-        		case 'Tab':
+		function insertTextAtCursor(text) {
+			let selection = window.getSelection()
+			let range = selection.getRangeAt(0)
+			range.deleteContents()
+			let node = document.createTextNode(text)
+			range.insertNode(node)
 
-        			e.preventdefault()
-                    return false
-        		default:
-        			return true
-            }
-        })
+			selection.modify('move', 'right', 'character')
+		}
+
+		$('div#wrap').bind('keydown', 'tab', function(event) {
+			insertTextAtCursor('   ')
+			event.preventDefault()
+		})
+
     </script>
 </footer>
 </body>
