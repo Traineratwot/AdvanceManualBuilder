@@ -12,7 +12,7 @@ editorTemplate.textarea = '<div class="form-group"><div class="input-group mb-3"
 	'<div class="input-group-prepend">\n' +
 	'    <span class="input-group-text">${label}</span>\n' +
 	'  </div>' +
-	'  <textarea id="${id}" name="${name}" rows="5" value="${value}" type="${type}"  class="md-textarea form-control"  placeholder="${placeholder}" aria-describedby="${id}_aria"></textarea>\n' +
+	'  <textarea id="${id}" name="${name}" min-rows="3" rows="5" value="${value}" type="${type}"  class="md-textarea form-control"  placeholder="${placeholder}" aria-describedby="${id}_aria"></textarea>\n' +
 	'  <div class="input-group-append">\n' +
 	'    <span class="input-group-text" id="${id}_aria"></span>\n' +
 	'  </div>\n' +

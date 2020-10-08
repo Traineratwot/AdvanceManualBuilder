@@ -394,7 +394,7 @@ CLASSES.DescriptionClass = class DescriptionClass extends CLASSES.CommonClass {
 
 
 	editorFields = {
-		body: new CLASSES.EditorFieldsClass(this, {name: 'body', type: 'textarea', label: 'Description'}),
+		body: new CLASSES.EditorFieldsClass(this, {name: 'body', type: 'textarea', label: 'Description',placeholder:'Markdown'}),
 	}
 
 
@@ -438,8 +438,8 @@ CLASSES.CodePreviewClass = class CodePreviewClass extends CLASSES.CommonClass {
 	editorFields = {
 		language: new CLASSES.EditorFieldsClass(this, {
 			name: 'language',
-			type: 'select',
-			dataSet: {'php': 'php', 'js': 'JavaScript'}
+			type: 'text',
+			dataSet: CodeLanguagesDataSet
 		}),
 		body: new CLASSES.EditorFieldsClass(this, {name: 'body', type: 'textarea'}),
 	}
