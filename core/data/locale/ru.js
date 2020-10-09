@@ -13,7 +13,7 @@ locale.add('ru',{
 	'class'          : 'Класс',
 	'function'       : 'функция',
 	'Name'           : 'Имя',
-	'possible_values': 'возможные значения',
+	'possible_values': 'возможное значения',
 	'Version'        : 'Версия',
 	'type'           : 'Тип',
 	'manuals'        : 'Мануалы',

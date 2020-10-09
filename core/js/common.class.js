@@ -81,6 +81,19 @@ CLASSES.CommonClass = class CommonClass {
 
 
 	set(key, value) {
+		switch(typeof value) {
+			case 'boolean':
+			case 'number':
+			case 'symbol':
+			case 'string':
+				value = ('' + value).trim()
+				if(value == '') {
+					value = false
+				}
+				break
+			default:
+				break
+		}
 		this[key] = value
 		this._empty = false
 		$(document).trigger(this.classKey + 'set', {
@@ -108,7 +121,7 @@ CLASSES.CommonClass = class CommonClass {
 			fieldKey: this.fieldKey ?? '',
 			label: this[this.uqField],
 			object: false,
-			prefix: 'edit ',
+			prefix: 'edit',
 			btnClass: 'btn-primary',
 			caller: 'tree'
 		}, options)
@@ -134,11 +147,13 @@ CLASSES.CommonClass = class CommonClass {
 			this.editorRenderFields(options.parent)
 		} else {
 			this.editorRenderFields(layout.editor.modals[this.GlobalKey].find('div.modal-body'))
+			var attr = ''
 			var button = $(editorTemplate.get('button', {
 				id: this.GlobalKey,
 				text: buttonLabel,
 				classKey: this.constructor.name,
 				btnClass: options.btnClass,
+				attr: attr,
 			})).appendTo(options.parent)
 			button.find('button').on('click', function() {
 				layout.editor.modals[$(this).data('object')].modal('show')
@@ -147,7 +162,8 @@ CLASSES.CommonClass = class CommonClass {
 				if(options.object !== false) {
 					options.object.addChildren(this, options.fieldKey)
 					if(options.caller != 'create') {
-						layout.editor.render(GOA[current.editor])
+						// layout.editor.render(GOA[current.editor])
+						layout.editor.render(GOA[options.object.GlobalKey])
 						layout.tree.render()
 					}
 				}

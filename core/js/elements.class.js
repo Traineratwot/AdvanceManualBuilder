@@ -82,7 +82,7 @@ CLASSES.VarClass = class VarClass extends CLASSES.CommonClass {
 		super(...arguments)
 		this.name = null
 		this.dataType = dataTypes.mixed
-		this.value = NaN
+		this.value = false
 		this.mdTemplate.main = `$[dataType] $[value]`
 		Object.assign(this, options)
 	}
@@ -90,7 +90,7 @@ CLASSES.VarClass = class VarClass extends CLASSES.CommonClass {
 
 	set(key, value) {
 		super.set(key, value)
-		if(isNaN(this.value)){
+		if(!this.value){
 			this._empty = true
 		}else{
 			this._empty = false
