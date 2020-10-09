@@ -15,32 +15,53 @@ CLASSES.GlobalObjectAccess = class GlobalObjectAccess {
 		if(value.GlobalKey === null || typeof value.GlobalKey == 'undefined') {
 			value.GlobalKey = key
 			this[key] = value
-			console.info('initialized ' + key + ' ' + value.constructor.name)
 			$(document).trigger(value.constructor.name + '_initialized', {
 				obj: value,
 				key: key,
+				classKey: value.constructor.name,
 			})
-		} else {
+			$(document).trigger('initialized', {
+				obj: value,
+				key: key,
+				classKey: value.constructor.name,
+			})
+			return true
+		} else if(typeof this[key] == 'undefined') {
 			key = value.GlobalKey
-			if(typeof this[key] == 'undefined') {
-				this[key] = value
-				console.info('initialized ' + key + ' ' + value.constructor.name)
-				$(document).trigger(value.constructor.name + '_initialized', {
-					obj: value,
-					key: key,
-				})
-			}
+			this[key] = value
+			$(document).trigger(value.constructor.name + '_initialized', {
+				success: true,
+				obj: value,
+				key: key,
+				classKey: value.constructor.name,
+			})
+			$(document).trigger('initialized', {
+				success: true,
+				obj: value,
+				key: key,
+				classKey: value.constructor.name,
+			})
+			return true
+		} else {
+			$(document).trigger('initialized', {
+				success: false,
+				obj: value,
+				key: key,
+				classKey: value.constructor.name,
+			})
 		}
 
 	}
 
-	count(){
+
+	count() {
 		var i = 0
 		for(const globalObjectAccessKey in this) {
 			i++
 		}
 		return i
 	}
+
 
 	getUniqueKey() {
 		var key = getRandomString()
@@ -82,6 +103,7 @@ const dataTypes = {}
 const layout = {}
 const current = {}
 current.editor = ''
+
 class Temp {
 	add(value) {
 		var key = getRandomString()
@@ -111,6 +133,7 @@ class Temp {
 		value.temp = null
 	}
 }
+
 const tmp = new Temp
 CLASSES.Template = class Template {
 	get(s, v = null) {

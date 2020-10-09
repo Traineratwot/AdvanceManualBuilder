@@ -6,6 +6,7 @@
     <title>AdvanceManualBuilder</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="core/libs/console.style.min.js"></script>
     <!-- Jquery js -->
     <script src="core/libs/jquery.min.js"></script>
     <script src="core/libs/jquery-ui.js"></script>
@@ -119,8 +120,14 @@
 		manuals.index[1].addElement(new CLASSES.ObjectClass({
 			name: 'Тестовый объект'
 		}))
-		$(document).on('CommonClass_set', function(e, data) {
-			console.info(data)
+		$(document).on('set', function(e, data) {
+			console.debug('%c set','color:#red;font-size:1.1em',data)
+		})
+		$(document).on('initialized', function(e, data) {
+			console.debug('%c initialized','color:#green;font-size:1.1em',data)
+		})
+		$(document).on('childAdd', function(e, data) {
+			console.debug('%c childAdd','color:#blue;font-size:1.1em',data)
 		})
     </script>
 

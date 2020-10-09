@@ -67,13 +67,15 @@ CLASSES.CommonClass = class CommonClass {
 			}
 			$(document).trigger(this.classKey + '_childAdd', {
 				obj: this,
-				child: obj
+				child: obj,
+				classKey: obj.constructor.name
 			})
-			$(document).trigger('CommonClass_childAdd', {
+			$(document).trigger('childAdd', {
 				obj: this,
-				child: obj
+				child: obj,
+				classKey: obj.constructor.name
 			})
-			console.info(this.GlobalKey + ' <== ' + obj.GlobalKey)
+			Console.info(this.GlobalKey + ' <== ' + obj.GlobalKey)
 		}
 	}
 
@@ -81,13 +83,13 @@ CLASSES.CommonClass = class CommonClass {
 	set(key, value) {
 		this[key] = value
 		this._empty = false
-		$(document).trigger(this.classKey + '_set', {
+		$(document).trigger(this.classKey + 'set', {
 			obj: this,
 			key: key,
 			value: value,
 			classKey: this.classKey,
 		})
-		$(document).trigger('CommonClass_set', {
+		$(document).trigger('set', {
 			obj: this,
 			key: key,
 			value: value,
@@ -96,7 +98,7 @@ CLASSES.CommonClass = class CommonClass {
 	}
 
 
-	render() { console.info('TODO render(){}') }
+	render() { Console.info('TODO render(){}') }
 
 
 	editorRender(options) {
@@ -110,7 +112,7 @@ CLASSES.CommonClass = class CommonClass {
 			btnClass: 'btn-primary',
 			caller: 'tree'
 		}, options)
-		console.info('TODO editorRender(){}', arguments)
+		Console.info('TODO editorRender(){}', arguments)
 
 		let label = options.label ? '"' + options.label + '"' : ''
 		if(!label || label.trim() == '') {
@@ -138,15 +140,12 @@ CLASSES.CommonClass = class CommonClass {
 				classKey: this.constructor.name,
 				btnClass: options.btnClass,
 			})).appendTo(options.parent)
-			var self = this
 			button.find('button').on('click', function() {
 				layout.editor.modals[$(this).data('object')].modal('show')
 			})
 			layout.editor.modals[this.GlobalKey].find('button.action-save').on('click', () => {
 				if(options.object !== false) {
-					if(options.caller == 'EditorFieldsClass') {
-						options.object.addChildren(this, options.fieldKey)
-					}
+					options.object.addChildren(this, options.fieldKey)
 					if(options.caller != 'create') {
 						layout.editor.render(GOA[current.editor])
 						layout.tree.render()

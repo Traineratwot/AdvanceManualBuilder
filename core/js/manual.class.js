@@ -39,7 +39,7 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 			var key = this.elements.length
 			value.setParent(this, key)
 			this.elements.push(value)
-			console.info(this.GlobalKey + ' <== ' + value.GlobalKey)
+			Console.info(this.GlobalKey + ' <== ' + value.GlobalKey)
 			return true
 		}
 		return false

@@ -11,7 +11,6 @@ class Locale {
 		if(!s || typeof s != 'string'){
 			return s
 		}
-		console.debug(s)
 		var LangKey = s.toLowerCase()
 		if(typeof this[this.lang][LangKey] != 'undefined') {
 			var t = this[this.lang][LangKey]

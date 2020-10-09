@@ -5,7 +5,7 @@ CLASSES.DataTypeClass = class DataTypeClass extends CLASSES.CommonClass {
 		this.subName = ''
 		this.preview = ''
 		this.color = '#693'
-		this.mdTemplate.main = `<i style="color: #693">$[name] : $[subName]</i>`
+		this.mdTemplate.main = `<i style="color: #693" title="$[name]">$[name] : $[subName]</i>`
 		Object.assign(this, options)
 		this.name = this.name.toLowerCase()
 		this.subName = this.subName.toLowerCase()
