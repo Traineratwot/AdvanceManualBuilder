@@ -82,7 +82,6 @@ const dataTypes = {}
 const layout = {}
 const current = {}
 current.editor = ''
-
 class Temp {
 	add(value) {
 		var key = getRandomString()
@@ -112,9 +111,7 @@ class Temp {
 		value.temp = null
 	}
 }
-
 const tmp = new Temp
-
 CLASSES.Template = class Template {
 	get(s, v = null) {
 		if(v != null && typeof (v) == 'object') {

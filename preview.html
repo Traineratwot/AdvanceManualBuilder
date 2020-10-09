@@ -21,6 +21,9 @@
     ## test
     - test
     - test2
+
+    - - -
+
     ```php
     class test extends Test2{
         public function __constructor(modX $modx){
@@ -29,12 +32,14 @@
     }
 
     ```
-
+    * * *
     | Tables        | Are           | Cool  |
     | ------------- |:-------------:| -----:|
     | **col 3 is**  | right-aligned | $1600 |
     | col 2 is      | *centered*    |   $12 |
     | zebra stripes | ~~are neat~~  |   `$1`|
+
+    ***
 
     - [x] checked list item
     - [ ] unchecked list item
@@ -64,7 +69,7 @@
 			document.querySelectorAll('pre code').forEach((block) => {
 				hljs.highlightBlock(block)
 			})
-			return
+			return true;
 		}
 
 		var fps = setTimeout(convert, 1000)

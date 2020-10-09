@@ -1,9 +1,9 @@
 class MemoryClass {
 	save() {
 		var data = []
-		for(const manualsKey in manuals) {
-			manuals[manualsKey].name
-			data.push(manuals[manualsKey].toObject())
+		for(const manualsKey in manuals.index) {
+			manuals.index[manualsKey].name
+			data.push(manuals.index[manualsKey].toObject())
 		}
 		return this.setLocalStorage('data', data)
 	}
@@ -14,7 +14,7 @@ class MemoryClass {
 		for(const datum of data) {
 			var tmpKey = tmp.add(new CLASSES[datum.classKey](datum))
 			tmp[tmpKey].regeneration()
-			manuals.push(tmp[tmpKey])
+			manuals.add(tmp[tmpKey])
 		}
 		layout.tree.render()
 	}

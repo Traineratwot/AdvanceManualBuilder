@@ -23,6 +23,7 @@ function Exception(message, code) {
 		return this.message
 	}
 }
+
 class ConverterUnits {
 	converterRule = {
 		'byte': {
@@ -37,13 +38,13 @@ class ConverterUnits {
 					0: 1024,
 					1: 'b'
 				},
-				'mb': {
+				'Mb': {
 					0: 1024,
 					1: 'kb'
 				},
 				'gb': {
 					0: 1024,
-					1: 'mb'
+					1: 'Mb'
 				},
 				'tb': {
 					0: 1024,

@@ -13,10 +13,10 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 		type: new CLASSES.EditorFieldsClass(this, {name: 'type'}),
 	}
 	availableChildrenClass = {
-		ClassClass: {label: 'Класс', childKey: 'elements'},
-		FunctionClass: {label: 'Функция', childKey: 'elements'},
-		ObjectClass: {label: 'Объект', childKey: 'elements'},
-		CodePreviewClass: {label: 'Пример кода', childKey: 'elements'},
+		ClassClass: {label: 'class', childKey: 'elements'},
+		FunctionClass: {label: 'function', childKey: 'elements'},
+		ObjectClass: {label: 'object', childKey: 'elements'},
+		CodePreviewClass: {label: 'codePreview', childKey: 'elements'},
 	}
 
 
@@ -96,7 +96,7 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 		for(const editorFieldsKey in this.editorFields) {
 			this.editorFields[editorFieldsKey].render(options.parent, this[editorFieldsKey], options.label)
 		}
-		$(document).trigger(this.GlobalKey+'_rendered', {
+		$(document).trigger(this.GlobalKey + '_rendered', {
 			obj: this,
 			key: this.GlobalKey,
 			options: options,
@@ -112,23 +112,12 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 	fromObject() { }
 
 
-	get GlobalKey() {
-		return this._GlobalKey
-	}
-
-
-	set GlobalKey(value) {
-		if(this._GlobalKey == null) {
-			this._GlobalKey = value
-		}
-	}
-
-
 	renderTree(parent) {
 		GOA.add(this)
 		var item = $(treeTemplate.get('item', {
 			text: this.name,
 			GlobalKey: this.GlobalKey,
+			childkey: this?.parent?.GlobalKey,
 			treeIcon: this.treeIcon
 		})).appendTo(parent)
 		if(this.elements.length > 0) {
@@ -143,5 +132,13 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 		this.renderAddItem(subItem)
 	}
 
+
+	getMd() {
+		layout.preview.clear()
+		for(const element in this.elements) {
+			layout.preview.add(this.elements[element].getMd())
+		}
+		return layout.preview.render()
+	}
 }
 
