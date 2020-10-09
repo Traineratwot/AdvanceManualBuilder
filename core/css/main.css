@@ -276,7 +276,7 @@ ul.tree {
 .tree .caret::before {
     width: 10px;
     height: 10px;
-    content: url("/assets/icons/dark/chevron-right.svg");
+    content: url("../../assets/icons/dark/chevron-right.svg");
     color: black;
     display: inline-block;
     margin-right: 6px;
@@ -285,12 +285,12 @@ ul.tree {
 
 /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
 .tree .caret-down::before {
-    content: url("/assets/icons/dark/chevron-down.svg");
+    content: url("../../assets/icons/dark/chevron-down.svg");
 }
 
 
 .tree .caret-down.empty::before {
-    content: url("/assets/icons/dark/chevron-right.svg");
+    content: url("../../assets/icons/dark/chevron-right.svg");
 
 }
 
