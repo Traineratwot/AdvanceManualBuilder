@@ -50,7 +50,7 @@ CLASSES.CommonClass = class CommonClass {
 	}
 
 
-	addChildren(obj, key) {
+	addChildren(obj, key, empty = false) {
 		if(obj instanceof CLASSES.CommonClass && obj.parent === null) {
 			if(key.indexOf('[]') > 0 || this[key] instanceof Array) {
 				if(!this[key] instanceof Array) {
@@ -59,9 +59,11 @@ CLASSES.CommonClass = class CommonClass {
 				var id = this[key].length
 				obj.setParent(this, id)
 				this[key][id] = obj
+				this._empty = empty
 			} else {
 				obj.setParent(this, -1)
 				this[key] = obj
+				this._empty = empty
 			}
 			$(document).trigger(this.classKey + '_childAdd', {
 				obj: this,
@@ -78,15 +80,18 @@ CLASSES.CommonClass = class CommonClass {
 
 	set(key, value) {
 		this[key] = value
+		this._empty = false
 		$(document).trigger(this.classKey + '_set', {
 			obj: this,
 			key: key,
 			value: value,
+			classKey: this.classKey,
 		})
 		$(document).trigger('CommonClass_set', {
 			obj: this,
 			key: key,
 			value: value,
+			classKey: this.classKey,
 		})
 	}
 
@@ -108,7 +113,10 @@ CLASSES.CommonClass = class CommonClass {
 		console.info('TODO editorRender(){}', arguments)
 
 		let label = options.label ? '"' + options.label + '"' : ''
-		var buttonLabel = locale._(options.prefix) + ' ' + locale._(options.fieldKey) + ' ' + locale._(label)
+		if(!label || label.trim() == '') {
+			label = options.fieldKey
+		}
+		var buttonLabel = locale._(options.prefix) + ' ' + locale._(label)
 
 		if(typeof layout?.editor?.modals[this.GlobalKey] == 'undefined') {
 			layout.editor.modals[this.GlobalKey] = $(editorTemplate.get('modal', {
@@ -136,7 +144,9 @@ CLASSES.CommonClass = class CommonClass {
 			})
 			layout.editor.modals[this.GlobalKey].find('button.action-save').on('click', () => {
 				if(options.object !== false) {
-					options.object.addChildren(this, options.fieldKey)
+					if(options.caller == 'EditorFieldsClass') {
+						options.object.addChildren(this, options.fieldKey)
+					}
 					if(options.caller != 'create') {
 						layout.editor.render(GOA[current.editor])
 						layout.tree.render()
@@ -160,7 +170,8 @@ CLASSES.CommonClass = class CommonClass {
 	}
 
 
-	editorRenderFields(parent, caller = false) {
+	editorRenderFields(parent, caller) {
+		caller = caller ? caller : this.constructor.name
 		parent.html('')
 		for(const editorFieldsKey in this.editorFields) {
 			this.editorFields[editorFieldsKey].render(parent, this[editorFieldsKey], false, caller)
@@ -274,7 +285,8 @@ CLASSES.CommonClass = class CommonClass {
 
 	fromObject(value) {
 		Object.assign(this, value)
-		return toObject()
+		this._empty = false
+		return this.toObject()
 	}
 
 
@@ -417,7 +429,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			this.caller = caller
 		}
 		if(this.input === false) {
-			switch( this.type ) {
+			switch(this.type) {
 				case 'class':
 					this.renderClass(parent, value, label)
 					break
@@ -456,19 +468,25 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 
 	renderClass(parent, value = '', label = false) {
 		if(this.object[this.name] instanceof CLASSES[this.class]) {
-			var result = this.object[this.name]
+			this.object[this.name].editorRender({
+				parent: parent,
+				fieldKey: this.name ?? '',
+				object: this.object,
+				prefix: 'edit',
+				btnClass: 'btn-primary',
+				caller: this.caller
+			})
 		} else {
-			var result = new CLASSES[this.class]
+			var key = tmp.add(new CLASSES[this.class])
+			tmp[key].editorRender({
+				parent: parent,
+				fieldKey: this.name ?? '',
+				object: this.object,
+				prefix: 'set',
+				btnClass: 'btn-info',
+				caller: this.caller
+			})
 		}
-		var key = tmp.add(result)
-		tmp[key].editorRender({
-			parent: parent,
-			fieldKey: this.name ?? '',
-			object: this.object,
-			prefix: 'set',
-			btnClass: 'btn-info',
-			caller: this.caller
-		})
 	}
 
 
@@ -498,7 +516,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 
 
 	renderSelect(parent, value = '', label = false) {
-		if(this.dataSet instanceof Array || this.dataSet instanceof Object ) {
+		if(this.dataSet instanceof Array || this.dataSet instanceof Object) {
 			this.input = $(editorTemplate.get('select', {
 				label: label,
 				name: this.name,
@@ -526,7 +544,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 				})
 			} else {
 				this.input.find('select').on('change', () => {
-					this.object[this.name] = this.dataSetOriginal ? this.dataSetOriginal[this.input.find('select').val()] : this.dataSet[this.input.find('select').val()]
+					this.object.set(this.name, this.dataSetOriginal ? this.dataSetOriginal[this.input.find('select').val()] : this.dataSet[this.input.find('select').val()])
 					this.input.find('select').removeClass('changing')
 					this.input.find('select').addClass('changed')
 				})
@@ -562,7 +580,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			})
 		} else {
 			this.input.find('input').on('change', () => {
-				this.object[this.name] = this.input.find('input').val()
+				this.object.set(this.name, this.input.find('input').val())
 				this.input.find('input').removeClass('changing')
 				this.input.find('input').addClass('changed')
 			})
@@ -600,7 +618,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			})
 		} else {
 			this.input.find('textarea').on('change', () => {
-				this.object[this.name] = this.input.find('textarea').val()
+				this.object.set(this.name, this.input.find('textarea').val())
 				this.input.find('textarea').removeClass('changing')
 				this.input.find('textarea').addClass('changed')
 			})

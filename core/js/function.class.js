@@ -8,11 +8,12 @@ CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 			class: 'DescriptionClass'
 		}),
 		inputs: new CLASSES.EditorFieldsClass(this, {name: 'inputs', type: 'class[]', class: 'FunctionInputClass'}),
-		output: new CLASSES.EditorFieldsClass(this, {name: 'output', type: 'class', class: 'FunctionOutputClass'}),
+		output: new CLASSES.EditorFieldsClass(this, {name: 'output', type: 'class', class: 'FunctionOutputClass',label:'output'}),
 		code: new CLASSES.EditorFieldsClass(this, {
 			name: 'code',
 			type: 'class',
-			class: 'CodePreviewClass'
+			class: 'CodePreviewClass',
+			label: 'CodePreview'
 		}),
 
 	}
@@ -28,9 +29,9 @@ CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 		super(...arguments)
 		this.name = ''
 		this.inputs = []
-		this.addChildren(new CLASSES.FunctionOutputClass, 'output')
-		this.addChildren(new CLASSES.DescriptionClass, 'description')
-		this.addChildren(new CLASSES.CodePreviewClass, 'code')
+		this.addChildren(new CLASSES.FunctionOutputClass, 'output',true)
+		this.addChildren(new CLASSES.DescriptionClass, 'description',true)
+		this.addChildren(new CLASSES.CodePreviewClass, 'code',true)
 		this.mdTemplate.main = `*$[name]* ($[inputs])`
 
 		Object.assign(this, options)
@@ -81,13 +82,19 @@ CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 		text += this.mdTemplate.get('main', {
 			name: this.name,
 			inputs: inputs.join(','),
-		})
-		text += '\n'
-		text += this.output.getMd()
-		text += '\n'
-		text += this.description.getMd()
-		text += '\n'
-		text += this.code.getMd()
+		})+'\n'
+		if(!this.output.empty) {
+			text += locale._('output') + ':\n'
+			text += this.output.getMd()
+		}
+		if(!this.description.empty) {
+			text += locale._('description') + ':\n'
+			text += this.description.getMd()
+		}
+		if(!this.code.empty) {
+			text += locale._('code') + ':\n'
+			text += this.code.getMd()
+		}
 
 		return text
 	}
@@ -98,7 +105,17 @@ CLASSES.FunctionInputClass = class FunctionInputClass extends CLASSES.CommonClas
 	editorFields = {
 		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
 		default: new CLASSES.EditorFieldsClass(this, {name: 'default', type: 'class', class: 'VarClass'}),
-		dataType: new CLASSES.EditorFieldsClass(this, {name: 'dataType', type: 'select', dataSet: dataTypes.toArray(),dataSetOriginal:dataTypes}),
+		dataType: new CLASSES.EditorFieldsClass(this, {
+			name: 'dataType',
+			type: 'select',
+			dataSet: dataTypes.toArray(),
+			dataSetOriginal: dataTypes
+		}),
+		possible_values: new CLASSES.EditorFieldsClass(this, {
+			name: 'possible_values',
+			type: 'class[]',
+			class: 'VarClass'
+		}),
 		description: new CLASSES.EditorFieldsClass(this, {
 			name: 'description',
 			type: 'class',
@@ -110,24 +127,37 @@ CLASSES.FunctionInputClass = class FunctionInputClass extends CLASSES.CommonClas
 	constructor() {
 		super(...arguments)
 		this.name = ''
-		this.addChildren(new CLASSES.DataTypeClass, 'dataType')
-		this.addChildren(new CLASSES.VarClass, 'default')
-		this.addChildren(new CLASSES.DescriptionClass, 'description')
+		this.dataType = dataTypes.mixed
+		this.addChildren(new CLASSES.DescriptionClass, 'description',true)
+		this.addChildren(new CLASSES.VarClass, 'default',true)
 		this.possible_values = []
 		this.mdTemplate.main = `$[dataType] **$[name]** $[default] $[possible_values]`
 	}
 
 
 	getMd() {
-		var possible_values = ''
-		if(this.possible_values.length > 0) {
-			possible_values = `[${this.possible_values.join(',')}]`
+		var possible_values = []
+		for(const possibleValuesKey in this.possible_values) {
+			possible_values.push(this.possible_values[possibleValuesKey].getMd())
 		}
-		var dataType = `<i style="color: #693">${this.dataType?.name}${this.dataType?.subname ?':'+this.dataType?.subname:''}</i>`
-		var _default = `= <i style="color: #936" title="${this.default?.dataType?.subname}">${this.default?.value}</i>`
+		var _possible_values = ''
+		if(possible_values.length > 0) {
+			_possible_values += '['
+			_possible_values += possible_values.join(',')
+			_possible_values += ']'
+		}
+		var dataType = '';
+		if(this.dataType instanceof CLASSES.DataTypeClass  && !this.dataType.empty) {
+			dataType = this.dataType.getMd()
+		}
+
+		var _default = ''
+		if(this.default instanceof CLASSES.VarClass && !this.default.empty) {
+			_default = '= ' + this.default.getMd()
+		}
 		return this.mdTemplate.get('main', {
 			name: this.name,
-			possible_values: possible_values,
+			possible_values: _possible_values,
 			dataType: dataType,
 			default: _default,
 		})
@@ -138,32 +168,47 @@ CLASSES.FunctionOutputClass = class FunctionOutputClass extends CLASSES.CommonCl
 	treeIcon = 'symbol-constant'
 	editorFields = {
 		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
-		dataType: new CLASSES.EditorFieldsClass(this, {name: 'dataType', type: 'select', dataSet: dataTypes.toArray(),dataSetOriginal:dataTypes}),
+		dataType: new CLASSES.EditorFieldsClass(this, {
+			name: 'dataType',
+			type: 'select',
+			dataSet: dataTypes.toArray(),
+			dataSetOriginal: dataTypes
+		}),
+		possible_values: new CLASSES.EditorFieldsClass(this, {
+			name: 'possible_values',
+			type: 'class[]',
+			class: 'VarClass'
+		}),
 	}
 
 
-	constructor() {
+	constructor(option) {
 		super(...arguments)
-		this.name = ''
-		this.addChildren(new CLASSES.DataTypeClass, 'dataType')
-		this.addChildren(new CLASSES.VarClass, 'default')
-		this.mdTemplate.main = `$[dataType] **$[name]** $[default] $[possible_values]`
+		this.addChildren(new CLASSES.DataTypeClass, 'dataType',true)
+		this.mdTemplate.main = `$[dataType] **$[name]** $[possible_values]`
 		this.possible_values = []
 	}
 
 
 	getMd() {
-		var possible_values = ''
-		if(this.possible_values.length > 0) {
-			possible_values = `[${this.possible_values.join(',')}]`
+		var possible_values = []
+		for(const possibleValuesKey in this.possible_values) {
+			possible_values.push(this.possible_values[possibleValuesKey].getMd())
 		}
-		var dataType = `<i style="color: #693">${this.dataType?.name}${this.dataType?.subname ?':'+this.dataType?.subname:''}</i>`
-		var _default = `= <i style="color: #936" title="${this.default?.dataType?.subname}">${this.default?.value}</i>`
+		var _possible_values = ''
+		if(possible_values.length > 0) {
+			_possible_values += '['
+			_possible_values += possible_values.join(',')
+			_possible_values += ']'
+		}
+		var dataType = '';
+		if(this.dataType instanceof CLASSES.DataTypeClass  && !this.dataType.empty) {
+			dataType = this.dataType.getMd()+': '
+		}
 		return this.mdTemplate.get('main', {
 			name: this.name,
-			possible_values: possible_values,
+			possible_values: _possible_values,
 			dataType: dataType,
-			default: _default,
 		})
 	}
 }

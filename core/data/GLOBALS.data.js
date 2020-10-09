@@ -117,7 +117,8 @@ CLASSES.Template = class Template {
 		if(v != null && typeof (v) == 'object') {
 			var t = '' + this[s]
 			for(var k in v) {
-				if(typeof v[k] != 'undefined') {
+				if(typeof v[k] != 'undefined' && v[k] != 'undefined') {
+
 					t = t.replaceAll('$[' + k + ']', locale._(v[k]))
 				}
 			}
