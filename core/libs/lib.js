@@ -119,7 +119,7 @@ function uniqueArrayObject(array, keys, obj) {
 	if(ObjCount(array) == 0 || ObjCount(keys) == 0) {
 		return true
 	}
-	if(objCount >  ObjCount(keys)) {
+	if(objCount > ObjCount(keys)) {
 		return true
 	}
 	var error = 0
@@ -169,4 +169,63 @@ function getRandomString(length = 16, charset = '0123456789ABCDEFGHIJKLMNOPQRSTU
 		str += charset[Math.floor(Math.random() * charset.length)]
 	}
 	return str
+}
+
+var eq = (a, b, eq = false) => {
+	function Exception(response) {
+		this.response = response
+		this.get = () => {
+			return this.response
+		}
+	}
+
+	function objCompare(a, b, eq) {
+		if(a.constructor.name != b.constructor.name) {
+			return false
+		}
+		if(a instanceof HTMLElement) {
+			if(b instanceof HTMLElement) {
+				if(eq) {
+					return a.isSameNode(b)
+				}
+				return a.isEqualNode(b)
+			} else {
+				return false
+			}
+		}
+	}
+
+	try {
+		if(eq) {
+			if(Object.is(a, b)) {
+				throw new Exception(true)
+			}
+		} else {
+			if(a == b) {
+				throw new Exception(true)
+			}
+		}
+		var type = typeof a
+		if(type === typeof b) {
+			switch( type ) {
+				case 'boolean':
+				case 'number':
+				case 'string':
+					if(eq) {
+						throw new Exception(a === b)
+					}
+					throw new Exception(a == b)
+				case 'object':
+					if(Object.is(a, b)) {
+						throw new Exception(true)
+					} else {
+						throw new Exception(objCompare(a, b, eq))
+					}
+			}
+		} else {
+			throw new Exception(false)
+		}
+	} catch(__e__) {
+		return __e__.get()
+	}
 }

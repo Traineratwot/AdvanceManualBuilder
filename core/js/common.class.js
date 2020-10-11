@@ -126,7 +126,6 @@ CLASSES.CommonClass = class CommonClass {
 			caller: 'tree'
 		}, options)
 		Console.info('TODO editorRender(){}', arguments)
-
 		let label = options.label ? '"' + options.label + '"' : ''
 		if(!label || label.trim() == '') {
 			label = options.fieldKey
@@ -141,7 +140,6 @@ CLASSES.CommonClass = class CommonClass {
 				classKey: this.constructor.name,
 			})).appendTo('body')
 		}
-		layout.editor.modals[this.GlobalKey].find('div.modal-body').html('')
 		layout.editor.modals[this.GlobalKey].find('div.modal-body').html('')
 		if(options.caller == 'tree') {
 			this.editorRenderFields(options.parent)
@@ -351,19 +349,15 @@ CLASSES.CommonClass = class CommonClass {
 		parent = parent ?? layout.editor.block
 		var tempKey = tmp.add(new CLASSES[classKey])
 		tmp[tempKey].editorRenderFields(parent, 'create')
-		$(editorTemplate.get('button', {
-			id: parentGlobalKey,
-			classKey: classKey,
-			btnClass: 'btn-success',
-			text: 'save',
-		})).appendTo(parent).on('click', () => {
-			if(this instanceof CLASSES.ManualClass) {
-				this.addElement(tmp[tempKey])
-			} else {
-				this.addChildren(tmp[tempKey], childKey)
-			}
-			layout.tree.render()
+		EMC.add({
+			element: elem[0],
+			event: 'click',
+			func: 'createNewElement',
+			object: this,
+			tempKey: tempKey,
+			childKey: childKey,
 		})
+		EMC.setEvents()
 		return tmp[tempKey]
 	}
 
@@ -554,19 +548,21 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 					})).appendTo(this.input.find('select'))
 				}
 			}
-			if(this.callback !== false) {
-				this.input.find('select').on('change', () => {
-					this.callback()
-					this.input.find('select').removeClass('changing')
-					this.input.find('select').addClass('changed')
-				})
-			} else {
-				this.input.find('select').on('change', () => {
-					this.object.set(this.name, this.dataSetOriginal ? this.dataSetOriginal[this.input.find('select').val()] : this.dataSet[this.input.find('select').val()])
-					this.input.find('select').removeClass('changing')
-					this.input.find('select').addClass('changed')
-				})
-			}
+			EMC.add({
+				element: this.input.find('select')[0],
+				event: 'focus',
+				func: 'inputChanging'
+			})
+			EMC.add({
+				element: this.input.find('select')[0],
+				event: 'change blur',
+				func: 'selectChanged',
+				callback: this.callback,
+				object: this.object,
+				name: this.name,
+				dataSetOriginal: this.dataSetOriginal,
+				dataSet: this.dataSet,
+			})
 		}
 	}
 
@@ -596,7 +592,8 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			event: 'change blur',
 			func: 'inputChanged',
 			callback: this.callback,
-			object: this.object
+			object: this.object,
+			name: this.name,
 		})
 		EMC.setEvents()
 	}
@@ -628,7 +625,8 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			event: 'change blur',
 			func: 'inputChanged',
 			callback: this.callback,
-			object: this.object
+			object: this.object,
+			name: this.name,
 		})
 		EMC.setEvents()
 	}

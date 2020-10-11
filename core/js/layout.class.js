@@ -73,42 +73,19 @@ class LayoutTreeClass {
 			$(this).toggleClass('caret-down').find('+ .nested').slideToggle()
 			GOA[$(this).data('object')].treeOpenedToggle()
 		})
-		$('button.startEditor').on('dblclick', function() {
-			current.editor = $(this).data('object')
-			layout.editor.render(GOA[current.editor])
+		$('button.startEditor').each(function() {
+			EMC.add({
+				element: this,
+				event: 'dblclick',
+				func: 'treeDblclick',
+			})
 		})
-		$('button.addElem').on('dblclick', function() {
-			if($(this).data('classkey') == 'ManualClass') {
-				layout.editor.block.html('')
-				var key = tmp.add(new CLASSES.ManualClass)
-				tmp[key].editorRender({
-					parent: layout.editor.block
-				})
-				$(editorTemplate.get('button', {
-					id: key,
-					classKey: 'ManualClass',
-					btnClass: 'btn-success',
-					text: 'save',
-				})).appendTo(layout.editor.block).on('click', () => {
-					manuals.add(tmp[key])
-					layout.tree.render()
-				})
-				return false
-			}
-			var GlobalKey = $(this).data('object')
-			var childKey = $(this).data('childKey')
-			var modal = layout.editor.addModals[GlobalKey]
-			modal.modal('show')
-			modal.find('select')
-				.on('change', function() {
-					modal.find('button.createElem i').html($(this).val())
-				})
-			modal.find('button.createElem')
-				.on('click', () => {
-					var classKey = modal.find('select').val()
-					GOA[GlobalKey].createNewElement(classKey, GlobalKey, childKey, layout.editor.block)
-				})
-
+		$('button.addElem').each(function() {
+			EMC.add({
+				element: this,
+				event: 'dblclick',
+				func: 'treeAddDblclick',
+			})
 		})
 		$('button.caret').each(function() {
 			var v = $(this).siblings('ul').length
@@ -119,6 +96,7 @@ class LayoutTreeClass {
 
 			}
 		})
+		EMC.setEvents()
 		tmp.trash()
 	}
 }

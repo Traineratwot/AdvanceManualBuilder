@@ -68,21 +68,19 @@ class EventManagerClass {
 		for(const eventEntityListKey in EMC.eventEntityList) {
 			const elem = EMC.eventEntityList[eventEntityListKey]
 
-			console.info(`elem.event.indexOf(event.type) `, elem.event.indexOf(event.type))
-			console.info(`(Object.is(elem.element, this) || Object.is(elem.element, event.target) `, (Object.is(elem.element, this) || Object.is(elem.element, event.target)))
-			console.warn(elem, event)
+			// console.info(`elem.event.indexOf(event.type) `, elem.event.indexOf(event.type))
+			// console.info(`(Object.is(elem.element, this) || Object.is(elem.element, event.target) `, (Object.is(elem.element, this) || Object.is(elem.element, event.target)))
+			// console.warn(elem, event)
 			if(elem.event.indexOf(event.type) >= 0 && (Object.is(elem.element, this) || Object.is(elem.element, event.target))) {
 				if(typeof EMC[elem.func] == 'function') {
-					event.preventDefault()
 					EMC.defiedEvent[elem.id]
 					Console.success(elem)
 					return EMC[elem.func].call(event.target, event, elem)
 				} else {
-					console.error(`undefined function: "${EMC[elem.func]}"`)
+					Console.error(`undefined function: "${EMC[elem.func]}"`)
 				}
 			}
 		}
-		console.error(`undefined`, event)
 	}
 
 }
@@ -109,7 +107,58 @@ EMC.inputChanging = function(event, data) {
 	$(this).removeClass('changed')
 }
 EMC.inputChanged = function(event, data) {
-	data.object.set(this.name, $(this).val())
+	data.object.set(data.name, $(this).val())
 	$(this).removeClass('changing')
 	$(this).addClass('changed')
+}
+EMC.selectChanged = function(event, data) {
+	data.object.set(data.name, data.dataSetOriginal ? data.dataSetOriginal[$(this).val()] : data.dataSet[$(this).val()])
+	$(this).removeClass('changing')
+	$(this).addClass('changed')
+}
+EMC.createNewElement = function(event, data) {
+	if(this instanceof CLASSES.ManualClass) {
+		data.object.addElement(tmp[data.tempKey])
+	} else {
+		data.object.addChildren(tmp[data.tempKey], data.childKey)
+	}
+	layout.tree.render()
+}
+EMC.treeDblclick = function(event, data) {
+	current.editor = $(this).data('object')
+	layout.editor.render(GOA[current.editor])
+}
+EMC.treeNondblclick = function(event, data) {
+	$(this).toggleClass('caret-down').find('+ .nested').slideToggle()
+	GOA[$(this).data('object')].treeOpenedToggle()
+}
+EMC.treeAddDblclick = function(event, data) {
+	if($(this).data('classkey') == 'ManualClass') {
+		layout.editor.block.html('')
+		var key = tmp.add(new CLASSES.ManualClass)
+		tmp[key].editorRender({
+			parent: layout.editor.block
+		})
+		$(editorTemplate.get('button', {
+			id: key,
+			classKey: 'ManualClass',
+			btnClass: 'btn-success',
+			text: 'save',
+		})).appendTo(layout.editor.block).on('click', () => {
+			manuals.add(tmp[key])
+			layout.tree.render()
+		})
+		return false
+	}
+	var GlobalKey = $(this).data('object')
+	var childKey = $(this).data('childKey')
+	var modal = layout.editor.addModals[GlobalKey]
+	modal.modal('show')
+	modal.find('select').on('change', function() {
+			modal.find('button.createElem i').html($(this).val())
+		})
+	modal.find('button.createElem').on('click', () => {
+			var classKey = modal.find('select').val()
+			GOA[GlobalKey].createNewElement(classKey, GlobalKey, childKey, layout.editor.block)
+		})
 }
