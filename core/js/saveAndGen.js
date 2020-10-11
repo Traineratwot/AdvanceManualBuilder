@@ -19,7 +19,6 @@ class MemoryClass {
 		layout.tree.render()
 	}
 
-
 	getLocalStorage(name) {
 		name = name.toString()
 		if(name) {

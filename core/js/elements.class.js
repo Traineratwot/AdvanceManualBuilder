@@ -76,7 +76,7 @@ CLASSES.VarClass = class VarClass extends CLASSES.CommonClass {
 			dataSetOriginal: dataTypes
 		}),
 	}
-
+	uqField = 'value'
 
 	constructor(options = {}) {
 		super(...arguments)

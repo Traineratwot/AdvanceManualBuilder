@@ -81,7 +81,7 @@ CLASSES.CommonClass = class CommonClass {
 
 
 	set(key, value) {
-		switch(typeof value) {
+		switch( typeof value ) {
 			case 'boolean':
 			case 'number':
 			case 'symbol':
@@ -126,7 +126,6 @@ CLASSES.CommonClass = class CommonClass {
 			caller: 'tree'
 		}, options)
 		Console.info('TODO editorRender(){}', arguments)
-
 		let label = options.label ? '"' + options.label + '"' : ''
 		if(!label || label.trim() == '') {
 			label = options.fieldKey
@@ -142,7 +141,6 @@ CLASSES.CommonClass = class CommonClass {
 			})).appendTo('body')
 		}
 		layout.editor.modals[this.GlobalKey].find('div.modal-body').html('')
-		layout.editor.modals[this.GlobalKey].find('div.modal-body').html('')
 		if(options.caller == 'tree') {
 			this.editorRenderFields(options.parent)
 		} else {
@@ -155,21 +153,23 @@ CLASSES.CommonClass = class CommonClass {
 				btnClass: options.btnClass,
 				attr: attr,
 			})).appendTo(options.parent)
-			button.find('button').on('click', function() {
-				layout.editor.modals[$(this).data('object')].modal('show')
+			EMC.add({
+				element: button.find('button')[0],
+				event: 'click',
+				func: 'editorRender_button'
 			})
-			layout.editor.modals[this.GlobalKey].find('button.action-save').on('click', () => {
-				if(options.object !== false) {
-					options.object.addChildren(this, options.fieldKey)
-					if(options.caller != 'create') {
-						// layout.editor.render(GOA[current.editor])
-						layout.editor.render(GOA[options.object.GlobalKey])
-						layout.tree.render()
-					}
-				}
+			EMC.add({
+				element: layout.editor.modals[this.GlobalKey].find('button.action-save')[0],
+				event: 'click',
+				func: 'editorRender_button_action_save',
+				options: options,
+				elem:this,
 			})
-			layout.editor.modals[this.GlobalKey].find('button.action-cancel').on('click', () => {
-				tmp.remove(this)
+			EMC.add({
+				element: layout.editor.modals[this.GlobalKey].find('button.action-cancel')[0],
+				event: 'click',
+				func: 'editorRender_button_action_cancel',
+				options: this,
 			})
 		}
 		$(document).trigger(this.GlobalKey + '_rendered', {
@@ -182,6 +182,7 @@ CLASSES.CommonClass = class CommonClass {
 			key: this.GlobalKey,
 			options: options,
 		})
+		EMC.setEvents()
 	}
 
 
@@ -348,19 +349,15 @@ CLASSES.CommonClass = class CommonClass {
 		parent = parent ?? layout.editor.block
 		var tempKey = tmp.add(new CLASSES[classKey])
 		tmp[tempKey].editorRenderFields(parent, 'create')
-		$(editorTemplate.get('button', {
-			id: parentGlobalKey,
-			classKey: classKey,
-			btnClass: 'btn-success',
-			text: 'save',
-		})).appendTo(parent).on('click', () => {
-			if(this instanceof CLASSES.ManualClass) {
-				this.addElement(tmp[tempKey])
-			} else {
-				this.addChildren(tmp[tempKey], childKey)
-			}
-			layout.tree.render()
+		EMC.add({
+			element: elem[0],
+			event: 'click',
+			func: 'createNewElement',
+			object: this,
+			tempKey: tempKey,
+			childKey: childKey,
 		})
+		EMC.setEvents()
 		return tmp[tempKey]
 	}
 
@@ -444,7 +441,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			this.caller = caller
 		}
 		if(this.input === false) {
-			switch(this.type) {
+			switch( this.type ) {
 				case 'class':
 					this.renderClass(parent, value, label)
 					break
@@ -551,19 +548,21 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 					})).appendTo(this.input.find('select'))
 				}
 			}
-			if(this.callback !== false) {
-				this.input.find('select').on('change', () => {
-					this.callback()
-					this.input.find('select').removeClass('changing')
-					this.input.find('select').addClass('changed')
-				})
-			} else {
-				this.input.find('select').on('change', () => {
-					this.object.set(this.name, this.dataSetOriginal ? this.dataSetOriginal[this.input.find('select').val()] : this.dataSet[this.input.find('select').val()])
-					this.input.find('select').removeClass('changing')
-					this.input.find('select').addClass('changed')
-				})
-			}
+			EMC.add({
+				element: this.input.find('select')[0],
+				event: 'focus',
+				func: 'inputChanging'
+			})
+			EMC.add({
+				element: this.input.find('select')[0],
+				event: 'change blur',
+				func: 'selectChanged',
+				callback: this.callback,
+				object: this.object,
+				name: this.name,
+				dataSetOriginal: this.dataSetOriginal,
+				dataSet: this.dataSet,
+			})
 		}
 	}
 
@@ -583,26 +582,20 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 				minLength: 0,
 			})
 		}
-		this.input.find('input').on('input', function() {
-			$(this).removeClass('changed')
-			$(this).addClass('changing')
+		EMC.add({
+			element: this.input.find('input')[0],
+			event: 'input',
+			func: 'inputChanging'
 		})
-		if(this.callback !== false) {
-			this.input.find('input').on('change', () => {
-				this.callback()
-				this.input.find('input').removeClass('changing')
-				this.input.find('input').addClass('changed')
-			})
-		} else {
-			this.input.find('input').on('change', () => {
-				this.object.set(this.name, this.input.find('input').val())
-				this.input.find('input').removeClass('changing')
-				this.input.find('input').addClass('changed')
-			})
-		}
-		this.input.find('input').on('blur', () => {
-			this.input.find('input').removeClass('changing')
+		EMC.add({
+			element: this.input.find('input')[0],
+			event: 'change blur',
+			func: 'inputChanged',
+			callback: this.callback,
+			object: this.object,
+			name: this.name,
 		})
+		EMC.setEvents()
 	}
 
 
@@ -621,26 +614,21 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 				minLength: 0,
 			})
 		}
-		this.input.find('textarea').on('input', function() {
-			$(this).removeClass('changed')
-			$(this).addClass('changing')
+		EMC.add({
+			element: this.input.find('textarea')[0],
+			event: 'input',
+			func: 'inputChanging'
 		})
-		if(this.callback !== false) {
-			this.input.find('textarea').on('change', () => {
-				this.callback()
-				this.input.find('textarea').removeClass('changing')
-				this.input.find('textarea').addClass('changed')
-			})
-		} else {
-			this.input.find('textarea').on('change', () => {
-				this.object.set(this.name, this.input.find('textarea').val())
-				this.input.find('textarea').removeClass('changing')
-				this.input.find('textarea').addClass('changed')
-			})
-		}
-		this.input.find('textarea').on('blur', () => {
-			this.input.find('input').removeClass('changing')
+
+		EMC.add({
+			element: this.input.find('textarea')[0],
+			event: 'change blur',
+			func: 'inputChanged',
+			callback: this.callback,
+			object: this.object,
+			name: this.name,
 		})
+		EMC.setEvents()
 	}
 
 }
