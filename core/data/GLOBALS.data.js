@@ -91,10 +91,15 @@ CLASSES.Manuals = class Manuals {
 
 
 	add(manual) {
-		if(typeof this[manual.GlobalKey] == 'undefined') {
-			this.index[this.i] = this[manual.GlobalKey] = manual
-			manual.ElementId = this.i
-			this.i++
+		if(manual) {
+			GOA.add(manual)
+			if(typeof this[manual.GlobalKey] == 'undefined') {
+				this.index[this.i] = this[manual.GlobalKey] = manual
+				manual.ElementId = this.i
+				this.i++
+			}
+		} else {
+			Console.error(manual)
 		}
 	}
 }

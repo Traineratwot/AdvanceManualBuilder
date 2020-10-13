@@ -101,32 +101,32 @@ getUniqueValues = function() {
 	})
 }
 
+function Count(obj) {
+	var i = 0
+	for(const key in obj) {
+		if(obj.hasOwnProperty(key)) {
+			i++
+		}
+	}
+	return i
+}
+
 function uniqueArrayObject(array, keys, obj) {
 
 	var test = []
 
-	function ObjCount(obj) {
-		var i = 0
-		for(const key in obj) {
-			if(obj.hasOwnProperty(key)) {
-				i++
-			}
-		}
-		return i
-	}
-
-	var objCount = ObjCount(obj)
-	if(ObjCount(array) == 0 || ObjCount(keys) == 0) {
+	var count = Count(obj)
+	if(Count(array) == 0 || Count(keys) == 0) {
 		return true
 	}
-	if(objCount > ObjCount(keys)) {
+	if(count > Count(keys)) {
 		return true
 	}
 	var error = 0
 	for(const key in array) {
 		if(array.hasOwnProperty(key)) {
 			const elem = array[key]
-			if(ObjCount(elem) != objCount) {
+			if(Count(elem) != count) {
 				error++
 				continue
 			}
@@ -151,7 +151,7 @@ function uniqueArrayObject(array, keys, obj) {
 			}
 		}
 	}
-	if(error == ObjCount(array)) {
+	if(error == Count(array)) {
 		return true
 	} else {
 		return false

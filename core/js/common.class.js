@@ -27,7 +27,7 @@ CLASSES.CommonClass = class CommonClass {
 		this.classKey = this.constructor.name
 		Object.assign(this, objects)
 		this[this.uqField] = this[this.uqField] ?? ''
-		this.mdTemplate.main = ''
+		this.mdTemplate.main = '#### $[name]'
 		GOA.add(this)
 	}
 
@@ -75,7 +75,7 @@ CLASSES.CommonClass = class CommonClass {
 				child: obj,
 				classKey: obj.constructor.name
 			})
-			Console.info(this.GlobalKey + ' <== ' + obj.GlobalKey)
+			// Console.info(this.GlobalKey + ' <== ' + obj.GlobalKey)
 		}
 	}
 
@@ -125,13 +125,15 @@ CLASSES.CommonClass = class CommonClass {
 			btnClass: 'btn-primary',
 			caller: 'tree'
 		}, options)
-		Console.info('TODO editorRender(){}', arguments)
+		// Console.info('TODO editorRender(){}', arguments)
 		let label = options.label ? '"' + options.label + '"' : ''
 		if(!label || label.trim() == '') {
 			label = options.fieldKey
 		}
 		var buttonLabel = locale._(options.prefix) + ' ' + locale._(label)
-
+		if(current.editor == this.GlobalKey){
+			return this.editorRenderFields(options.parent,options.caller)
+		}
 		if(typeof layout?.editor?.modals[this.GlobalKey] == 'undefined') {
 			layout.editor.modals[this.GlobalKey] = $(editorTemplate.get('modal', {
 				id: this.GlobalKey,
@@ -163,7 +165,7 @@ CLASSES.CommonClass = class CommonClass {
 				event: 'click',
 				func: 'editorRender_button_action_save',
 				options: options,
-				elem:this,
+				elem: this,
 			})
 			EMC.add({
 				element: layout.editor.modals[this.GlobalKey].find('button.action-cancel')[0],
@@ -328,12 +330,14 @@ CLASSES.CommonClass = class CommonClass {
 
 	renderAddItem(subItem) {
 		layout.editor.addModals[this.GlobalKey] = $(layout.editor.template.get('addModal', {
-			GlobalKey: this._GlobalKey,
+			GlobalKey: this.GlobalKey,
+			childkey: this.GlobalKey,
 		})).appendTo('body')
 		for(const availableChildrenClassKey in this.availableChildrenClass) {
 			var select = layout.editor.addModals[this.GlobalKey].find('select')
 			select.append($(editorTemplate.get('option', {
 				label: locale._(this.availableChildrenClass[availableChildrenClassKey].label),
+				key: this.availableChildrenClass[availableChildrenClassKey].childKey,
 				value: availableChildrenClassKey,
 			})))
 		}
@@ -349,6 +353,11 @@ CLASSES.CommonClass = class CommonClass {
 		parent = parent ?? layout.editor.block
 		var tempKey = tmp.add(new CLASSES[classKey])
 		tmp[tempKey].editorRenderFields(parent, 'create')
+		var elem = $(editorTemplate.get('button', {
+			id: tempKey,
+			btnClass: 'btn-success',
+			text: 'save',
+		})).appendTo(parent).find('button')
 		EMC.add({
 			element: elem[0],
 			event: 'click',
@@ -409,6 +418,20 @@ CLASSES.CommonClass = class CommonClass {
 			proto = proto.__proto__
 		}
 		return proto
+	}
+
+
+	getManual(limit = 100) {
+		if(this instanceof CLASSES.ManualClass) {
+			return this
+		}
+		var i = 0
+		var obj = this
+		while(!(obj?.parent instanceof CLASSES.ManualClass) && i < limit) {
+			i++
+			obj = obj?.parent
+		}
+		return obj?.parent ? obj.parent : false
 	}
 }
 
@@ -576,7 +599,7 @@ CLASSES.EditorFieldsClass = class EditorFieldsClass {
 			id: this.id,
 			placeholder: this.placeholder,
 		})).appendTo(parent)
-		if(this.dataSet instanceof Array || this.dataSet instanceof Object) {
+		if((this.dataSet instanceof Array || this.dataSet instanceof Object) && Count(this.dataSet) > 0) {
 			this.input.find('input').autocomplete({
 				source: this.dataSet,
 				minLength: 0,

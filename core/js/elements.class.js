@@ -82,7 +82,7 @@ CLASSES.VarClass = class VarClass extends CLASSES.CommonClass {
 		super(...arguments)
 		this.name = null
 		this.dataType = dataTypes.mixed
-		this.value = false
+		this.value = null
 		this.mdTemplate.main = `$[dataType] $[value]`
 		Object.assign(this, options)
 	}

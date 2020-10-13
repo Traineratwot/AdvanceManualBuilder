@@ -14,7 +14,7 @@ class EventManagerClass {
 		this.eventList.push(options.event)
 		if(uniqueArrayObject(this.eventEntityList, ['element', 'event', 'func'], options)) {
 			var id = getRandomString()
-			console.log('i add ' + id)
+			// console.log('i add ' + id)
 			options = Object.assign(
 				{
 					id: id,
@@ -26,7 +26,7 @@ class EventManagerClass {
 			this.eventEntityList[id] = options
 			return id
 		} else {
-			console.log('i not add ', options)
+			// console.log('i not add ', options)
 		}
 		return false
 	}
@@ -64,7 +64,7 @@ class EventManagerClass {
 
 
 	manager(event) {
-		console.clear()
+		// console.clear()
 		for(const eventEntityListKey in EMC.eventEntityList) {
 			const elem = EMC.eventEntityList[eventEntityListKey]
 
@@ -77,7 +77,7 @@ class EventManagerClass {
 					Console.success(elem)
 					return EMC[elem.func].call(event.target, event, elem)
 				} else {
-					Console.error(`undefined function: "${EMC[elem.func]}"`)
+					// Console.error(`undefined function: "${EMC[elem.func]}"`)
 				}
 			}
 		}
@@ -159,6 +159,7 @@ EMC.treeAddDblclick = function(event, data) {
 		})
 	modal.find('button.createElem').on('click', () => {
 			var classKey = modal.find('select').val()
+			var childKey = modal.find(`option[value="${classKey}"]`).data('key')
 			GOA[GlobalKey].createNewElement(classKey, GlobalKey, childKey, layout.editor.block)
 		})
 }

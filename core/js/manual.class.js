@@ -3,19 +3,19 @@
 CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 	_GlobalKey = null
 	editorFields = {
-		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
-		version: new CLASSES.EditorFieldsClass(this, {name: 'version'}),
+		name       : new CLASSES.EditorFieldsClass(this, {name: 'name'}),
+		version    : new CLASSES.EditorFieldsClass(this, {name: 'version'}),
 		description: new CLASSES.EditorFieldsClass(this, {
-			name: 'description',
-			type: 'class',
-			class: 'DescriptionClass'
+			name      : 'description',
+			type      : 'class',
+			class     : 'DescriptionClass'
 		}),
-		type: new CLASSES.EditorFieldsClass(this, {name: 'type'}),
+		type       : new CLASSES.EditorFieldsClass(this, {name: 'type'}),
 	}
 	availableChildrenClass = {
-		ClassClass: {label: 'class', childKey: 'elements'},
-		FunctionClass: {label: 'function', childKey: 'elements'},
-		ObjectClass: {label: 'object', childKey: 'elements'},
+		ClassClass      : {label: 'class'      , childKey: 'elements'},
+		FunctionClass   : {label: 'function'   , childKey: 'elements'},
+		ObjectClass     : {label: 'object'     , childKey: 'elements'},
 		CodePreviewClass: {label: 'codePreview', childKey: 'elements'},
 	}
 
@@ -29,6 +29,7 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 		this.addChildren(new CLASSES.DescriptionClass, 'description')
 		this.elements = []
 		this.classKey = this.constructor.name
+		this.mdTemplate.main = `# $[name]$[version]$[description]`
 		Object.assign(this, object)
 
 	}
@@ -39,7 +40,7 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 			var key = this.elements.length
 			value.setParent(this, key)
 			this.elements.push(value)
-			Console.info(this.GlobalKey + ' <== ' + value.GlobalKey)
+			// Console.info(this.GlobalKey + ' <== ' + value.GlobalKey)
 			return true
 		}
 		return false
@@ -120,8 +121,8 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 			childkey: this?.parent?.GlobalKey,
 			treeIcon: this.treeIcon
 		})).appendTo(parent)
+		var subItem = $(treeTemplate.get('subItem')).appendTo(item)
 		if(this.elements.length > 0) {
-			var subItem = $(treeTemplate.get('subItem')).appendTo(item)
 			for(const k in this.elements) {
 				if(this.elements[k] instanceof CLASSES.CommonClass) {
 					const element = this.elements[k]
@@ -135,6 +136,12 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 
 	getMd() {
 		layout.preview.clear()
+
+		layout.preview.add(this.mdTemplate.get('main', {
+			name       : this.name?this.name                                 : '',
+			version    : this.version?'\n###### version - '+ this.version    : '',
+			description: this.description.body?'\n'+this.description.body	 : '',
+		}))
 		for(const element in this.elements) {
 			layout.preview.add(this.elements[element].getMd())
 		}

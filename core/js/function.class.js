@@ -1,27 +1,26 @@
 CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-method'
 	editorFields = {
-		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
+		name       : new CLASSES.EditorFieldsClass(this, {name: 'name'}),
 		description: new CLASSES.EditorFieldsClass(this, {
-			name: 'description',
-			type: 'class',
-			class: 'DescriptionClass'
+			name      : 'description',
+			type      : 'class',
+			class     : 'DescriptionClass'
 		}),
-		inputs: new CLASSES.EditorFieldsClass(this, {name: 'inputs', type: 'class[]', class: 'FunctionInputClass'}),
-		output: new CLASSES.EditorFieldsClass(this, {name: 'output', type: 'class', class: 'FunctionOutputClass',label:'output'}),
-		code: new CLASSES.EditorFieldsClass(this, {
-			name: 'code',
-			type: 'class',
-			class: 'CodePreviewClass',
-			label: 'CodePreview'
+		inputs     : new CLASSES.EditorFieldsClass(this, {name: 'inputs', type: 'class[]', class: 'FunctionInputClass'}),
+		output     : new CLASSES.EditorFieldsClass(this, {name: 'output', type: 'class'  , class: 'FunctionOutputClass' , label: 'output'}),
+		code       : new CLASSES.EditorFieldsClass(this, {
+			name      : 'code',
+			type      : 'class',
+			class     : 'CodePreviewClass',
+			label     : 'CodePreview'
 		}),
-
 	}
 	availableChildrenClass = {
-		FunctionInputClass: {label: 'input', childKey: 'inputs'},
-		FunctionOutputClass: {label: 'function', childKey: 'output'},
-		DescriptionClass: {label: 'object', childKey: 'description'},
-		CodePreviewClass: {label: 'codePreview', childKey: 'code'},
+		FunctionInputClass : {label: 'input'      , childKey: 'inputs'},
+		FunctionOutputClass: {label: 'function'   , childKey: 'output'},
+		DescriptionClass   : {label: 'object'     , childKey: 'description'},
+		CodePreviewClass   : {label: 'codePreview', childKey: 'code'},
 	}
 
 
@@ -103,23 +102,23 @@ CLASSES.FunctionClass = class FunctionClass extends CLASSES.CommonClass {
 CLASSES.FunctionInputClass = class FunctionInputClass extends CLASSES.CommonClass {
 	treeIcon = 'symbol-variable'
 	editorFields = {
-		name: new CLASSES.EditorFieldsClass(this, {name: 'name'}),
-		default: new CLASSES.EditorFieldsClass(this, {name: 'default', type: 'class', class: 'VarClass'}),
-		dataType: new CLASSES.EditorFieldsClass(this, {
-			name: 'dataType',
-			type: 'select',
-			dataSet: dataTypes.toArray(),
+		name            : new CLASSES.EditorFieldsClass(this, {name: 'name'}),
+		default         : new CLASSES.EditorFieldsClass(this, {name: 'default', type: 'class', class: 'VarClass'}),
+		dataType        : new CLASSES.EditorFieldsClass(this, {
+			name           : 'dataType',
+			type           : 'select',
+			dataSet        : dataTypes.toArray(),
 			dataSetOriginal: dataTypes
 		}),
-		possible_values: new CLASSES.EditorFieldsClass(this, {
-			name: 'possible_values',
-			type: 'class[]',
-			class: 'VarClass'
+		possible_values : new CLASSES.EditorFieldsClass(this, {
+			name           : 'possible_values',
+			type           : 'class[]',
+			class          : 'VarClass'
 		}),
-		description: new CLASSES.EditorFieldsClass(this, {
-			name: 'description',
-			type: 'class',
-			class: 'DescriptionClass'
+		description     : new CLASSES.EditorFieldsClass(this, {
+			name           : 'description',
+			type           : 'class',
+			class          : 'DescriptionClass'
 		}),
 	}
 
