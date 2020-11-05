@@ -1,29 +1,3 @@
-function in_array($k, $a) {
-	for(const $aKey in $a) {
-		if($k == $a[$aKey]) {return true}
-	}
-	return false
-}
-
-function array_keys($a) {
-	var arr = []
-	for(const $aKey in $a) {
-		arr.push($aKey)
-	}
-	return arr
-}
-
-function Exception(message, code) {
-	this.message = message;
-	this.code = code;
-	this.getCode=()=>{
-		return this.code
-	}
-	this.getMessage=()=>{
-		return this.message
-	}
-}
-
 class ConverterUnits {
 	converterRule = {
 		'byte': {
@@ -145,38 +119,38 @@ class ConverterUnits {
 			var i = 1
 			n = parseFloat(n)
 			if(!n) {
-				throw new Exception('invalid number', 0)
+				throw new this.Exception('invalid number', 0)
 			}
 			if(typeof this.converterRule[type] != 'undefined') {
 				var converterRule = this.converterRule[type]
 				var SI = converterRule['SI'][1]
 			} else {
-				throw new Exception('invalid type', 0)
+				throw new this.Exception('invalid type', 0)
 			}
 			if(to != 'best' && to != 'SI') {
-				if(!in_array(to, array_keys(converterRule[0])) && !in_array(to, array_keys(converterRule[1])) && to != SI) {
+				if(!this.in_array(to, this.array_keys(converterRule[0])) && !this.in_array(to, this.array_keys(converterRule[1])) && to != SI) {
 					to = 'best'
 				}
 			}
 			//validate input end
 			if(to == from && to != 'SI') {
-				throw new Exception('easy )', 1)
+				throw new this.Exception('easy )', 1)
 			}
 			n = this.ToSi(n, type, from)
 			if(!n) {
-				throw new Exception('invalid "from" unit', 2)
+				throw new this.Exception('invalid "from" unit', 2)
 			}
 			if(to == 'SI' || to == SI) {
-				throw new Exception('easy )', 2)
+				throw new this.Exception('easy )', 2)
 			}
 			if(to != 'best') {
-				if(in_array(to, array_keys(converterRule[0]))) {
+				if(this.in_array(to, this.array_keys(converterRule[0]))) {
 					var g
 					g = 0
-				} else if(in_array(to, array_keys(converterRule[1]))) {
+				} else if(this.in_array(to, this.array_keys(converterRule[1]))) {
 					g = 1
 				} else {
-					throw new Exception('invalid "to" unit', 2)
+					throw new this.Exception('invalid "to" unit', 2)
 				}
 			} else {
 				var g
@@ -217,7 +191,7 @@ class ConverterUnits {
 			}
 		} catch(__e__) {
 			var e
-			if(__e__ instanceof Exception) {
+			if(__e__ instanceof this.Exception) {
 				e = __e__
 				console.log(e.getMessage())
 				__loop1:
@@ -241,8 +215,7 @@ class ConverterUnits {
 		}
 		return out
 	}
-
-
+	
 	ToSi(n, type, from) {
 		if(typeof type == 'undefined') type = 'byte'
 		if(typeof from == 'undefined') from = 'SI'
@@ -259,9 +232,9 @@ class ConverterUnits {
 		}
 		var g
 
-		if(in_array(from, array_keys(converterRule[0]))) {
+		if(this.in_array(from, this.array_keys(converterRule[0]))) {
 			g = 0
-		} else if(in_array(from, array_keys(converterRule[1]))) {
+		} else if(this.in_array(from, this.array_keys(converterRule[1]))) {
 			g = 1
 		} else {
 			return false
@@ -274,6 +247,32 @@ class ConverterUnits {
 				from = f_[1]
 			}
 		return n
+	}
+
+	in_array($k, $a) {
+		for(const $aKey in $a) {
+			if($k == $a[$aKey]) {return true}
+		}
+		return false
+	}
+
+	array_keys($a) {
+		var arr = []
+		for(const $aKey in $a) {
+			arr.push($aKey)
+		}
+		return arr
+	}
+
+	Exception(message, code) {
+		this.message = message;
+		this.code = code;
+		this.getCode=()=>{
+			return this.code
+		}
+		this.getMessage=()=>{
+			return this.message
+		}
 	}
 }
 
