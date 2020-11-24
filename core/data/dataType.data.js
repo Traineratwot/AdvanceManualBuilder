@@ -24,3 +24,7 @@ dataTypes.img = new CLASSES.DataTypeClass({ name: 'string', subName: 'img', prev
 dataTypes.url = new CLASSES.DataTypeClass({ name: 'string', subName: 'url', preview: 'https://domain' })
 dataTypes.resource = new CLASSES.DataTypeClass({ name: 'resource', subName: 'resource' })
 dataTypes.xml = new CLASSES.DataTypeClass({	name: 'string',	subName: 'xml',	preview: '<element item="">content</element>'})
+
+
+
+

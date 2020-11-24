@@ -91,3 +91,6 @@
 	// you can include the sample plugin in all instances by default
 	$.jstree.defaults.plugins.push("sample");
 })(jQuery);
+//# sourceMappingURL=sample.js.map
+
+//# sourceMappingURL=sample.js.map

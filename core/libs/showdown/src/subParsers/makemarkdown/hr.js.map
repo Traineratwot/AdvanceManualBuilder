@@ -1,0 +1,1 @@
+{"version":3,"names":[],"mappings":"","sources":["assets/projects/AdvanceManualBuilder/core/libs/showdown/src/subParsers/makemarkdown/hr.js"],"sourcesContent":["showdown.subParser('makeMarkdown.hr', function () {\n  'use strict';\n\n  return '---';\n});\n\n\n"],"file":"hr.js"}

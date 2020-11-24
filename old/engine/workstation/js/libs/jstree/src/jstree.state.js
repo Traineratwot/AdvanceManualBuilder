@@ -136,3 +136,6 @@
 	// include the state plugin by default
 	// $.jstree.defaults.plugins.push("state");
 }));
+//# sourceMappingURL=jstree.state.js.map
+
+//# sourceMappingURL=jstree.state.js.map

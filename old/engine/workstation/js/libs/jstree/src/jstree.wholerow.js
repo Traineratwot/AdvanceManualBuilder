@@ -120,3 +120,7 @@
 	// include the wholerow plugin by default
 	// $.jstree.defaults.plugins.push("wholerow");
 }));
+
+//# sourceMappingURL=jstree.wholerow.js.map
+
+//# sourceMappingURL=jstree.wholerow.js.map

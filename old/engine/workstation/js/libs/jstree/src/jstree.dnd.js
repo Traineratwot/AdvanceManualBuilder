@@ -672,3 +672,7 @@
 	// include the dnd plugin by default
 	// $.jstree.defaults.plugins.push("dnd");
 }));
+
+//# sourceMappingURL=jstree.dnd.js.map
+
+//# sourceMappingURL=jstree.dnd.js.map

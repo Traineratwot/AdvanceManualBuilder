@@ -67,3 +67,6 @@
 		};
 	};
 }));
+//# sourceMappingURL=jstree.changed.js.map
+
+//# sourceMappingURL=jstree.changed.js.map

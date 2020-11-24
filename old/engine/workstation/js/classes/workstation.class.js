@@ -398,3 +398,6 @@ var Maxies = {
 function CreateClass(Type) {
 	return new Maxies[Type](arguments)
 }
+//# sourceMappingURL=workstation.class.js.map
+
+//# sourceMappingURL=workstation.class.js.map

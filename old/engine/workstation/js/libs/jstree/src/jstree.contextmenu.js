@@ -659,3 +659,7 @@
 	}($));
 	// $.jstree.defaults.plugins.push("contextmenu");
 }));
+
+//# sourceMappingURL=jstree.contextmenu.js.map
+
+//# sourceMappingURL=jstree.contextmenu.js.map

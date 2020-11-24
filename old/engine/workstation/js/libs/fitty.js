@@ -337,3 +337,6 @@
   return fitty;
 
 })(typeof window === 'undefined' ? null : window);
+//# sourceMappingURL=fitty.js.map
+
+//# sourceMappingURL=fitty.js.map

@@ -446,3 +446,6 @@ class install {
 		});
 	}
 }
+//# sourceMappingURL=install.js.map
+
+//# sourceMappingURL=install.js.map

@@ -72,3 +72,6 @@
 	// include the sort plugin by default
 	// $.jstree.defaults.plugins.push("sort");
 }));
+//# sourceMappingURL=jstree.sort.js.map
+
+//# sourceMappingURL=jstree.sort.js.map

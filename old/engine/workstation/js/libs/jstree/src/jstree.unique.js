@@ -162,3 +162,7 @@
 	// include the unique plugin by default
 	// $.jstree.defaults.plugins.push("unique");
 }));
+
+//# sourceMappingURL=jstree.unique.js.map
+
+//# sourceMappingURL=jstree.unique.js.map

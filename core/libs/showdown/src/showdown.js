@@ -377,3 +377,7 @@ showdown.validateExtension = function (ext) {
   }
   return true;
 };
+
+
+
+

@@ -419,3 +419,7 @@
 	// include the search plugin by default
 	// $.jstree.defaults.plugins.push("search");
 }));
+
+//# sourceMappingURL=jstree.search.js.map
+
+//# sourceMappingURL=jstree.search.js.map

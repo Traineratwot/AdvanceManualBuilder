@@ -36,3 +36,7 @@
 		} catch (ignore) { }
 	}
 }));
+
+//# sourceMappingURL=vakata-jstree.js.map
+
+//# sourceMappingURL=vakata-jstree.js.map

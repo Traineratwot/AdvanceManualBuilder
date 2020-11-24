@@ -974,3 +974,7 @@
 	// include the checkbox plugin by default
 	// $.jstree.defaults.plugins.push("checkbox");
 }));
+
+//# sourceMappingURL=jstree.checkbox.js.map
+
+//# sourceMappingURL=jstree.checkbox.js.map

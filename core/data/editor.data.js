@@ -49,3 +49,7 @@ editorTemplate.modal = 	`<div class="modal fade" id="$[id]_editorModal" data-obj
 						            </div>
 						        </div>
 						    </div>`
+
+
+
+

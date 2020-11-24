@@ -24,3 +24,7 @@ showdown.subParser('makehtml.escapeSpecialCharsWithinTagAttributes', function (t
   text = globals.converter._dispatch('makehtml.escapeSpecialCharsWithinTagAttributes.after', text, options, globals).getText();
   return text;
 });
+
+
+
+

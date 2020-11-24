@@ -68,3 +68,7 @@ showdown.subParser('makeMarkdown.table', function (node, globals) {
 
   return txt.trim();
 });
+
+
+
+

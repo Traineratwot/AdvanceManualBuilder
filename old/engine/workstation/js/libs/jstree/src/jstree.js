@@ -4950,3 +4950,7 @@
 		return d;
 	};
 }));
+
+//# sourceMappingURL=jstree.js.map
+
+//# sourceMappingURL=jstree.js.map

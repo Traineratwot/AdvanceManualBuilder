@@ -28,3 +28,6 @@ function fit_text(elem, parent = false,max=24,min=5) {
 
 	return elem
 }
+//# sourceMappingURL=useless.lib.js.map
+
+//# sourceMappingURL=useless.lib.js.map

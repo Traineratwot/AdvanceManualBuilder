@@ -215,3 +215,7 @@ class install {
 		return exportData
 	}
 }
+
+//# sourceMappingURL=install_depricatede.js.map
+
+//# sourceMappingURL=install_depricatede.js.map

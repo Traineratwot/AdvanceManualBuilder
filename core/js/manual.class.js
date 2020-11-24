@@ -149,3 +149,7 @@ CLASSES.ManualClass = class ManualClass extends CLASSES.CommonClass {
 	}
 }
 
+
+
+
+

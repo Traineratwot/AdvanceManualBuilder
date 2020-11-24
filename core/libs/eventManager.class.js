@@ -163,3 +163,6 @@ EMC.treeAddDblclick = function(event, data) {
 			GOA[GlobalKey].createNewElement(classKey, GlobalKey, childKey, layout.editor.block)
 		})
 }
+
+
+

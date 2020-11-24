@@ -370,3 +370,7 @@
 	// include the types plugin by default
 	// $.jstree.defaults.plugins.push("types");
 }));
+
+//# sourceMappingURL=jstree.types.js.map
+
+//# sourceMappingURL=jstree.types.js.map
